@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eshequ.msa.crm.mapper.targetcust.CrmMarketingCustMapper">
+  <resultMap id="BaseResultMap" type="com.eshequ.msa.crm.model.targetcust.CrmMarketingCust">
+    <id column="CUST_ID" jdbcType="BIGINT" property="custId" />
+    <result column="HOU_COUNT" jdbcType="DECIMAL" property="houCount" />
+    <result column="YEAR_AMT" jdbcType="DECIMAL" property="yearAmt" />
+    <result column="QUALIFICATION_LEVEL" jdbcType="CHAR" property="qualificationLevel" />
+    <result column="SALE_STATUS" jdbcType="CHAR" property="saleStatus" />
+    <result column="GROUP_COM" jdbcType="VARCHAR" property="groupCom" />
+    <result column="SYS_OPERID" jdbcType="BIGINT" property="sysOperid" />
+    <result column="CUST_NAME" jdbcType="VARCHAR" property="custName" />
+    <result column="CUST_ADDR" jdbcType="VARCHAR" property="custAddr" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+    <result column="REGION_ID" jdbcType="BIGINT" property="regionId" />
+    <result column="CITY_ID" jdbcType="BIGINT" property="cityId" />
+    <result column="PROVINCE_ID" jdbcType="BIGINT" property="provinceId" />
+    <result column="INDUSTRY_ID" jdbcType="BIGINT" property="industryId" />
+  </resultMap>
+  <select id="queryCustByExample" resultType="com.eshequ.msa.crm.model.targetcust.CrmMarketingCust" parameterType="com.eshequ.msa.crm.vo.targetcust.TargetCustVo">
+  	select * from crm_marketing_cust where 1=1
+  	<if test="custName != null">
+  		and cust_name like CONCAT('%', #{custName}, '%')
+  	</if>
+  	<if test="custAddr != null">
+  		and cust_addr like CONCAT('%', #{custAddr}, '%')
+  	</if>
+  	<if test="groupCom != null">
+  		and GROUP_COM like CONCAT('%', #{groupCom}, '%')
+  	</if>
+  	<if test="saleStatus != null">
+  		and SALE_STATUS = #{saleStatus}
+  	</if>
+  	<if test="regionId != 0">
+  		and REGION_ID = #{regionId}
+  	</if>
+  	<if test="cityId != 0">
+  		and CITY_ID = #{cityId}
+  	</if>
+  	<if test="provinceId != 0">
+  		and PROVINCE_ID = #{provinceId}
+  	</if>
+  	<if test="industryId != 0">
+  		and INDUSTRY_ID = #{industryId}
+  	</if>
+  	<if test="sysOperid != 0">
+  		and SYS_OPERID = #{sysOperid}
+  	</if>
+  	<if test="minHouCount != null">
+  		and HOU_COUNT >= #{minHouCount}
+  	</if>
+  	<if test="maxHouCount != null">
+  		and HOU_COUNT &lt;= #{maxHouCount}
+  	</if>
+  </select>
+</mapper>

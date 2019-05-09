@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eshequ.msa.crm.mapper.repairmng.FileMngMapper">
+  <resultMap id="BaseResultMap" type="com.eshequ.msa.crm.model.repairmng.FileMng">
+    <id column="FILE_ID" jdbcType="VARCHAR" property="fileId" />
+    <result column="FILE_PATH" jdbcType="VARCHAR" property="filePath" />
+    <result column="FILE_SIZE" jdbcType="DOUBLE" property="fileSize" />
+    <result column="CREATE_DATE" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="FILE_TYPE" jdbcType="CHAR" property="fileType" />
+    <result column="REPAIR_ID" jdbcType="VARCHAR" property="repairId" />
+  </resultMap>
+  
+  <delete id="seleteByRepairId" parameterType="String">
+  DELETE FROM FILE_MNG WHERE REPAIR_ID = #{repairId}
+  </delete>
+  
+  <select id="getRepairOrderById" parameterType="String" resultMap="BaseResultMap">
+  SELECT FILE_PATH, FILE_ID FROM FILE_MNG WHERE REPAIR_ID = #{repairId}
+  </select>
+</mapper>

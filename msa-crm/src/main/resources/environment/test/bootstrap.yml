@@ -1,0 +1,16 @@
+---
+spring:
+  cloud:
+    bus:
+      enabled: true
+    consul:
+      port: 8500
+      discovery:
+        healthCheckUrl: http://test-msa1:${server.port}${server.servlet.context-path}/actuator/health
+        serviceName: ${spring.application.name}
+        enabled: true
+        healthCheckInterval: 10s
+      host: test-msa2
+      enabled: true
+  application:
+    name: msa-crm

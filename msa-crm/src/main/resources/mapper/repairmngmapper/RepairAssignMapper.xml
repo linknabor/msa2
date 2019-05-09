@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eshequ.msa.crm.mapper.repairmng.RepairAssignMapper">
+  <resultMap id="BaseResultMap" type="com.eshequ.msa.crm.model.repairmng.RepairAssign">
+    <id column="REPAIR_ASSIGN_ID" jdbcType="VARCHAR" property="repairAssignId" />
+    <result column="ASSIGN_PEPOLE_ID" jdbcType="VARCHAR" property="assignPepoleId" />
+    <result column="ASSIGN_PEPOLE_NAME" jdbcType="VARCHAR" property="assignPepoleName" />
+    <result column="ASSIGN_PEPOLE_IMG" jdbcType="VARCHAR" property="assignPepoleImg" />
+    <result column="ASSIGN_DATE" jdbcType="TIMESTAMP" property="assignDate" />
+    <result column="ASSIGN_PEPOLE_POSITION" jdbcType="VARCHAR" property="assignPepolePosition" />
+     <result column="ASSIGN_PEPOLE_PHONE" jdbcType="VARCHAR" property="assignPepolePhone" />
+  </resultMap>
+  <select id="getByAssignPepoleId" parameterType="java.lang.String" resultType="java.lang.Integer">
+  SELECT COUNT(*) FROM REPAIR_ASSIGN WHERE ASSIGN_PEPOLE_ID= #{assignPepoleId}
+  </select>
+  
+  <select id="selectByAssignPepoleId" parameterType="java.lang.String" resultMap="BaseResultMap">
+  SELECT REPAIR_ASSIGN_ID,ASSIGN_PEPOLE_ID,ASSIGN_PEPOLE_NAME,ASSIGN_PEPOLE_IMG,ASSIGN_PEPOLE_PHONE FROM REPAIR_ASSIGN WHERE ASSIGN_PEPOLE_ID= #{assignPepoleId}
+  </select>
+</mapper>

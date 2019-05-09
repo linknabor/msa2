@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eshequ.msa.crm.mapper.repairmng.RepairOrderMapper">
+  <resultMap id="BaseResultMap" type="com.eshequ.msa.crm.model.repairmng.RepairOrder">
+    <id column="REPAIR_ID" jdbcType="VARCHAR" property="repairId" />
+    <result column="REPAIR_TYPE" jdbcType="CHAR" property="repairType" />
+    <result column="REPAIR_ADDRESS" jdbcType="VARCHAR" property="repairAddress" />
+    <result column="REPAIR_CONTENT" jdbcType="VARCHAR" property="repairContent" />
+    <result column="REPAIR_PHONE" jdbcType="VARCHAR" property="repairPhone" />
+    <result column="REPAIR_DATE" jdbcType="TIMESTAMP" property="repairDate" />
+    <result column="REPAIR_PEPOLE_ID" jdbcType="VARCHAR" property="repairPepoleId" />
+    <result column="REPAIR_PEPOLE_NAME" jdbcType="VARCHAR" property="repairPepoleName" />
+    <result column="REPAIR_PEPOLE_IMG" jdbcType="VARCHAR" property="repairPepoleImg" />
+    <result column="REPAIR_STATUS" jdbcType="CHAR" property="repairStatus" />
+    <result column="REPAIR_CLOSE_RESION" jdbcType="VARCHAR" property="repairCloseResion" />
+    <result column="REPAIR_ASSIGN_ID" jdbcType="VARCHAR" property="repairAssignId" />
+    <result column="SERVICE_LOOK" jdbcType="VARCHAR" property="serviceLook" />
+     <result column="REPAIR_LOOK" jdbcType="VARCHAR" property="repairLook" />
+    <result column="SERVER_IDS" jdbcType="VARCHAR" property="serverIds" />
+  </resultMap>
+  
+  <select id="getRepairOrderList" parameterType="java.lang.String" resultMap="BaseResultMap">
+  SELECT REPAIR_ID,REPAIR_ADDRESS,REPAIR_DATE,REPAIR_PEPOLE_NAME,REPAIR_PEPOLE_IMG,SERVICE_LOOK,REPAIR_LOOK FROM REPAIR_ORDER 
+  <where>
+  <if test="userId != null">
+  AND REPAIR_ASSIGN_ID=#{userId}
+  
+  AND REPAIR_STATUS != 2
+  </if>
+  </where>
+  ORDER BY REPAIR_DATE DESC
+  </select>
+  <select id="findRepairOrderById" parameterType="java.lang.String" resultMap="BaseResultMap">
+  SELECT REPAIR_ID,REPAIR_TYPE,REPAIR_ADDRESS,REPAIR_CONTENT,REPAIR_DATE,REPAIR_STATUS,REPAIR_PHONE,REPAIR_ASSIGN_ID,SERVICE_LOOK,REPAIR_LOOK,REPAIR_CLOSE_RESION FROM REPAIR_ORDER
+  WHERE  REPAIR_ID = #{repairId}
+  </select>
+  
+  <select id="getNotLookOrderCount" parameterType="java.lang.String" resultType="java.lang.Integer">
+  SELECT COUNT(REPAIR_ID) FROM REPAIR_ORDER
+  <where>
+  <if test="userId != null">
+   REPAIR_ASSIGN_ID=#{userId}
+  
+  AND REPAIR_LOOK = 0
+  </if>
+  
+  <if test="userId == null">
+  AND  SERVICE_LOOK = 0
+  </if>
+  
+  </where>
+  </select>
+  
+  
+  <select id="getMaxTime" parameterType="java.lang.String" resultType="java.lang.String">
+  select max(REPAIR_DATE) REPAIR_DATE FROM REPAIR_ORDER
+  <where>
+  <if test="userId != null">
+   REPAIR_ASSIGN_ID=#{userId}
+   
+   AND REPAIR_LOOK = 0
+  </if>
+  </where>
+  </select>
+  
+  <update id="updateIsLook" parameterType="java.lang.String">
+  UPDATE REPAIR_ORDER  SET
+  <if test="userId != null">
+   REPAIR_LOOK = 1
+   
+   WHERE REPAIR_ASSIGN_ID=#{userId} AND REPAIR_LOOK = 0
+  </if>
+  <if test="userId == null">
+  SERVICE_LOOK = 1
+  
+  WHERE SERVICE_LOOK=0
+  </if>
+  </update>
+  
+  <update id="updateIsLookById" parameterType="java.lang.String">
+  UPDATE REPAIR_ORDER
+  <set>
+   <if test="userId != null">
+   REPAIR_LOOK = 1
+  </if>
+  <if test="userId == null">
+  SERVICE_LOOK = 1
+  </if>
+  </set>
+  WHERE REPAIR_ID = #{repairId}
+  </update>
+</mapper>

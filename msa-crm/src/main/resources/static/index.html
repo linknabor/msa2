@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<link rel="stylesheet" type="text/css" th:href="@{jquery-easyui-1.4.5/themes/default/easyui.css}" />  
+<link rel="stylesheet" type="text/css" th:href="@{jquery-easyui-1.4.5/themes/icon.css}" />  
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<script type="text/javascript">
+$(function(){
+	$("#btn").click(function(){
+		$.ajax({
+			url:"http://192.168.0.115/sso/login",
+			type:"GET",
+			xhrFields: {
+				withCredentials: true
+	       	},
+	       	crossDomain: true,
+	       	success:function(result){
+				console.info(result);
+			}
+		})
+	})
+	
+})
+</script>
+<body>
+    <h1>testThymeleaf</h1>
+    <form id="form1" action="">
+    <table>
+    <tr>
+    <td>用户名</td>
+    <td><input name="userName" value="" /></td>
+    </tr>
+    <tr>
+    <td>密码</td>
+    <td><input name="password" value="" /></td>
+    </tr>
+    <tr>
+    <td>验证码</td>
+    <td><input name="code" value="" /></td>
+    </tr>
+    </table>
+    <button id="btn" type="button">提交</button>
+    </form>
+</body>
+</html>

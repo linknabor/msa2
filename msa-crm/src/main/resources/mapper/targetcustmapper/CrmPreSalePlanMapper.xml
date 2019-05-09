@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eshequ.msa.crm.mapper.targetcust.CrmPreSalePlanMapper">
+  <resultMap id="BaseResultMap" type="com.eshequ.msa.crm.model.targetcust.CrmPreSalePlan">
+    <id column="PLAN_ID" jdbcType="VARCHAR" property="planId" />
+    <result column="SALE_DATE" jdbcType="CHAR" property="saleDate" />
+    <result column="DATE_FLAG" jdbcType="CHAR" property="dateFlag" />
+    <result column="TIME_QUANTUM" jdbcType="VARCHAR" property="timeQuantum" />
+    <result column="CALL_ID" jdbcType="VARCHAR" property="callId" />
+    <result column="SYS_OPERID" jdbcType="VARCHAR" property="sysOperid" />
+    <result column="LINK_ID" jdbcType="VARCHAR" property="linkId" />
+    <result column="CUST_ID" jdbcType="BIGINT" property="custId" />
+  </resultMap>
+</mapper>
