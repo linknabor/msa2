@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.eshequ.msa.crm.mapper.targetcust.CrmRelatePlatCustMapper">
-  <resultMap id="BaseResultMap" type="com.eshequ.msa.crm.model.targetcust.CrmRelatePlatCust">
-    <id column="CUST_ID" jdbcType="BIGINT" property="custId" />
-    <result column="ENTERPRISE_ID" jdbcType="VARCHAR" property="enterpriseId" />
-  </resultMap>
-</mapper>
