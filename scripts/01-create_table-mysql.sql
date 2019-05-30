@@ -281,61 +281,12 @@ ORIGIN_ORDER_ID                                   BIGINT default 0 NOT NULL, #原
 CONSTRAINT MSA_TRADE_REFUND_ORDER_CHK3 CHECK(CONSULT_RATE<=100.00),
 CONSTRAINT MSA_TRADE_REFUND_ORDER_PK PRIMARY KEY(ID)   );
 
-#退款订单表 （操作表）
-DROP TABLE OPER_MSA_TRADE_REFUND_ORDER;
-CREATE TABLE OPER_MSA_TRADE_REFUND_ORDER(
-WORK_ID VARCHAR(38) NOT NULL,
-DATA_TYPE CHAR(1) NOT NULL,
-ID                                                BIGINT default 0 NOT NULL, #退款订单ID
-TRAN_STATUS                                       CHAR(2) NOT NULL, #退款状态
-CONSULT_RATE                                      DECIMAL(5,2) NOT NULL, #费率
-CONSULT_AMT                                       DECIMAL(16,2) default 0 NOT NULL, #费率金额
-TRAN_AMT                                          DECIMAL(16,2) default 0 NOT NULL, #交易金额
-PAY_METHOD                                        CHAR(2) NOT NULL, #支付渠道
-TRAN_DATE                                         CHAR(8) NOT NULL, #交易日期
-TRAN_TIME                                         CHAR(6) NOT NULL, #交易时间
-ACCT_DATE                                         CHAR(8) NULL, #记账日期
-ACCT_TIME                                         CHAR(6) NULL, #记账时间
-CSP_ID                                            BIGINT default 0 NULL, #物业公司ID
-CSP_NAME                                          VARCHAR(40) NULL, #公司名称
-SECT_ID                                           BIGINT default 0 NULL, #物业项目ID
-SECT_NAME                                         VARCHAR(40) NULL, #项目名称
-PLAT_CHANNEL                                      CHAR(1) NULL, #支付平台
-CARD_TYPE                                         CHAR(1) NULL, #银行卡类型
-OPER_NAME                                         VARCHAR(80) NULL, #操作人
-OWNER_CONSULT_AMT                                 DECIMAL(16,2) default 0 NULL, #业主承担费率金额
-OUTSIDE_ORDER_ID                                  VARCHAR(40) NULL, #外部订单ID
-FROM_SYS                                          VARCHAR(20) NULL, #来自平台
-ORDER_ATTACH                                      VARCHAR(256) NULL, #订单附加信息
-ORIGIN_ORDER_ID                                   BIGINT default 0 NOT NULL, #原支付订单号
-CONSTRAINT OPER_MSA_TRADE_REFUND_ORDER_PK PRIMARY KEY(WORK_ID, DATA_TYPE, ID)   );
-
-#退款订单表 （业务表）
-DROP TABLE BIZ_MSA_TRADE_REFUND_ORDER;
-CREATE TABLE BIZ_MSA_TRADE_REFUND_ORDER(
-BIZ_ID VARCHAR(38) NOT NULL,
-ID                                                BIGINT default 0 NOT NULL, #退款订单ID
-TRAN_STATUS                                       CHAR(2) NOT NULL, #退款状态
-CONSULT_RATE                                      DECIMAL(5,2) NOT NULL, #费率
-CONSULT_AMT                                       DECIMAL(16,2) default 0 NOT NULL, #费率金额
-TRAN_AMT                                          DECIMAL(16,2) default 0 NOT NULL, #交易金额
-PAY_METHOD                                        CHAR(2) NOT NULL, #支付渠道
-TRAN_DATE                                         CHAR(8) NOT NULL, #交易日期
-TRAN_TIME                                         CHAR(6) NOT NULL, #交易时间
-ACCT_DATE                                         CHAR(8) NULL, #记账日期
-ACCT_TIME                                         CHAR(6) NULL, #记账时间
-CSP_ID                                            BIGINT default 0 NULL, #物业公司ID
-CSP_NAME                                          VARCHAR(40) NULL, #公司名称
-SECT_ID                                           BIGINT default 0 NULL, #物业项目ID
-SECT_NAME                                         VARCHAR(40) NULL, #项目名称
-PLAT_CHANNEL                                      CHAR(1) NULL, #支付平台
-CARD_TYPE                                         CHAR(1) NULL, #银行卡类型
-OPER_NAME                                         VARCHAR(80) NULL, #操作人
-OWNER_CONSULT_AMT                                 DECIMAL(16,2) default 0 NULL, #业主承担费率金额
-OUTSIDE_ORDER_ID                                  VARCHAR(40) NULL, #外部订单ID
-FROM_SYS                                          VARCHAR(20) NULL, #来自平台
-ORDER_ATTACH                                      VARCHAR(256) NULL, #订单附加信息
-ORIGIN_ORDER_ID                                   BIGINT default 0 NOT NULL, #原支付订单号
-CONSTRAINT BIZ_MSA_TRADE_REFUND_ORDER_PK PRIMARY KEY(BIZ_ID, ID)   );
-
-
+DROP TABLE IF EXISTS CODE_INFO;
+CREATE TABLE `code_info` (
+  `CI_SP_CODE` varchar(40) NOT NULL,
+  `CI_SP_CLASS` varchar(40) NOT NULL,
+  `CI_SP_CLASSNAME` varchar(80) NOT NULL,
+  `CI_SP_NAME` varchar(256) NOT NULL,
+  `CI_SP_REMARK` varchar(512) DEFAULT NULL,
+  PRIMARY KEY (`CI_SP_CODE`,`CI_SP_CLASS`)
+) ;
