@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eshequ.msa.codes.mapper.CodeInfoMapper">
+  <resultMap id="BaseResultMap" type="com.eshequ.msa.codes.model.CodeInfo">
+    <id column="CI_SP_CODE" jdbcType="VARCHAR" property="ciSpCode" />
+    <id column="CI_SP_CLASS" jdbcType="VARCHAR" property="ciSpClass" />
+    <result column="CI_SP_CLASSNAME" jdbcType="VARCHAR" property="ciSpClassname" />
+    <result column="CI_SP_NAME" jdbcType="VARCHAR" property="ciSpName" />
+    <result column="CI_SP_REMARK" jdbcType="VARCHAR" property="ciSpRemark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    CI_SP_CODE, CI_SP_CLASS, CI_SP_CLASSNAME, CI_SP_NAME, CI_SP_REMARK
+  </sql>
+  <select id="selectByClass" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from code_info
+    where CI_SP_CLASS = #{ciSpClass,jdbcType=VARCHAR}
+  </select>
+
+</mapper>

@@ -1,0 +1,8 @@
+/.settings/org.eclipse.core.resources.prefs
+/.settings/org.eclipse.m2e.core.prefs
+/msa-parent/.classpath
+/msa-parent/.settings/*.prefs
+/msa-parent/msa-common/*.classpath
+/msa-parent/msa-common/.settings/*.prefs
+/msa-parent/msa-finance/*.classpath
+/msa-parent/msa-finance/.settings/*.prefs
