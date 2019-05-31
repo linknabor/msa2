@@ -19,4 +19,5 @@
 	LinkedMultiValueMap<String, String> multiMap = new LinkedMultiValueMap<>();  
 	multiMap.setAll(map);  
 	String resp = restTemplate.postForObject(reqUrl, multiMap, String.class);  
-10.业务处理类放在service包下  
+10.controller都放在web包下，业务处理类放在service包下，数据库操作在各自的mapper中。 
+ 

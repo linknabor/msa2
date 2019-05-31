@@ -6,3 +6,6 @@
 /msa-parent/msa-common/.settings/*.prefs
 /msa-parent/msa-finance/*.classpath
 /msa-parent/msa-finance/.settings/*.prefs
+/msa-parent/msa-reconciliation/.settings/org.eclipse.core.resources.prefs
+/msa-parent/msa-reconciliation/.settings/*.prefs
+/msa-parent/msa-reconciliation/.classpath
