@@ -1,6 +1,6 @@
-# msa2
+# msa2  
 
-开发注意事项：
+开发注意事项：  
 1.pom文件中添加<dependency></dependency>时，不要写入确切版本号，用占位符代替，例如：${springboot.version}。具体版本在<properties></properties>标签下定义。  
 2.用mabatis反向工程工具生成实体和mapper的，请修改resources文件下的generatorConfig.xml。然后在Util包下找到MybatisGeneratorUtill这个类，执行main函数。  
 3.Mybatis反向工程由于generatorConfig.xml文件设置了属性modelOnly，不会自动生成SQL及其对应的mapper，请自行创建该实体对应的Mapper文件并继承com.eshequ.msa.common.CommonMapper。  
