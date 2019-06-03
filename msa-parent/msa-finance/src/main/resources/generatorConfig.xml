@@ -3,7 +3,7 @@
 <generatorConfiguration>
 
 	<classPathEntry
-		location="D:\workstation\devtools\apache-maven-3.5.4\dependencies_plat\mysql\mysql-connector-java\5.1.47\mysql-connector-java-5.1.47.jar" />
+		location="D:\j2ee\apache-maven-3.3.9\repository\mysql\mysql-connector-java\5.1.47\mysql-connector-java-5.1.47.jar" />
 
 	<context id="MysqlTables" targetRuntime="MyBatis3">
 		<commentGenerator>
@@ -60,7 +60,7 @@
 			<property name="rootInterface" value="com.eshequ.msa.common.CommonMapper"/>
 		</javaClientGenerator>
      	
-<!-- 		<table schema="msa_trade" tableName="msa_base_acct_info" enableCountByExample="false"
+ 		<table schema="msa_trade" tableName="msa_base_acct_info" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 			<property name="useActualColumnNames" value="false"/>
@@ -128,7 +128,7 @@
 			enableSelectByExample="false" selectByExampleQueryId="false">
 			<property name="useActualColumnNames" value="false"/>
 			<property name ="modelOnly" value="true" />
-		</table> -->
+		</table>
 		
 		<table schema="msa_trade" tableName="msa_base_mch_info" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"

@@ -29,6 +29,10 @@ public class CodesItem {
 	protected static final String mchStatus=new String("7");
 	
 	protected static final String accountStatus=new String("8");
+	
+	protected static final String payChannel=new String("9");
+	
+	protected static final String processStatus=new String("11");
 
 
 	protected static final Map mapCat= new HashMap(100);
@@ -39,7 +43,9 @@ public class CodesItem {
 		mapCat.put("MergerStatus",mergerStatus);
 		mapCat.put("CardType",cardType);
 		mapCat.put("MchStatus",mchStatus);
-		mapCat.put("accountStatus",accountStatus);
+		mapCat.put("AccountStatus",accountStatus);
+		mapCat.put("PayChannel",payChannel);
+		mapCat.put("ProcessStatus",processStatus);
 	}
 
 

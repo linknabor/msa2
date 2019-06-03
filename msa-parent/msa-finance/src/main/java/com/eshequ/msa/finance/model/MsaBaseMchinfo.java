@@ -26,6 +26,8 @@ public class MsaBaseMchInfo extends BaseModel {
 
     private String payProduct;
 
+    private String payChannel;
+
     private String linkMan;
 
     private String certNo;
@@ -130,6 +132,14 @@ public class MsaBaseMchInfo extends BaseModel {
 
     public void setPayProduct(String payProduct) {
         this.payProduct = payProduct;
+    }
+
+    public String getPayChannel() {
+        return payChannel;
+    }
+
+    public void setPayChannel(String payChannel) {
+        this.payChannel = payChannel;
     }
 
     public String getLinkMan() {

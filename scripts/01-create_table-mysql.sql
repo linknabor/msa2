@@ -1,14 +1,3 @@
-#代码项
-DROP TABLE IF EXISTS CODE_INFO;
-CREATE TABLE `CODE_INFO` (
-  `CI_SP_CODE` varchar(40) NOT NULL,
-  `CI_SP_CLASS` varchar(40) NOT NULL,
-  `CI_SP_CLASSNAME` varchar(80) NOT NULL,
-  `CI_SP_NAME` varchar(256) NOT NULL,
-  `CI_SP_REMARK` varchar(512) DEFAULT NULL,
-  PRIMARY KEY (`CI_SP_CODE`,`CI_SP_CLASS`)
-);
-
 #商户信息表
 DROP TABLE IF EXISTS MSA_BASE_MCH_INFO ;
 CREATE TABLE MSA_BASE_MCH_INFO(
@@ -23,6 +12,7 @@ METHOD_TYPE                                       CHAR(10) NOT NULL, #渠道类型
 CONSULT_RATE                                      DECIMAL(5,2) NOT NULL, #费率
 CONSULT_LIMIT                                     DECIMAL(16,2) default 0 NOT NULL, #费率上限
 PAY_PRODUCT                                       VARCHAR(10) NOT NULL, #支付产品
+PAY_CHANNEL                                       CHAR(2) NOT NULL, #支付渠道
 LINK_MAN                                          VARCHAR(80) NOT NULL, #联系人
 CERT_NO                                           VARCHAR(40) NOT NULL, #证件号
 TEL                                               VARCHAR(20) NOT NULL, #联系电话
@@ -35,7 +25,6 @@ ENTITY_ID                                         CHAR(10) NULL, #ID
 CONSTRAINT MSA_BASE_MCH_INFO_CHK9 CHECK(CONSULT_RATE<=100.00),
 CONSTRAINT MSA_BASE_MCH_INFO_PK PRIMARY KEY(ID)   );
 
-
 #客户商户关系表
 DROP TABLE IF EXISTS MSA_RELATE_MCH_CUST ;
 CREATE TABLE MSA_RELATE_MCH_CUST(
@@ -46,10 +35,10 @@ CUST_ADDR                                         VARCHAR(80) NULL, #客户地址
 CONSTRAINT MSA_RELATE_MCH_CUST_PK PRIMARY KEY(CUST_ID)   );
 
 #原始对账信息表
-DROP TABLE IF EXISTS MSA_BASE_ORIGIN_RECON_INFO ;
-CREATE TABLE MSA_BASE_ORIGIN_RECON_INFO(
+DROP TABLE IF EXISTS MSA_BASE_ORIGIN_VERIFY ;
+CREATE TABLE MSA_BASE_ORIGIN_VERIFY(
 ID                                                BIGINT default 0 NOT NULL, #ID
-CREATE_DATE                                       CHAR(8) NULL, #文件生成日期
+FILE_CREATE_DATE                                  CHAR(8) NULL, #文件生成日期
 TRAN_DATE                                         CHAR(8) NOT NULL, #交易日期
 TRAN_TIME                                         CHAR(6) NOT NULL, #交易时间
 SYS_MCH_NO                                        VARCHAR(256) NOT NULL, #支付商户号
@@ -63,11 +52,11 @@ ORIGIN_ORDER_ID                                   BIGINT default 0 NULL, #原业务
 ORIGIN_TRAN_DATE                                  CHAR(8) NULL, #原交易日期
 CHECK_FLAG                                        CHAR(1) NULL, #对账标识
 REMARK                                            VARCHAR(256) NULL, #备注
-CONSTRAINT MSA_BASE_ORIGIN_RECON_INFO_PK PRIMARY KEY(ID)   );
+CONSTRAINT MSA_BASE_ORIGIN_VERIFY_PK PRIMARY KEY(ID)   );
 
 #自主清算明细表
-DROP TABLE IF EXISTS MSA_LIQUIDATE_OWNER_DETAIL ;
-CREATE TABLE MSA_LIQUIDATE_OWNER_DETAIL(
+DROP TABLE IF EXISTS SP_LIQUIDATE_OWNER_DETAIL ;
+CREATE TABLE SP_LIQUIDATE_OWNER_DETAIL(
 ID                                                BIGINT default 0 NOT NULL, #ID
 ORDER_ID                                          BIGINT default 0 NOT NULL, #业务订单号
 TRAN_AMT                                          DECIMAL(16,2) default 0 NOT NULL, #交易金额
@@ -85,14 +74,15 @@ SECT_NAME                                         VARCHAR(80) NULL, #小区名称
 CSP_ID                                            BIGINT default 0 NULL, #公司ID
 CSP_NAME                                          VARCHAR(80) NULL, #公司名称
 LIQUIDATE_ID                                      BIGINT default 0 NOT NULL, #ID
-CONSTRAINT MSA_LIQUIDATE_OWNER_DETAIL_CHK8 CHECK(CONSULT_RATE<=100.00),
-CONSTRAINT MSA_LIQUIDATE_OWNER_DETAIL_CHK10 CHECK(CHANNEL_RATE<=100.00),
-CONSTRAINT MSA_LIQUIDATE_OWNER_DETAIL_PK PRIMARY KEY(ID)   );
+CONSTRAINT SP_LIQUIDATE_OWNER_DETAIL_CHK8 CHECK(CONSULT_RATE<=100.00),
+CONSTRAINT SP_LIQUIDATE_OWNER_DETAIL_CHK10 CHECK(CHANNEL_RATE<=100.00),
+CONSTRAINT SP_LIQUIDATE_OWNER_DETAIL_PK PRIMARY KEY(ID)   );
 
 #自主清算汇总表
-DROP TABLE IF EXISTS MSA_LIQUIDATE_OWNER_SUM ;
-CREATE TABLE MSA_LIQUIDATE_OWNER_SUM(
+DROP TABLE IF EXISTS SP_LIQUIDATE_OWNER_SUM ;
+CREATE TABLE SP_LIQUIDATE_OWNER_SUM(
 ID                                                BIGINT default 0 NOT NULL, #ID
+PROCESS_STATUS                                    CHAR(1) NOT NULL, #流程状态
 BANK_NAME                                         VARCHAR(40) NULL, #开户行名称
 ACCT_NAME                                         VARCHAR(40) NULL, #结算账户名称
 ACCT_NO                                           VARCHAR(40) NULL, #结算账号
@@ -109,7 +99,7 @@ LIQUIDATE_STATUS                                  CHAR(1) NOT NULL, #清算状态
 LIQUIDATE_COUNT                                   DECIMAL(10) default 0 NOT NULL, #清算笔数
 OPER_NAME                                         VARCHAR(40) NULL, #清算人
 LIQUIDATE_CONTENT                                 VARCHAR(256) NULL, #清算内容
-CONSTRAINT MSA_LIQUIDATE_OWNER_SUM_PK PRIMARY KEY(ID)   );
+CONSTRAINT SP_LIQUIDATE_OWNER_SUM_PK PRIMARY KEY(ID)   );
 
 #节假日信息表
 DROP TABLE IF EXISTS MSA_BASE_HOLIDAY ;
@@ -145,7 +135,7 @@ SHOULD_DATE                                       CHAR(8) NOT NULL, #应结日期
 ACCOUNT_AMT                                       DECIMAL(16,2) default 0 NULL, #到账金额
 ACCOUNT_DATE                                      CHAR(8) NULL, #到账日期
 PAY_NUM                                           DECIMAL(10) default 0 NOT NULL, #交易笔数
-ACCOUNT_STATUS                                    CHAR(1) NOT NULL, #结算状态
+ACCOUNT_STATUS                                    CHAR(1) NOT NULL, #清算状态
 ENTITY_ID                                         CHAR(10) NOT NULL, #ID
 ENTITY_NAME                                       VARCHAR(40) NULL, #实体名称
 ACCOUNT_NO                                        VARCHAR(40) NULL, #结算账户
@@ -188,7 +178,7 @@ TRAN_STATUS                                       CHAR(2) NOT NULL, #交易状态
 CONSULT_RATE                                      DECIMAL(5,2) NOT NULL, #费率
 CONSULT_AMT                                       DECIMAL(16,2) default 0 NOT NULL, #费率金额
 TRAN_AMT                                          DECIMAL(16,2) default 0 NOT NULL, #交易金额
-PAY_METHOD                                        CHAR(2) NOT NULL, #支付渠道
+PAY_METHOD                                        CHAR(2) NOT NULL, #支付方式
 TRAN_DATE                                         CHAR(8) NOT NULL, #交易日期
 TRAN_TIME                                         CHAR(6) NOT NULL, #交易时间
 ACCT_DATE                                         CHAR(8) NULL, #记账日期
@@ -208,7 +198,6 @@ ORDER_ATTACH                                      VARCHAR(256) NULL, #订单附加信
 CONSTRAINT MSA_TRADE_PAY_ORDER_CHK3 CHECK(CONSULT_RATE<=100.00),
 CONSTRAINT MSA_TRADE_PAY_ORDER_PK PRIMARY KEY(ID)   );
 
-
 #退款订单表
 DROP TABLE IF EXISTS MSA_TRADE_REFUND_ORDER ;
 CREATE TABLE MSA_TRADE_REFUND_ORDER(
@@ -217,7 +206,7 @@ TRAN_STATUS                                       CHAR(2) NOT NULL, #退款状态
 CONSULT_RATE                                      DECIMAL(5,2) NOT NULL, #费率
 CONSULT_AMT                                       DECIMAL(16,2) default 0 NOT NULL, #费率金额
 TRAN_AMT                                          DECIMAL(16,2) default 0 NOT NULL, #交易金额
-PAY_METHOD                                        CHAR(2) NOT NULL, #支付渠道
+PAY_METHOD                                        CHAR(2) NOT NULL, #支付方式
 TRAN_DATE                                         CHAR(8) NOT NULL, #交易日期
 TRAN_TIME                                         CHAR(6) NOT NULL, #交易时间
 ACCT_DATE                                         CHAR(8) NULL, #记账日期
@@ -236,9 +225,5 @@ ORDER_ATTACH                                      VARCHAR(256) NULL, #订单附加信
 ORIGIN_ORDER_ID                                   BIGINT default 0 NOT NULL, #原支付订单号
 CONSTRAINT MSA_TRADE_REFUND_ORDER_CHK3 CHECK(CONSULT_RATE<=100.00),
 CONSTRAINT MSA_TRADE_REFUND_ORDER_PK PRIMARY KEY(ID)   );
-
-
-
-
 
 

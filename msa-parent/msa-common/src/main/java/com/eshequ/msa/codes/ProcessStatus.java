@@ -5,24 +5,24 @@ import java.util.List;
 import java.util.Map;                                                           
 import com.eshequ.msa.codes.model.CodeInfo;                     
 /** Auto generated */												 
-public class AccountStatus extends CodesItem {                                      
-	private AccountStatus(String code){super(CodesItem.accountStatus,code);}	        
+public class ProcessStatus extends CodesItem {                                      
+	private ProcessStatus(String code){super(CodesItem.processStatus,code);}	        
 	public static String getValue(String code){                                         
-		return CodesItem.getValue(CodesItem.accountStatus,code);                         
+		return CodesItem.getValue(CodesItem.processStatus,code);                         
 	}                                                                                   
-	public static String getValue(AccountStatus code){	                                
-		return CodesItem.getValue(CodesItem.accountStatus,code.toString());              
+	public static String getValue(ProcessStatus code){	                                
+		return CodesItem.getValue(CodesItem.processStatus,code.toString());              
 	}                                                                                   
 	public static List<CodeInfo> getCodeList(){	                                                
-		return CodesItem.getCodeList(CodesItem.accountStatus);                           
+		return CodesItem.getCodeList(CodesItem.processStatus);                           
 	}                                                                                   
-	public static final AccountStatus getObject(String code){                          
-		Map map=(Map)mapCodeObject.get(CodesItem.accountStatus);                         
-		return map==null?null:(AccountStatus)map.get(code);                                             
+	public static final ProcessStatus getObject(String code){                          
+		Map map=(Map)mapCodeObject.get(CodesItem.processStatus);                         
+		return map==null?null:(ProcessStatus)map.get(code);                                             
 	}                                                                                   
 	static {		fillObjectToMap();	}                                                   
 	private static final void fillObjectToMap(){                                        
-		List<CodeInfo> listCode = getCodeFromDB(CodesItem.accountStatus);                                                                 
+		List<CodeInfo> listCode = getCodeFromDB(CodesItem.processStatus);                                                                 
 		Map map = new HashMap(listCode.size());        
 		String temp = null;	                          
 		Map map2 = new HashMap(listCode.size());                           
@@ -30,10 +30,10 @@ public class AccountStatus extends CodesItem {
 			CodeInfo codeInfo = listCode.get(i);                                              
 			temp = codeInfo.getCiSpCode();                                              
 			map.put(temp, codeInfo.getCiSpName());                                     
-			map2.put(temp, new AccountStatus(temp));                                        
+			map2.put(temp, new ProcessStatus(temp));                                        
 		}                                                                                 
-		mapCategoryCode.put(CodesItem.accountStatus, map);                                
-		mapCodeObject.put(CodesItem.accountStatus, map2);		                              
+		mapCategoryCode.put(CodesItem.processStatus, map);                                
+		mapCodeObject.put(CodesItem.processStatus, map2);		                              
 	}                                                                                   
 /////////////////////////////////////////////////////////////////////////////////		
 	public int hashCode(){return super.hashCode();}
@@ -49,8 +49,8 @@ public class AccountStatus extends CodesItem {
 
 
 
-	public static final AccountStatus WeiJieSuan                              		= getObject("0");
-	public static final AccountStatus JieSuanZhong                            		= getObject("1");
-	public static final AccountStatus YiJieSuan                               		= getObject("2");
+	public static final ProcessStatus DaiShenHe                               		= getObject("0");
+	public static final ProcessStatus ShenHeTongGuo                           		= getObject("1");
+	public static final ProcessStatus ShenHeBoHui                             		= getObject("2");
 }
 
