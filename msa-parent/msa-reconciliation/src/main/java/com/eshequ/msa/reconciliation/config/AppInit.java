@@ -1,6 +1,7 @@
 package com.eshequ.msa.reconciliation.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,13 +10,13 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerA
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.client.RestTemplate;
 
-import com.eshequ.msa.reconciliation.service.collection.CollectionFactory;
-import com.eshequ.msa.reconciliation.service.collection.CollectionStarter;
+import com.eshequ.msa.reconciliation.service.ReconcilFactory;
+import com.eshequ.msa.reconciliation.service.ReconcilStarter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 //多数据源需要exclude后面那2个类，不然spring会自动配置一个数据源
 @SpringBootApplication(exclude={DataSourceAutoConfiguration.class, DataSourceTransactionManagerAutoConfiguration.class})	
-@ComponentScan("com.eshequ.reconciliation")
+@ComponentScan({"com.eshequ.msa", "com.eshequ.msa.reconciliation"})
 public class AppInit implements CommandLineRunner {
 
 	public static void main(String[] args) {
@@ -32,10 +33,10 @@ public class AppInit implements CommandLineRunner {
 	private RestTemplate restTemplate;
 	
 	@Autowired 
-	private CollectionFactory collectionFactory;
+	private ReconcilFactory reconcilFactory;
 	
 	@Autowired
-	private CollectionStarter collectionStarter;
+	private ReconcilStarter reconcilStarter;
 	
 	@Override
 	public void run(String... args) throws Exception {
@@ -58,7 +59,10 @@ public class AppInit implements CommandLineRunner {
 //		CollectionService service = collectionFactory.getCollectionInstance(CollectionCfg.UnionPay);
 //		service.downloadFile("20190308");
 		
-		collectionStarter.start("20190430");
+//		reconcilStarter.start("20190430");
+		
+		reconcilStarter.test();
+		
 	}
 	
 }

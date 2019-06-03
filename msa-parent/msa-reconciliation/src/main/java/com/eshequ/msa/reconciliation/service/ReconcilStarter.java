@@ -34,6 +34,12 @@ public class ReconcilStarter {
 		
 	}
 	
+	public void test() {
+		
+		ReconcilService service = collectionFactory.getCollectionInstance(CollectionCfg.collectionQueue.get(0));
+		service.runReconcil();
+	}
+	
 	
 
 }

@@ -26,7 +26,7 @@ import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
  *
  */
 @Configuration
-@MapperScan(basePackages = "com.eshequ.reconciliation.mapper", sqlSessionFactoryRef = "masterSqlSessionFactory")
+@MapperScan(basePackages = {"com.eshequ.msa.reconciliation.mapper", "com.eshequ.msa.reconciliation.mapper.customize", "com.eshequ.msa.codes.mapper"}, sqlSessionFactoryRef = "masterSqlSessionFactory")
 public class MasterDataSourceConfig {
 	
 	@Value("${mybatis.mapper.resource}")
@@ -56,7 +56,11 @@ public class MasterDataSourceConfig {
         SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
         sessionFactory.setDataSource(masterDataSource);
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-        sessionFactory.setMapperLocations(resolver.getResources(mapperResource));
+        String[]resources = mapperResource.split(",");
+        for (String resource : resources) {
+        	resource = resource.trim();
+        	sessionFactory.setMapperLocations(resolver.getResources(resource));
+		}
         return sessionFactory.getObject();
     }
 	

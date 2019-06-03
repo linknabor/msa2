@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.eshequ.msa.reconciliation.mapper.UnreconcilTradeMchMapper">
+<select id="listUnreconcilTradeMch" resultType="hashmap">
+   
+   select * from msa_trade_pay_order o 
+   left join msa_base_check_detail cd on o.id = cd.order_id
+   where o.tran_status = #{tranStatus}
+   and o.tran_date &lt;= #{tranDate}
+   and o.pay_channel = #{payChannel}
+   and cd.id is null
+</select>
+</mapper>

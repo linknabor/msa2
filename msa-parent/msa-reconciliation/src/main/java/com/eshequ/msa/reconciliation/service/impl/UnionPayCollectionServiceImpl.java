@@ -23,6 +23,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import com.eshequ.msa.codes.MergerStatus;
+import com.eshequ.msa.codes.PayChannel;
+import com.eshequ.msa.reconciliation.mapper.MsaBaseMchInfoMapper;
+import com.eshequ.msa.reconciliation.mapper.customize.UnreconcilTradeMchMapper;
+import com.eshequ.msa.reconciliation.model.MsaBaseMchInfo;
 import com.eshequ.msa.reconciliation.service.ReconcilService;
 import com.eshequ.msa.reconciliation.service.dto.ReconcilFileBody;
 import com.eshequ.msa.reconciliation.service.dto.ReconcilFileDTO;
@@ -30,6 +35,8 @@ import com.eshequ.msa.reconciliation.service.dto.ReconcilFileHead;
 import com.eshequ.msa.reconciliation.util.UnionPayUtil;
 import com.eshequ.msa.util.ObjectUtil;
 import com.eshequ.msa.util.SnowFlake;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  *银联支付对账实现类
@@ -59,6 +66,15 @@ public class UnionPayCollectionServiceImpl implements ReconcilService {
 	
 	@Value("${unionpay_data_file}")
 	private String localFolder;
+	
+	@Autowired
+	private MsaBaseMchInfoMapper msaBaseMchInfoMapper;
+	
+	@Autowired
+	private UnreconcilTradeMchMapper unreconcilTradeMchMapper;
+	
+	@Autowired
+	private ObjectMapper objectMapper;
 	
 	@Override
 	public List<String> downloadFile(String collectionDate) {
@@ -181,7 +197,20 @@ public class UnionPayCollectionServiceImpl implements ReconcilService {
 	 */
 	public void getReconcilMchInfo() {
 		
+		//1.获取正启用的银联商户号
+		MsaBaseMchInfo mchInfo = new MsaBaseMchInfo();
+		mchInfo.setPayChannel(PayChannel.UnionPay.toString());
+		List<MsaBaseMchInfo> mchList = msaBaseMchInfoMapper.select(mchInfo);
 		
+		//2.获取已关闭的，但仍有未清算交易的商户号
+		List<Map<String, String>> list = unreconcilTradeMchMapper.listUnreconcilTradeMch(MergerStatus.YiZhiFu.toString(), "20190501", PayChannel.UnionPay.toString());
+		try {
+			String s = objectMapper.writeValueAsString(list);
+			System.out.println(s);
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 	
@@ -204,8 +233,9 @@ public class UnionPayCollectionServiceImpl implements ReconcilService {
 
 	@Override
 	public void runReconcil() {
-		// TODO Auto-generated method stub
+
 		
+		getReconcilMchInfo();
 	}
 	
 	/**
