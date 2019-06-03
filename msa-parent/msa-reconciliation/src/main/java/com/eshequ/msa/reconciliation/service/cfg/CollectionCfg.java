@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.eshequ.msa.reconciliation.service.collection.cfg;
+package com.eshequ.msa.reconciliation.service.cfg;
 
 import java.util.ArrayList;
 import java.util.List;

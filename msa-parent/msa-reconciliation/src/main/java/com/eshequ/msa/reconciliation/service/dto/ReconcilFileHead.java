@@ -1,14 +1,14 @@
 /**
  * 
  */
-package com.eshequ.msa.reconciliation.service.collection.dto;
+package com.eshequ.msa.reconciliation.service.dto;
 
 /**
  *所有对账的文件头都应该继承这个类，抽取共有的部分作为父类，特有的或者需要特殊处理的属性在子类在重写
  * @author david
  *
  */
-public class CollectionHead {
+public class ReconcilFileHead {
 	
 	private String tranDate;
 	private String totalCount;
@@ -19,7 +19,7 @@ public class CollectionHead {
 	/**
 	 * 
 	 */
-	public CollectionHead() {
+	public ReconcilFileHead() {
 		// TODO Auto-generated constructor stub
 	}
 

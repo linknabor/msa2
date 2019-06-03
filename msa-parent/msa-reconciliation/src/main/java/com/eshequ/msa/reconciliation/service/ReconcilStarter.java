@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.eshequ.msa.reconciliation.service.collection;
+package com.eshequ.msa.reconciliation.service;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -9,17 +9,17 @@ import java.util.concurrent.Executors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.eshequ.msa.reconciliation.service.collection.cfg.CollectionCfg;
+import com.eshequ.msa.reconciliation.service.cfg.CollectionCfg;
 
 /**
  * @author david
  *
  */
 @Service
-public class CollectionStarter {
+public class ReconcilStarter {
 	
 	@Autowired
-	private CollectionFactory collectionFactory;
+	private ReconcilFactory collectionFactory;
 	
 	/**
 	 * 入口程序
@@ -28,8 +28,8 @@ public class CollectionStarter {
 		
 		ExecutorService pool = Executors.newFixedThreadPool(CollectionCfg.collectionQueue.size());	//几种对账就开几个线程。每个线程单独处理自己的任务
 		for (String collectionType : CollectionCfg.collectionQueue) {
-			CollectionService service = collectionFactory.getCollectionInstance(collectionType);
-			pool.execute(new CollectionExecutor<Object>(collectionDate, service));
+			ReconcilService service = collectionFactory.getCollectionInstance(collectionType);
+			pool.execute(new ReconcilExecutor<Object>(collectionDate, service));
 		}
 		
 	}
