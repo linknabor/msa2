@@ -195,6 +195,12 @@ OWNER_CONSULT_AMT                                 DECIMAL(16,2) default 0 NULL, 
 OUTSIDE_ORDER_ID                                  VARCHAR(40) NULL, #外部订单ID
 FROM_SYS                                          VARCHAR(20) NULL, #来自平台
 ORDER_ATTACH                                      VARCHAR(256) NULL, #订单附加信息
+MCH_NO                                            VARCHAR(40) NOT NULL, #商户号
+MCH_NAME                                          VARCHAR(40) NULL, #商户名称
+MCH_ABBRE                                         VARCHAR(40) NULL, #商户简称
+SECRET                                            VARCHAR(40) NULL, #商户密钥
+APPID                                             VARCHAR(20) NULL, #应用ID
+PAY_CHANNEL                                       CHAR(2) NOT NULL, #支付渠道
 CONSTRAINT MSA_TRADE_PAY_ORDER_CHK3 CHECK(CONSULT_RATE<=100.00),
 CONSTRAINT MSA_TRADE_PAY_ORDER_PK PRIMARY KEY(ID)   );
 
@@ -223,6 +229,12 @@ OUTSIDE_ORDER_ID                                  VARCHAR(40) NULL, #外部订单ID
 FROM_SYS                                          VARCHAR(20) NULL, #来自平台
 ORDER_ATTACH                                      VARCHAR(256) NULL, #订单附加信息
 ORIGIN_ORDER_ID                                   BIGINT default 0 NOT NULL, #原支付订单号
+MCH_NO                                            VARCHAR(40) NOT NULL, #商户号
+MCH_NAME                                          VARCHAR(40) NULL, #商户名称
+MCH_ABBRE                                         VARCHAR(40) NULL, #商户简称
+SECRET                                            VARCHAR(40) NULL, #商户密钥
+APPID                                             VARCHAR(20) NULL, #应用ID
+PAY_CHANNEL                                       CHAR(2) NOT NULL, #支付渠道
 CONSTRAINT MSA_TRADE_REFUND_ORDER_CHK3 CHECK(CONSULT_RATE<=100.00),
 CONSTRAINT MSA_TRADE_REFUND_ORDER_PK PRIMARY KEY(ID)   );
 

@@ -6,4 +6,14 @@
     <id column="HOLIDAY" jdbcType="CHAR" property="holiday" />
     <result column="REMARK" jdbcType="VARCHAR" property="remark" />
   </resultMap>
+  <resultMap id="BaseResultMap" type="com.eshequ.msa.finance.model.MsaBaseHoliday">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <id column="HOLIDAY" jdbcType="CHAR" property="holiday" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <resultMap id="BaseResultMap" type="com.eshequ.msa.finance.model.MsaBaseHoliday">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <id column="HOLIDAY" jdbcType="CHAR" property="holiday" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
 </mapper>
