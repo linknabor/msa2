@@ -20,42 +20,4 @@
     <result column="OPER_NAME" jdbcType="VARCHAR" property="operName" />
     <result column="LIQUIDATE_CONTENT" jdbcType="VARCHAR" property="liquidateContent" />
   </resultMap>
-  <resultMap id="BaseResultMap" type="com.eshequ.msa.finance.model.MsaLiquidateOwnerSum">
-    <id column="ID" jdbcType="BIGINT" property="id" />
-    <result column="BANK_NAME" jdbcType="VARCHAR" property="bankName" />
-    <result column="ACCT_NAME" jdbcType="VARCHAR" property="acctName" />
-    <result column="ACCT_NO" jdbcType="VARCHAR" property="acctNo" />
-    <result column="LINK_MAN" jdbcType="VARCHAR" property="linkMan" />
-    <result column="PROVINCE" jdbcType="VARCHAR" property="province" />
-    <result column="CITY" jdbcType="VARCHAR" property="city" />
-    <result column="PHONE" jdbcType="VARCHAR" property="phone" />
-    <result column="ENTITY_NAME" jdbcType="VARCHAR" property="entityName" />
-    <result column="LIQUIDATE_DATE" jdbcType="CHAR" property="liquidateDate" />
-    <result column="LIQUIDATE_TIME" jdbcType="CHAR" property="liquidateTime" />
-    <result column="LIQUIDATE_AMT" jdbcType="DECIMAL" property="liquidateAmt" />
-    <result column="TRAN_AMT" jdbcType="DECIMAL" property="tranAmt" />
-    <result column="LIQUIDATE_STATUS" jdbcType="CHAR" property="liquidateStatus" />
-    <result column="LIQUIDATE_COUNT" jdbcType="DECIMAL" property="liquidateCount" />
-    <result column="OPER_NAME" jdbcType="VARCHAR" property="operName" />
-    <result column="LIQUIDATE_CONTENT" jdbcType="VARCHAR" property="liquidateContent" />
-  </resultMap>
-  <resultMap id="BaseResultMap" type="com.eshequ.msa.finance.model.MsaLiquidateOwnerSum">
-    <id column="ID" jdbcType="BIGINT" property="id" />
-    <result column="BANK_NAME" jdbcType="VARCHAR" property="bankName" />
-    <result column="ACCT_NAME" jdbcType="VARCHAR" property="acctName" />
-    <result column="ACCT_NO" jdbcType="VARCHAR" property="acctNo" />
-    <result column="LINK_MAN" jdbcType="VARCHAR" property="linkMan" />
-    <result column="PROVINCE" jdbcType="VARCHAR" property="province" />
-    <result column="CITY" jdbcType="VARCHAR" property="city" />
-    <result column="PHONE" jdbcType="VARCHAR" property="phone" />
-    <result column="ENTITY_NAME" jdbcType="VARCHAR" property="entityName" />
-    <result column="LIQUIDATE_DATE" jdbcType="CHAR" property="liquidateDate" />
-    <result column="LIQUIDATE_TIME" jdbcType="CHAR" property="liquidateTime" />
-    <result column="LIQUIDATE_AMT" jdbcType="DECIMAL" property="liquidateAmt" />
-    <result column="TRAN_AMT" jdbcType="DECIMAL" property="tranAmt" />
-    <result column="LIQUIDATE_STATUS" jdbcType="CHAR" property="liquidateStatus" />
-    <result column="LIQUIDATE_COUNT" jdbcType="DECIMAL" property="liquidateCount" />
-    <result column="OPER_NAME" jdbcType="VARCHAR" property="operName" />
-    <result column="LIQUIDATE_CONTENT" jdbcType="VARCHAR" property="liquidateContent" />
-  </resultMap>
 </mapper>
