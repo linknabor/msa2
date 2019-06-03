@@ -10,8 +10,8 @@ CREATE TABLE `CODE_INFO` (
 );
 
 #商户信息表
-DROP TABLE IF EXISTS MSA_BASE_MCHINFO ;
-CREATE TABLE MSA_BASE_MCHINFO(
+DROP TABLE IF EXISTS MSA_BASE_MCH_INFO ;
+CREATE TABLE MSA_BASE_MCH_INFO(
 ID                                                BIGINT default 0 NOT NULL, #ID
 MCH_NO                                            VARCHAR(40) NULL, #商户号
 MCH_STATUS                                        CHAR(1) NOT NULL, #商户状态
@@ -32,8 +32,9 @@ MCH_ADDR                                          VARCHAR(128) NULL, #商户地址
 INDUSTRY_TYPE                                     VARCHAR(10) NOT NULL, #行业类别
 REMARK                                            VARCHAR(256) NULL, #备注
 ENTITY_ID                                         CHAR(10) NULL, #ID
-CONSTRAINT MSA_BASE_MCHINFO_CHK9 CHECK(CONSULT_RATE<=100.00),
-CONSTRAINT MSA_BASE_MCHINFO_PK PRIMARY KEY(ID)   );
+CONSTRAINT MSA_BASE_MCH_INFO_CHK9 CHECK(CONSULT_RATE<=100.00),
+CONSTRAINT MSA_BASE_MCH_INFO_PK PRIMARY KEY(ID)   );
+
 
 #客户商户关系表
 DROP TABLE IF EXISTS MSA_RELATE_MCH_CUST ;
