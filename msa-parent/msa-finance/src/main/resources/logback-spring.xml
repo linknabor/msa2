@@ -28,7 +28,16 @@
        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
          <MaxFileSize>10MB</MaxFileSize>
        </triggeringPolicy>
-    </appender>     
+    </appender>
+    
+    <!-- mybatis日志打印-->
+    <logger name="org.apache.ibatis" level="DEBUG" />
+    <logger name="java.sql" level="DEBUG" />
+
+    <!--  项目 mapper 路径
+            console控制台显示sql语句：STDOUT.filter.level -> debug级别
+    -->
+    <logger name="com.eshequ.msa.finance.mapper" level="DEBUG"></logger>
 
     <!-- 日志输出级别 -->
     <root level="INFO">   
