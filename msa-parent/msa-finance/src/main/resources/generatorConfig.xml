@@ -60,7 +60,7 @@
 			<property name="rootInterface" value="com.eshequ.msa.common.CommonMapper"/>
 		</javaClientGenerator>
      	
-		<table schema="msa_trade" tableName="msa_base_acct_info" enableCountByExample="false"
+<!-- 		<table schema="msa_trade" tableName="msa_base_acct_info" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 			<property name="useActualColumnNames" value="false"/>
@@ -82,13 +82,6 @@
 		</table>
 		
 		<table schema="msa_trade" tableName="msa_base_holiday" enableCountByExample="false"
-			enableUpdateByExample="false" enableDeleteByExample="false"
-			enableSelectByExample="false" selectByExampleQueryId="false">
-			<property name="useActualColumnNames" value="false"/>
-			<property name ="modelOnly" value="true" />
-		</table>
-		
-		<table schema="msa_trade" tableName="msa_base_mchinfo" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 			<property name="useActualColumnNames" value="false"/>
@@ -131,6 +124,13 @@
 		</table>
 		
 		<table schema="msa_trade" tableName="msa_trade_refund_order" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+			<property name="useActualColumnNames" value="false"/>
+			<property name ="modelOnly" value="true" />
+		</table> -->
+		
+		<table schema="msa_trade" tableName="msa_base_mch_info" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 			<property name="useActualColumnNames" value="false"/>
