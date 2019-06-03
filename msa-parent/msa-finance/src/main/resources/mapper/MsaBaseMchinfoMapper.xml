@@ -24,4 +24,50 @@
     <result column="REMARK" jdbcType="VARCHAR" property="remark" />
     <result column="ENTITY_ID" jdbcType="CHAR" property="entityId" />
   </resultMap>
+  <resultMap id="BaseResultMap" type="com.eshequ.msa.finance.model.MsaBaseMchInfo">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="MCH_NO" jdbcType="VARCHAR" property="mchNo" />
+    <result column="MCH_STATUS" jdbcType="CHAR" property="mchStatus" />
+    <result column="MCH_NAME" jdbcType="VARCHAR" property="mchName" />
+    <result column="MCH_ABBRE" jdbcType="VARCHAR" property="mchAbbre" />
+    <result column="SECRET" jdbcType="VARCHAR" property="secret" />
+    <result column="APPID" jdbcType="VARCHAR" property="appid" />
+    <result column="METHOD_TYPE" jdbcType="CHAR" property="methodType" />
+    <result column="CONSULT_RATE" jdbcType="DECIMAL" property="consultRate" />
+    <result column="CONSULT_LIMIT" jdbcType="DECIMAL" property="consultLimit" />
+    <result column="PAY_PRODUCT" jdbcType="VARCHAR" property="payProduct" />
+    <result column="PAY_CHANNEL" jdbcType="CHAR" property="payChannel" />
+    <result column="LINK_MAN" jdbcType="VARCHAR" property="linkMan" />
+    <result column="CERT_NO" jdbcType="VARCHAR" property="certNo" />
+    <result column="TEL" jdbcType="VARCHAR" property="tel" />
+    <result column="EMAIL" jdbcType="VARCHAR" property="email" />
+    <result column="CUSTOMER_TEL" jdbcType="VARCHAR" property="customerTel" />
+    <result column="MCH_ADDR" jdbcType="VARCHAR" property="mchAddr" />
+    <result column="INDUSTRY_TYPE" jdbcType="VARCHAR" property="industryType" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+    <result column="ENTITY_ID" jdbcType="CHAR" property="entityId" />
+  </resultMap>
+  <resultMap id="BaseResultMap" type="com.eshequ.msa.finance.model.MsaBaseMchInfo">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="MCH_NO" jdbcType="VARCHAR" property="mchNo" />
+    <result column="MCH_STATUS" jdbcType="CHAR" property="mchStatus" />
+    <result column="MCH_NAME" jdbcType="VARCHAR" property="mchName" />
+    <result column="MCH_ABBRE" jdbcType="VARCHAR" property="mchAbbre" />
+    <result column="SECRET" jdbcType="VARCHAR" property="secret" />
+    <result column="APPID" jdbcType="VARCHAR" property="appid" />
+    <result column="METHOD_TYPE" jdbcType="CHAR" property="methodType" />
+    <result column="CONSULT_RATE" jdbcType="DECIMAL" property="consultRate" />
+    <result column="CONSULT_LIMIT" jdbcType="DECIMAL" property="consultLimit" />
+    <result column="PAY_PRODUCT" jdbcType="VARCHAR" property="payProduct" />
+    <result column="PAY_CHANNEL" jdbcType="CHAR" property="payChannel" />
+    <result column="LINK_MAN" jdbcType="VARCHAR" property="linkMan" />
+    <result column="CERT_NO" jdbcType="VARCHAR" property="certNo" />
+    <result column="TEL" jdbcType="VARCHAR" property="tel" />
+    <result column="EMAIL" jdbcType="VARCHAR" property="email" />
+    <result column="CUSTOMER_TEL" jdbcType="VARCHAR" property="customerTel" />
+    <result column="MCH_ADDR" jdbcType="VARCHAR" property="mchAddr" />
+    <result column="INDUSTRY_TYPE" jdbcType="VARCHAR" property="industryType" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+    <result column="ENTITY_ID" jdbcType="CHAR" property="entityId" />
+  </resultMap>
 </mapper>

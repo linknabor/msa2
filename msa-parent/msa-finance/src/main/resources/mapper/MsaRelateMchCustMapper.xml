@@ -7,4 +7,16 @@
     <result column="CUST_NAME" jdbcType="VARCHAR" property="custName" />
     <result column="CUST_ADDR" jdbcType="VARCHAR" property="custAddr" />
   </resultMap>
+  <resultMap id="BaseResultMap" type="com.eshequ.msa.finance.model.MsaRelateMchCust">
+    <id column="CUST_ID" jdbcType="BIGINT" property="custId" />
+    <result column="MCH_ID" jdbcType="BIGINT" property="mchId" />
+    <result column="CUST_NAME" jdbcType="VARCHAR" property="custName" />
+    <result column="CUST_ADDR" jdbcType="VARCHAR" property="custAddr" />
+  </resultMap>
+  <resultMap id="BaseResultMap" type="com.eshequ.msa.finance.model.MsaRelateMchCust">
+    <id column="CUST_ID" jdbcType="BIGINT" property="custId" />
+    <result column="MCH_ID" jdbcType="BIGINT" property="mchId" />
+    <result column="CUST_NAME" jdbcType="VARCHAR" property="custName" />
+    <result column="CUST_ADDR" jdbcType="VARCHAR" property="custAddr" />
+  </resultMap>
 </mapper>

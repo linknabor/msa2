@@ -48,6 +48,18 @@ public class MsaTradePayOrder extends BaseModel {
 
     private String orderAttach;
 
+    private String mchNo;
+
+    private String mchName;
+
+    private String mchAbbre;
+
+    private String secret;
+
+    private String appid;
+
+    private String payChannel;
+
     public Long getId() {
         return id;
     }
@@ -222,5 +234,53 @@ public class MsaTradePayOrder extends BaseModel {
 
     public void setOrderAttach(String orderAttach) {
         this.orderAttach = orderAttach;
+    }
+
+    public String getMchNo() {
+        return mchNo;
+    }
+
+    public void setMchNo(String mchNo) {
+        this.mchNo = mchNo;
+    }
+
+    public String getMchName() {
+        return mchName;
+    }
+
+    public void setMchName(String mchName) {
+        this.mchName = mchName;
+    }
+
+    public String getMchAbbre() {
+        return mchAbbre;
+    }
+
+    public void setMchAbbre(String mchAbbre) {
+        this.mchAbbre = mchAbbre;
+    }
+
+    public String getSecret() {
+        return secret;
+    }
+
+    public void setSecret(String secret) {
+        this.secret = secret;
+    }
+
+    public String getAppid() {
+        return appid;
+    }
+
+    public void setAppid(String appid) {
+        this.appid = appid;
+    }
+
+    public String getPayChannel() {
+        return payChannel;
+    }
+
+    public void setPayChannel(String payChannel) {
+        this.payChannel = payChannel;
     }
 }

@@ -15,4 +15,32 @@
     <result column="STATUS" jdbcType="CHAR" property="status" />
     <result column="REMARK" jdbcType="VARCHAR" property="remark" />
   </resultMap>
+  <resultMap id="BaseResultMap" type="com.eshequ.msa.finance.model.MsaBaseAcctInfo">
+    <id column="ID" jdbcType="CHAR" property="id" />
+    <result column="LIQUIDATION_CYCLE" jdbcType="DECIMAL" property="liquidationCycle" />
+    <result column="ENTITY_NAME" jdbcType="VARCHAR" property="entityName" />
+    <result column="BANK_NAME" jdbcType="VARCHAR" property="bankName" />
+    <result column="ACCOUNT_NAME" jdbcType="VARCHAR" property="accountName" />
+    <result column="ACCOUNT_NO" jdbcType="VARCHAR" property="accountNo" />
+    <result column="CUST_NAME" jdbcType="VARCHAR" property="custName" />
+    <result column="PROVINCE" jdbcType="VARCHAR" property="province" />
+    <result column="PHONE" jdbcType="VARCHAR" property="phone" />
+    <result column="CITY" jdbcType="VARCHAR" property="city" />
+    <result column="STATUS" jdbcType="CHAR" property="status" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <resultMap id="BaseResultMap" type="com.eshequ.msa.finance.model.MsaBaseAcctInfo">
+    <id column="ID" jdbcType="CHAR" property="id" />
+    <result column="LIQUIDATION_CYCLE" jdbcType="DECIMAL" property="liquidationCycle" />
+    <result column="ENTITY_NAME" jdbcType="VARCHAR" property="entityName" />
+    <result column="BANK_NAME" jdbcType="VARCHAR" property="bankName" />
+    <result column="ACCOUNT_NAME" jdbcType="VARCHAR" property="accountName" />
+    <result column="ACCOUNT_NO" jdbcType="VARCHAR" property="accountNo" />
+    <result column="CUST_NAME" jdbcType="VARCHAR" property="custName" />
+    <result column="PROVINCE" jdbcType="VARCHAR" property="province" />
+    <result column="PHONE" jdbcType="VARCHAR" property="phone" />
+    <result column="CITY" jdbcType="VARCHAR" property="city" />
+    <result column="STATUS" jdbcType="CHAR" property="status" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
 </mapper>
