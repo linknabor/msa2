@@ -34,9 +34,10 @@ CUST_NAME                                         VARCHAR(160) NULL, #客户名称
 CUST_ADDR                                         VARCHAR(80) NULL, #客户地址
 CONSTRAINT MSA_RELATE_MCH_CUST_PK PRIMARY KEY(CUST_ID)   );
 
+
 #原始对账信息表
-DROP TABLE IF EXISTS MSA_BASE_ORIGIN_VERIFY ;
-CREATE TABLE MSA_BASE_ORIGIN_VERIFY(
+DROP TABLE IF EXISTS MSA_BASE_ORIGIN_RECONCIL_FILE ;
+CREATE TABLE MSA_BASE_ORIGIN_RECONCIL_FILE(
 ID                                                BIGINT default 0 NOT NULL, #ID
 FILE_CREATE_DATE                                  CHAR(8) NULL, #文件生成日期
 TRAN_DATE                                         CHAR(8) NOT NULL, #交易日期
@@ -52,7 +53,8 @@ ORIGIN_ORDER_ID                                   BIGINT default 0 NULL, #原业务
 ORIGIN_TRAN_DATE                                  CHAR(8) NULL, #原交易日期
 CHECK_FLAG                                        CHAR(1) NULL, #对账标识
 REMARK                                            VARCHAR(256) NULL, #备注
-CONSTRAINT MSA_BASE_ORIGIN_VERIFY_PK PRIMARY KEY(ID)   );
+CONSTRAINT MSA_BASE_ORIGIN_RECONCIL_FILE_PK PRIMARY KEY(ID)   );
+
 
 #自主清算明细表
 DROP TABLE IF EXISTS SP_LIQUIDATE_OWNER_DETAIL ;
