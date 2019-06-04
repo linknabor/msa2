@@ -25,8 +25,8 @@ import org.springframework.web.client.RestTemplate;
 
 import com.eshequ.msa.codes.MergerStatus;
 import com.eshequ.msa.codes.PayChannel;
-import com.eshequ.msa.reconciliation.mapper.MsaBaseMchInfoMapper;
-import com.eshequ.msa.reconciliation.mapper.customize.UnreconcilTradeMchMapper;
+import com.eshequ.msa.reconciliation.mapper.custom.UnreconcilTradeMchMapper;
+import com.eshequ.msa.reconciliation.mapper.normal.MsaBaseMchInfoMapper;
 import com.eshequ.msa.reconciliation.model.MsaBaseMchInfo;
 import com.eshequ.msa.reconciliation.service.ReconcilService;
 import com.eshequ.msa.reconciliation.service.dto.ReconcilFileBody;

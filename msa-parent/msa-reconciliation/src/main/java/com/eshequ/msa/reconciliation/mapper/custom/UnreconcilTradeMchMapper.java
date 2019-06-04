@@ -1,4 +1,4 @@
-package com.eshequ.msa.reconciliation.mapper.customize;
+package com.eshequ.msa.reconciliation.mapper.custom;
 
 import java.util.List;
 import java.util.Map;

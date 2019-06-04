@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.eshequ.msa.reconciliation.mapper.MsaBaseMchInfoMapper">
+<mapper namespace="com.eshequ.msa.reconciliation.mapper.normal.MsaBaseMchInfoMapper">
   <resultMap id="BaseResultMap" type="com.eshequ.msa.reconciliation.model.MsaBaseMchInfo">
     <id column="ID" jdbcType="BIGINT" property="id" />
     <result column="MCH_NO" jdbcType="VARCHAR" property="mchNo" />

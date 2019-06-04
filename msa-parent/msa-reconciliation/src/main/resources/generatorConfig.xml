@@ -49,13 +49,13 @@
 	      	这个元素就必须配置
 			targetPackage/targetProject:同javaModelGenerator
 	      -->
-	     <sqlMapGenerator targetPackage="resources.mapper" targetProject=".\src\main\">
+	     <sqlMapGenerator targetPackage="resources.mapper.normal" targetProject=".\src\main\">
 	         <!-- 在targetPackage的基础上，根据数据库的schema再生成一层package，最终生成的类放在这个package下，默认为false -->
 	         <property name="enableSubPackages" value="false"/>
      	</sqlMapGenerator>
      	
   
-     	<javaClientGenerator targetPackage="com.eshequ.msa.reconciliation.mapper"
+     	<javaClientGenerator targetPackage="com.eshequ.msa.reconciliation.mapper.normal"
 			targetProject=".\src\main\java\" type="XMLMAPPER" >
 			<property name="rootInterface" value="com.eshequ.msa.common.CommonMapper"/>
 		</javaClientGenerator>
