@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.eshequ.msa.finance.mapper.MsaBaseAcctInfoMapper;
+import com.eshequ.msa.finance.mapper.normal.MsaBaseAcctInfoMapper;
 import com.eshequ.msa.finance.model.MsaBaseAcctInfo;
 import com.eshequ.msa.finance.service.MsaBaseAcctInfoService;
 

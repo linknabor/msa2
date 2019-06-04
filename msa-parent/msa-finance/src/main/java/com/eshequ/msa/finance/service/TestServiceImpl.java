@@ -12,9 +12,8 @@ import com.eshequ.msa.codes.MergerStatus;
 import com.eshequ.msa.codes.PayChannel;
 import com.eshequ.msa.codes.mapper.CodeInfoMapper;
 import com.eshequ.msa.codes.model.CodeInfo;
-import com.eshequ.msa.finance.mapper.MsaBaseAcctInfoMapper;
-import com.eshequ.msa.finance.mapper.customize.UnreconcilTradeMchMapper;
-import com.eshequ.msa.finance.model.MsaBaseAcctInfo;
+import com.eshequ.msa.finance.mapper.custom.UnreconcilTradeMchMapper;
+import com.eshequ.msa.finance.mapper.normal.MsaBaseAcctInfoMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -43,6 +42,7 @@ public class TestServiceImpl implements TestService {
 
 		List<CodeInfo> codeList = codeInfoMapper.selectAll();
 		List<Map<String, String>> mapList = unreconcilTradeMchMapper.listUnreconcilTradeMch(MergerStatus.YiZhiFu.toString(), "20190501", PayChannel.UnionPay.toString());
+		msaBaseAcctInfoMapper.selectAll();
 		String codeStr = "";
 		String acctStr = "";
 		try {

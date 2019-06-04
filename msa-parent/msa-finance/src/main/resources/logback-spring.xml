@@ -37,7 +37,8 @@
     <!--  项目 mapper 路径
             console控制台显示sql语句：STDOUT.filter.level -> debug级别
     -->
-    <logger name="com.eshequ.msa.finance.mapper" level="DEBUG"></logger>
+    <logger name="com.eshequ.msa.finance.mapper.custom" level="DEBUG"></logger>
+    <logger name="com.eshequ.msa.finance.mapper.normal" level="DEBUG"></logger>
 
     <!-- 日志输出级别 -->
     <root level="INFO">   

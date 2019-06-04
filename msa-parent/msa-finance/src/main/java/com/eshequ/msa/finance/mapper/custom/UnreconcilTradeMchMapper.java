@@ -1,4 +1,4 @@
-package com.eshequ.msa.finance.mapper.customize;
+package com.eshequ.msa.finance.mapper.custom;
 
 import java.util.List;
 import java.util.Map;

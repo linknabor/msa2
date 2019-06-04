@@ -1,17 +1,16 @@
 package com.eshequ.msa.finance.service.impl;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.eshequ.msa.finance.mapper.MsaBaseMchInfoMapper;
-import com.eshequ.msa.finance.model.MsaBaseMchInfo;
-import com.eshequ.msa.finance.service.MsaBaseMchInfoService;
-
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.eshequ.msa.finance.mapper.normal.MsaBaseMchInfoMapper;
+import com.eshequ.msa.finance.model.MsaBaseMchInfo;
+import com.eshequ.msa.finance.service.MsaBaseMchInfoService;
 
 @Service
 @Transactional

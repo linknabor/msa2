@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.eshequ.msa.finance.mapper.MsaBaseCheckSumMapper">
+<mapper namespace="com.eshequ.msa.finance.custom.mapper.MsaBaseCheckSumMapper">
   <resultMap id="BaseResultMap" type="com.eshequ.msa.finance.model.MsaBaseCheckSum">
     <id column="ID" jdbcType="BIGINT" property="id" />
     <result column="SHOULD_PAY_AMT" jdbcType="DECIMAL" property="shouldPayAmt" />

@@ -26,12 +26,13 @@ import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
  *
  */
 @Configuration
-@MapperScan(basePackages = {"com.eshequ.msa.finance.mapper", "com.eshequ.msa.finance.mapper.customize", "com.eshequ.msa.codes.mapper"}, sqlSessionFactoryRef = "masterSqlSessionFactory")
+@MapperScan(basePackages = { "com.eshequ.msa.finance.mapper.normal", "com.eshequ.msa.finance.mapper.custom",
+		"com.eshequ.msa.codes.mapper" }, sqlSessionFactoryRef = "masterSqlSessionFactory")
 public class MasterDataSourceConfig {
-	
+
 	@Value("${mybatis.mapper.resource}")
 	private String mapperResource;
-	
+
 	@Autowired
 	private Environment env;
 
@@ -41,28 +42,27 @@ public class MasterDataSourceConfig {
 		DataSource dataSource = DruidDataSourceBuilder.create().build(env, "spring.datasource.druid.one.");
 		return dataSource;
 	}
-	
-    @Bean(name = "masterTransactionManager")
-    @Primary
-    public DataSourceTransactionManager masterTransactionManager() {
-        return new DataSourceTransactionManager(masterDataSource());
-    }
 
-    @Bean(name = "masterSqlSessionFactory")
-    @Primary
-    public SqlSessionFactory masterSqlSessionFactory(@Qualifier("masterDataSource") DataSource masterDataSource)
-            throws Exception {
-    	
-        SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
-        sessionFactory.setDataSource(masterDataSource);
-        PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-        String[]resources = mapperResource.split(",");
-        for (String resource : resources) {
-        	resource = resource.trim();
-        	sessionFactory.setMapperLocations(resolver.getResources(resource));
+	@Bean(name = "masterTransactionManager")
+	@Primary
+	public DataSourceTransactionManager masterTransactionManager() {
+		return new DataSourceTransactionManager(masterDataSource());
+	}
+
+	@Bean(name = "masterSqlSessionFactory")
+	@Primary
+	public SqlSessionFactory masterSqlSessionFactory(@Qualifier("masterDataSource") DataSource masterDataSource)
+			throws Exception {
+
+		SqlSessionFactoryBean sessionFactory = new SqlSessionFactoryBean();
+		sessionFactory.setDataSource(masterDataSource);
+		PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+		String[] resources = mapperResource.split(",");
+		for (String resource : resources) {
+			resource = resource.trim();
+			sessionFactory.setMapperLocations(resolver.getResources(resource));
 		}
-        return sessionFactory.getObject();
-    }
-	
-	
+		return sessionFactory.getObject();
+	}
+
 }
