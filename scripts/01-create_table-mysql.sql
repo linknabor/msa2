@@ -52,8 +52,10 @@ ORDER_ID                                          BIGINT default 0 NOT NULL, #业
 ORIGIN_ORDER_ID                                   BIGINT default 0 NULL, #原业务订单号
 ORIGIN_TRAN_DATE                                  CHAR(8) NULL, #原交易日期
 CHECK_FLAG                                        CHAR(1) NULL, #对账标识
+PAY_CHANNEL                                       CHAR(2) NOT NULL, #支付渠道
 REMARK                                            VARCHAR(256) NULL, #备注
-CONSTRAINT MSA_BASE_ORIGIN_RECONCIL_FILE_PK PRIMARY KEY(ID)   );
+CONSTRAINT MSA_BASE_ORIGIN_RECON_FILE_PK PRIMARY KEY(ID)   );
+
 
 
 #自主清算明细表
@@ -172,40 +174,6 @@ CONSTRAINT MSA_BASE_CHECK_DETAIL_CHK8 CHECK(CONSULT_RATE<=100.00),
 CONSTRAINT MSA_BASE_CHECK_DETAIL_CHK10 CHECK(CHANNEL_RATE<=100.00),
 CONSTRAINT MSA_BASE_CHECK_DETAIL_PK PRIMARY KEY(ID)   );
 
-#支付订单表
-DROP TABLE IF EXISTS MSA_TRADE_PAY_ORDER ;
-CREATE TABLE MSA_TRADE_PAY_ORDER(
-ID                                                BIGINT default 0 NOT NULL, #支付订单ID
-TRAN_STATUS                                       CHAR(2) NOT NULL, #交易状态
-CONSULT_RATE                                      DECIMAL(5,2) NOT NULL, #费率
-CONSULT_AMT                                       DECIMAL(16,2) default 0 NOT NULL, #费率金额
-TRAN_AMT                                          DECIMAL(16,2) default 0 NOT NULL, #交易金额
-PAY_METHOD                                        CHAR(2) NOT NULL, #支付方式
-TRAN_DATE                                         CHAR(8) NOT NULL, #交易日期
-TRAN_TIME                                         CHAR(6) NOT NULL, #交易时间
-ACCT_DATE                                         CHAR(8) NULL, #记账日期
-ACCT_TIME                                         CHAR(6) NULL, #记账时间
-NEED_INVOICE                                      CHAR(1) NULL, #是否需要发票
-CSP_ID                                            BIGINT default 0 NULL, #物业公司ID
-CSP_NAME                                          VARCHAR(40) NULL, #公司名称
-SECT_ID                                           BIGINT default 0 NULL, #物业项目ID
-SECT_NAME                                         VARCHAR(40) NULL, #项目名称
-PLAT_CHANNEL                                      CHAR(1) NOT NULL, #支付平台
-CARD_TYPE                                         CHAR(1) NULL, #银行卡类型
-STAFF_NAME                                        VARCHAR(80) NOT NULL, #员工名称
-OWNER_CONSULT_AMT                                 DECIMAL(16,2) default 0 NULL, #业主承担费率金额
-OUTSIDE_ORDER_ID                                  VARCHAR(40) NULL, #外部订单ID
-FROM_SYS                                          VARCHAR(20) NULL, #来自平台
-ORDER_ATTACH                                      VARCHAR(256) NULL, #订单附加信息
-MCH_NO                                            VARCHAR(40) NOT NULL, #商户号
-MCH_NAME                                          VARCHAR(40) NULL, #商户名称
-MCH_ABBRE                                         VARCHAR(40) NULL, #商户简称
-SECRET                                            VARCHAR(40) NULL, #商户密钥
-APPID                                             VARCHAR(20) NULL, #应用ID
-PAY_CHANNEL                                       CHAR(2) NOT NULL, #支付渠道
-CONSTRAINT MSA_TRADE_PAY_ORDER_CHK3 CHECK(CONSULT_RATE<=100.00),
-CONSTRAINT MSA_TRADE_PAY_ORDER_PK PRIMARY KEY(ID)   );
-
 #退款订单表
 DROP TABLE IF EXISTS MSA_TRADE_REFUND_ORDER ;
 CREATE TABLE MSA_TRADE_REFUND_ORDER(
@@ -237,7 +205,45 @@ MCH_ABBRE                                         VARCHAR(40) NULL, #商户简称
 SECRET                                            VARCHAR(40) NULL, #商户密钥
 APPID                                             VARCHAR(20) NULL, #应用ID
 PAY_CHANNEL                                       CHAR(2) NOT NULL, #支付渠道
+PAY_PRODUCT                                       VARCHAR(20) NULL, #支付产品
 CONSTRAINT MSA_TRADE_REFUND_ORDER_CHK3 CHECK(CONSULT_RATE<=100.00),
 CONSTRAINT MSA_TRADE_REFUND_ORDER_PK PRIMARY KEY(ID)   );
+
+#支付订单表
+DROP TABLE IF EXISTS MSA_TRADE_PAY_ORDER ;
+CREATE TABLE MSA_TRADE_PAY_ORDER(
+ID                                                BIGINT default 0 NOT NULL, #支付订单ID
+TRAN_STATUS                                       CHAR(2) NOT NULL, #交易状态
+CONSULT_RATE                                      DECIMAL(5,2) NOT NULL, #费率
+CONSULT_AMT                                       DECIMAL(16,2) default 0 NOT NULL, #费率金额
+TRAN_AMT                                          DECIMAL(16,2) default 0 NOT NULL, #交易金额
+PAY_METHOD                                        CHAR(2) NOT NULL, #支付方式
+TRAN_DATE                                         CHAR(8) NOT NULL, #交易日期
+TRAN_TIME                                         CHAR(6) NOT NULL, #交易时间
+ACCT_DATE                                         CHAR(8) NULL, #记账日期
+ACCT_TIME                                         CHAR(6) NULL, #记账时间
+NEED_INVOICE                                      CHAR(1) NULL, #是否需要发票
+CSP_ID                                            BIGINT default 0 NULL, #物业公司ID
+CSP_NAME                                          VARCHAR(40) NULL, #公司名称
+SECT_ID                                           BIGINT default 0 NULL, #物业项目ID
+SECT_NAME                                         VARCHAR(40) NULL, #项目名称
+PLAT_CHANNEL                                      CHAR(1) NOT NULL, #支付平台
+CARD_TYPE                                         CHAR(1) NULL, #银行卡类型
+STAFF_NAME                                        VARCHAR(80) NOT NULL, #员工名称
+OWNER_CONSULT_AMT                                 DECIMAL(16,2) default 0 NULL, #业主承担费率金额
+OUTSIDE_ORDER_ID                                  VARCHAR(40) NULL, #外部订单ID
+FROM_SYS                                          VARCHAR(20) NULL, #来自平台
+ORDER_ATTACH                                      VARCHAR(256) NULL, #订单附加信息
+MCH_NO                                            VARCHAR(40) NOT NULL, #商户号
+MCH_NAME                                          VARCHAR(40) NULL, #商户名称
+MCH_ABBRE                                         VARCHAR(40) NULL, #商户简称
+SECRET                                            VARCHAR(40) NULL, #商户密钥
+APPID                                             VARCHAR(20) NULL, #应用ID
+PAY_CHANNEL                                       CHAR(2) NOT NULL, #支付渠道
+PAY_PRODUCT                                       VARCHAR(20) NULL, #支付产品
+CONSTRAINT MSA_TRADE_PAY_ORDER_CHK3 CHECK(CONSULT_RATE<=100.00),
+CONSTRAINT MSA_TRADE_PAY_ORDER_PK PRIMARY KEY(ID)   );
+
+
 
 
