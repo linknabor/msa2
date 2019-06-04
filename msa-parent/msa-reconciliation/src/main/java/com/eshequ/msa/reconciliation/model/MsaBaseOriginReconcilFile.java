@@ -3,10 +3,10 @@ package com.eshequ.msa.reconciliation.model;
 import com.eshequ.msa.common.BaseModel;
 import java.math.BigDecimal;
 
-public class MsaBaseOriginReconInfo extends BaseModel {
+public class MsaBaseOriginReconcilFile extends BaseModel {
     private Long id;
 
-    private String createDate;
+    private String fileCreateDate;
 
     private String tranDate;
 
@@ -42,12 +42,12 @@ public class MsaBaseOriginReconInfo extends BaseModel {
         this.id = id;
     }
 
-    public String getCreateDate() {
-        return createDate;
+    public String getFileCreateDate() {
+        return fileCreateDate;
     }
 
-    public void setCreateDate(String createDate) {
-        this.createDate = createDate;
+    public void setFileCreateDate(String fileCreateDate) {
+        this.fileCreateDate = fileCreateDate;
     }
 
     public String getTranDate() {

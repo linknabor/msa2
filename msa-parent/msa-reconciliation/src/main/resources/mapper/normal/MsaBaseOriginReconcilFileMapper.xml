@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.eshequ.msa.reconciliation.mapper.normal.MsaBaseOriginReconInfoMapper">
-  <resultMap id="BaseResultMap" type="com.eshequ.msa.reconciliation.model.MsaBaseOriginReconInfo">
+<mapper namespace="com.eshequ.msa.reconciliation.mapper.normal.MsaBaseOriginReconcilFileMapper">
+  <resultMap id="BaseResultMap" type="com.eshequ.msa.reconciliation.model.MsaBaseOriginReconcilFile">
     <id column="ID" jdbcType="BIGINT" property="id" />
-    <result column="CREATE_DATE" jdbcType="CHAR" property="createDate" />
+    <result column="FILE_CREATE_DATE" jdbcType="CHAR" property="fileCreateDate" />
     <result column="TRAN_DATE" jdbcType="CHAR" property="tranDate" />
     <result column="TRAN_TIME" jdbcType="CHAR" property="tranTime" />
     <result column="SYS_MCH_NO" jdbcType="VARCHAR" property="sysMchNo" />
