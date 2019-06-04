@@ -20,7 +20,7 @@
 	multiMap.setAll(map);  
 	String resp = restTemplate.postForObject(reqUrl, multiMap, String.class);  
 10.controller都放在web包下，业务处理类放在service包下，数据库操作在各自的mapper中。  
-11.自定义mapper放在mapper包的custom包下，建议按功能模块划分。并在类上注解@Mapper。对应的xxxxMapper.xml放在resources下mapper下的customize，与类路径对应。  
+11.自定义mapper放在mapper包的custom包下，建议按功能模块划分。并在类上注解@Mapper。对应的xxxxMapper.xml放在resources下mapper下的custom目录下，与类路径对应。  
 12.自动生成的mapper放在mapper包下的normal包下。不要再自动生成的xxxxMapper.xml里写自定义SQL  
 
  
