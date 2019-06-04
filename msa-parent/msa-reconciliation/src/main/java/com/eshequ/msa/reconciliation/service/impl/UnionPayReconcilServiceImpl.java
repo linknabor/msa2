@@ -7,7 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
-import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -23,9 +23,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import com.eshequ.msa.codes.MchStatus;
 import com.eshequ.msa.codes.MergerStatus;
 import com.eshequ.msa.codes.PayChannel;
-import com.eshequ.msa.reconciliation.mapper.custom.UnreconcilTradeMchMapper;
+import com.eshequ.msa.reconciliation.mapper.custom.UnionPayReconcilMapper;
 import com.eshequ.msa.reconciliation.mapper.normal.MsaBaseMchInfoMapper;
 import com.eshequ.msa.reconciliation.model.MsaBaseMchInfo;
 import com.eshequ.msa.reconciliation.service.ReconcilService;
@@ -33,9 +34,9 @@ import com.eshequ.msa.reconciliation.service.dto.ReconcilFileBody;
 import com.eshequ.msa.reconciliation.service.dto.ReconcilFileDTO;
 import com.eshequ.msa.reconciliation.service.dto.ReconcilFileHead;
 import com.eshequ.msa.reconciliation.util.UnionPayUtil;
+import com.eshequ.msa.util.DateUtil;
 import com.eshequ.msa.util.ObjectUtil;
 import com.eshequ.msa.util.SnowFlake;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -44,14 +45,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  *
  */
 @Service
-public class UnionPayCollectionServiceImpl implements ReconcilService {
+public class UnionPayReconcilServiceImpl implements ReconcilService {
 
 	private static String REQUEST_VERSION = "V1.1";
 	private static String REQUEST_TYPE = "14";
 	private static String DEFAULT_CHARSET = "UTF-8";
 	private static String UNIONPAY_SUCCESS = "0000";
 	
-	private static Logger logger = LoggerFactory.getLogger(UnionPayCollectionServiceImpl.class);
+	private static Logger logger = LoggerFactory.getLogger(UnionPayReconcilServiceImpl.class);
 	private static String REQUEST_URL =  "https://www.zfzlpay.com/payment-gate-web/gateway/api/backTransReq";
 	
 	@Autowired
@@ -71,31 +72,63 @@ public class UnionPayCollectionServiceImpl implements ReconcilService {
 	private MsaBaseMchInfoMapper msaBaseMchInfoMapper;
 	
 	@Autowired
-	private UnreconcilTradeMchMapper unreconcilTradeMchMapper;
+	private UnionPayReconcilMapper unionPayReconcilMapper;
 	
 	@Autowired
 	private ObjectMapper objectMapper;
 	
-	@Override
-	public List<String> downloadFile(String collectionDate) {
+	/**
+	 * 获取需要对账的商户号
+	 * 包括两部分：
+	 * 1.当前正启用的商户
+	 * 2.已关闭商户但存在未对账交易的商户
+	 * @param reconcilDate 跑批日期
+	 */
+	private List<MsaBaseMchInfo> getMchList(String reconcilDate) {
 		
-		String mchNo = "888290059501308";	//TODO 商户号，暂时写死
-		String respStr = getFileStr(collectionDate, mchNo);
-		List<String> list = new ArrayList<>();
-		if (!ObjectUtil.isEmpty(respStr)) {
-			String filePath = localFolder + collectionDate+"_"+mchNo+".dat";
-			try {
-				File localfile = new File(filePath);
-				if (!localfile.exists()) {
-					FileUtils.writeStringToFile(new File(filePath), respStr, DEFAULT_CHARSET);;
-				}
-				
-			} catch (IOException e) {
-				logger.error(e.getMessage(), e);
-			} 
-			list.add(filePath);
+		//1.获取正启用的银联商户号
+		MsaBaseMchInfo mchInfo = new MsaBaseMchInfo();
+		mchInfo.setPayChannel(PayChannel.UnionPay.toString());
+		List<MsaBaseMchInfo> mchList = msaBaseMchInfoMapper.select(mchInfo);
+		
+		//2.获取已关闭的，但仍有未清算交易的商户号
+		List<MsaBaseMchInfo> unReconcilMchlist = unionPayReconcilMapper.getUnreconcilTradeMch(MergerStatus.YiZhiFu.toString(), 
+				reconcilDate, PayChannel.UnionPay.toString(), MchStatus.QiYong.toString());
+		
+		mchList.addAll(unReconcilMchlist);
+		return null;
+	}
+	
+	/**
+	 * 下载对账文件
+	 * @param reconcilDate 跑批日期
+	 */
+	@Override
+	public List<String> downloadFile(String batchDate) {
+		
+		String reconcilDate = DateUtil.getNextDateByNum(batchDate, -1);	//清算前一天的交易
+		
+		List<MsaBaseMchInfo> mchList = getMchList(reconcilDate);
+		List<String> filePahtList = new ArrayList<>();
+		for (MsaBaseMchInfo msaBaseMchInfo : mchList) {
+			String mchNo = msaBaseMchInfo.getMchNo();
+			String respStr = getFileStr(reconcilDate, mchNo);
+			
+			if (!ObjectUtil.isEmpty(respStr)) {
+				String filePath = localFolder + reconcilDate+"_"+mchNo+".dat";
+				try {
+					File localfile = new File(filePath);
+					if (!localfile.exists()) {
+						FileUtils.writeStringToFile(new File(filePath), respStr, DEFAULT_CHARSET);;
+					}
+					
+				} catch (IOException e) {
+					logger.error(e.getMessage(), e);
+				} 
+				filePahtList.add(filePath);
+			}
 		}
-		return list;
+		return filePahtList;
 	
 	}
 
@@ -124,7 +157,7 @@ public class UnionPayCollectionServiceImpl implements ReconcilService {
 		String resp = restTemplate.postForObject(reqUrl, multiMap, String.class);
 		logger.info("请求银联后数据：" + resp);
 		
-		Map<String, String> respMap = convertRespToMap(resp);
+		Map<String, String> respMap = unionPayUtil.convertRespToMap(resp);
 		String responseCode = (String) respMap.get("respCode");
 		
 		String respStr = "";
@@ -190,43 +223,17 @@ public class UnionPayCollectionServiceImpl implements ReconcilService {
 	}
 
 	/**
-	 * 获取需要对账的商户号
-	 * 包括两部分：
-	 * 1.当前正启用的商户
-	 * 2.已关闭商户但存在未对账交易的商户
-	 */
-	public void getReconcilMchInfo() {
-		
-		//1.获取正启用的银联商户号
-		MsaBaseMchInfo mchInfo = new MsaBaseMchInfo();
-		mchInfo.setPayChannel(PayChannel.UnionPay.toString());
-		List<MsaBaseMchInfo> mchList = msaBaseMchInfoMapper.select(mchInfo);
-		
-		//2.获取已关闭的，但仍有未清算交易的商户号
-		List<Map<String, String>> list = unreconcilTradeMchMapper.listUnreconcilTradeMch(MergerStatus.YiZhiFu.toString(), "20190501", PayChannel.UnionPay.toString());
-		try {
-			String s = objectMapper.writeValueAsString(list);
-			System.out.println(s);
-		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
-	
-	
-	/**
 	 * 文件落地存表
+	 * @param dto
 	 */
 	@Override
 	@Transactional
-	public void collection(ReconcilFileDTO dto) {
+	public void saveFile2DB(ReconcilFileDTO dto) {
 
 		List<ReconcilFileBody> detailList = dto.getBody();
-		for (ReconcilFileBody collectionBody : detailList) {
+		for (ReconcilFileBody reconcilFileBody : detailList) {
 			
 		}
-		
 		
 	}
 	
@@ -235,24 +242,10 @@ public class UnionPayCollectionServiceImpl implements ReconcilService {
 	public void runReconcil() {
 
 		
-		getReconcilMchInfo();
 	}
 	
-	/**
-	 * 将银联对账接口返回的消息转换成map
-	 * @param str
-	 * @return
-	 */
-	private static Map<String, String> convertRespToMap(String str) {
-		Map<String, String> map = new HashMap<String, String>();
-		String data[] = str.split("&");
-        for (int i = 0; i < data.length; i++) {
-            String tmp[] = data[i].split("=", 2);
-            map.put(tmp[0], tmp[1]);
-        }
-        return map;
-	}
 	
+
 
 	
 }
