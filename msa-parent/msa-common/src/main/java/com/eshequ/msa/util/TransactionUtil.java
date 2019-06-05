@@ -22,14 +22,14 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
  *
  */
 @Component
-public class TransactionUtil<T> {
+public class TransactionUtil {
 	
 	private static final Logger logger = LoggerFactory.getLogger(TransactionUtil.class);
 
 	@Autowired
 	private PlatformTransactionManager transactionManager;
 
-	public boolean transact(Consumer<T> consumer) {
+	public boolean transact(Consumer<Object> consumer) {
 		TransactionStatus status = transactionManager.getTransaction(new DefaultTransactionDefinition());
 		try {
 			consumer.accept(null);
