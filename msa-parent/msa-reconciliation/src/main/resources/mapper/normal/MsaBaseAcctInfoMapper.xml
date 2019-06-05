@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.eshequ.msa.reconciliation.mapper.normal.MsaBaseAcctInfoMapper">
   <resultMap id="BaseResultMap" type="com.eshequ.msa.reconciliation.model.MsaBaseAcctInfo">
-    <id column="ID" jdbcType="CHAR" property="id" />
-    <result column="LIQUIDATION_CYCLE" jdbcType="DECIMAL" property="liquidationCycle" />
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="LIQUIDATION_CYCLE" jdbcType="INTEGER" property="liquidationCycle" />
     <result column="ENTITY_NAME" jdbcType="VARCHAR" property="entityName" />
     <result column="BANK_NAME" jdbcType="VARCHAR" property="bankName" />
     <result column="ACCOUNT_NAME" jdbcType="VARCHAR" property="accountName" />

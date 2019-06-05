@@ -5,8 +5,10 @@ package com.eshequ.msa.reconciliation.service.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -19,41 +21,80 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import com.eshequ.msa.codes.AccountStatus;
+import com.eshequ.msa.codes.IsFlag;
 import com.eshequ.msa.codes.MchStatus;
 import com.eshequ.msa.codes.MergerStatus;
 import com.eshequ.msa.codes.PayChannel;
+import com.eshequ.msa.codes.PayMethod;
+import com.eshequ.msa.exception.BusinessException;
 import com.eshequ.msa.reconciliation.mapper.custom.UnionPayReconcilMapper;
+import com.eshequ.msa.reconciliation.mapper.normal.MsaBaseAcctInfoMapper;
+import com.eshequ.msa.reconciliation.mapper.normal.MsaBaseCheckDetailMapper;
+import com.eshequ.msa.reconciliation.mapper.normal.MsaBaseCheckSumMapper;
 import com.eshequ.msa.reconciliation.mapper.normal.MsaBaseMchInfoMapper;
+import com.eshequ.msa.reconciliation.mapper.normal.MsaBaseOriginReconFileMapper;
+import com.eshequ.msa.reconciliation.mapper.normal.MsaTradePayOrderMapper;
+import com.eshequ.msa.reconciliation.model.MsaBaseAcctInfo;
+import com.eshequ.msa.reconciliation.model.MsaBaseCheckDetail;
+import com.eshequ.msa.reconciliation.model.MsaBaseCheckSum;
 import com.eshequ.msa.reconciliation.model.MsaBaseMchInfo;
+import com.eshequ.msa.reconciliation.model.MsaBaseOriginReconFile;
+import com.eshequ.msa.reconciliation.model.MsaTradePayOrder;
 import com.eshequ.msa.reconciliation.service.ReconcilService;
 import com.eshequ.msa.reconciliation.service.dto.ReconcilFileBody;
 import com.eshequ.msa.reconciliation.service.dto.ReconcilFileDTO;
 import com.eshequ.msa.reconciliation.service.dto.ReconcilFileHead;
 import com.eshequ.msa.reconciliation.util.UnionPayUtil;
 import com.eshequ.msa.util.DateUtil;
+import com.eshequ.msa.util.FeeCalculator;
 import com.eshequ.msa.util.ObjectUtil;
 import com.eshequ.msa.util.SnowFlake;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.eshequ.msa.util.TransactionUtil;
 
 /**
  *银联支付对账实现类
  * @author david
+ * @param <T>
  *
  */
 @Service
-public class UnionPayReconcilServiceImpl implements ReconcilService {
+public class UnionPayReconcilServiceImpl<T> implements ReconcilService {
 
-	private static String REQUEST_VERSION = "V1.1";
-	private static String REQUEST_TYPE = "14";
-	private static String DEFAULT_CHARSET = "UTF-8";
-	private static String UNIONPAY_SUCCESS = "0000";
+	private static final String REQUEST_VERSION = "V1.1";
+	private static final String REQUEST_TYPE = "14";
+	private static final String DEFAULT_CHARSET = "UTF-8";
+	private static final String UNIONPAY_SUCCESS = "0000";
+	
+	private static final String TRAN_TYPE_FUND = "消费";
+	private static final String TRAN_TYPE_REFUND = "退货";
+	
+	private static final String WECHAT_MICROPAY = "微信.刷卡支付";
+	private static final String ALIPAY_MICROPAY = "支付宝.刷卡支付";
+	
+	private static String REQUEST_URL =  "https://www.zfzlpay.com/payment-gate-web/gateway/api/backTransReq";
+	
 	
 	private static Logger logger = LoggerFactory.getLogger(UnionPayReconcilServiceImpl.class);
-	private static String REQUEST_URL =  "https://www.zfzlpay.com/payment-gate-web/gateway/api/backTransReq";
+	
+	private static Map<String, String> payProductMap;
+	
+	static {
+		
+		try {
+			payProductMap = new HashMap<>();
+			payProductMap.put(WECHAT_MICROPAY, PayMethod.WechatMicropay.toString());
+			payProductMap.put(ALIPAY_MICROPAY, PayMethod.AliPayMicropay.toString());
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+		}
+	}
 	
 	@Autowired
 	private SnowFlake snowFlake;
@@ -61,21 +102,29 @@ public class UnionPayReconcilServiceImpl implements ReconcilService {
 	@Autowired
 	@Qualifier("restTemplateWeakSsl")
 	private RestTemplate restTemplate;
-	
 	@Autowired
 	private UnionPayUtil unionPayUtil;
-	
 	@Value("${unionpay_data_file}")
 	private String localFolder;
 	
 	@Autowired
+	private TransactionUtil transacionUtil;
+	@Autowired
+	private PlatformTransactionManager transactionManager;
+	@Autowired
 	private MsaBaseMchInfoMapper msaBaseMchInfoMapper;
-	
 	@Autowired
 	private UnionPayReconcilMapper unionPayReconcilMapper;
-	
 	@Autowired
-	private ObjectMapper objectMapper;
+	private MsaBaseOriginReconFileMapper msaBaseOriginReconFileMapper;
+	@Autowired
+	private MsaTradePayOrderMapper msaTradePayOrderMapper;
+	@Autowired
+	private MsaBaseCheckDetailMapper msaBaseCheckDetailMapper;
+	@Autowired
+	private MsaBaseCheckSumMapper msaBaseCheckSumMapper;
+	@Autowired
+	private MsaBaseAcctInfoMapper msaBaseAcctInfoMapper;
 	
 	/**
 	 * 获取需要对账的商户号
@@ -201,18 +250,18 @@ public class UnionPayReconcilServiceImpl implements ReconcilService {
 				
 				String[]detailLines = dataList.get(i).split("\\|");
 				ReconcilFileBody body = new ReconcilFileBody();
-				body.setTranDate(detailLines[0]);
+				body.setAcctDate(detailLines[0]);
 				body.setParentMch(detailLines[1]);
 				body.setMchId(detailLines[2]);
 				body.setPayPro(detailLines[3]);
 				body.setTranType(detailLines[4]);
 				body.setOrderId(detailLines[5]);	//订单号
-				body.setTranDate(detailLines[6]);	//交易日期时间,yyyy-MM-dd hh:mm:ss
+				body.setTranDateTime(detailLines[6]);	//交易日期时间,yyyy-MM-dd hh:mm:ss
 				body.setTranAmt(detailLines[7]);
 				body.setFeeAmt(detailLines[8]);
 				body.setLiquidateAmt(detailLines[9]);
 				body.setOrderId(detailLines[10]);
-				body.setOriTranTime(detailLines[11]);
+				body.setOriTranDateTime(detailLines[11]);
 				body.setRemark(detailLines[12]);
 				bodyList.add(body);
 			}
@@ -227,24 +276,255 @@ public class UnionPayReconcilServiceImpl implements ReconcilService {
 	 * @param dto
 	 */
 	@Override
-	@Transactional
 	public void saveFile2DB(ReconcilFileDTO dto) {
-
+		//手动控制事务，失败只回滚单条
 		List<ReconcilFileBody> detailList = dto.getBody();
-		for (ReconcilFileBody reconcilFileBody : detailList) {
+		for (ReconcilFileBody reconcilFile : detailList) {
+			transacionUtil.transact(consumer->saveFileManually(reconcilFile));
+		}
+	}
+
+	/**
+	 * 文件落表，手动控制事务
+	 * @param reconcilFile
+	 */
+	private void saveFileManually(ReconcilFileBody reconcilFile) {
+		
+		//先根据订单号查一遍当前交易是否已经在表里存在。如果存在不做处理，不存在则做新增
+		MsaBaseOriginReconFile oriFile = new MsaBaseOriginReconFile();
+		oriFile.setOrderId(Long.valueOf(reconcilFile.getOrderId()));
+		oriFile = msaBaseOriginReconFileMapper.selectOne(oriFile);
+		if (oriFile == null) {
+			oriFile = new MsaBaseOriginReconFile();
+			oriFile.setId(snowFlake.nextId());
+			oriFile.setFileCreateDate(reconcilFile.getAcctDate());
+			oriFile.setTranDate(reconcilFile.getTranDate());
+			oriFile.setTranTime(reconcilFile.getTranTime());
+			oriFile.setSysMchNo(reconcilFile.getMchId());
+			oriFile.setTranAmt(new BigDecimal(reconcilFile.getTranAmt()));
+			oriFile.setFeeAmt(new BigDecimal(reconcilFile.getFeeAmt()));
+			oriFile.setPayProduct(reconcilFile.getPayPro());
+			oriFile.setTranTime(reconcilFile.getTranType());
+			oriFile.setOrderId(Long.valueOf(reconcilFile.getOrderId()));
+			oriFile.setOriginOrderId(Long.valueOf(reconcilFile.getOriOrderId()));
+			oriFile.setOriginTranDate(reconcilFile.getOriTranDate());
+			oriFile.setCheckFlag(IsFlag.Fou.toString());
+			msaBaseOriginReconFileMapper.insert(oriFile);
+		}
+	}
+	
+	/**
+	 * 对账处理
+	 * 跟订单表中已经完成的交易做匹配，能匹配上的记录对账明细和汇总
+	 */
+	@Override
+	public void runReconcil() {
+		
+		MsaBaseOriginReconFile file = new MsaBaseOriginReconFile();
+		file.setCheckFlag(IsFlag.Fou.toString());
+		file.setPayChannel(PayChannel.UnionPay.toString());	//银联实现类只查银联渠道的
+		//获取未对账交易列表
+		List<MsaBaseOriginReconFile> fileList = msaBaseOriginReconFileMapper.select(file);
+		Map<String, List<MsaBaseCheckDetail>> checkMap = new HashMap<>(2<<8);	//key为sect_id+"_"+"_"+mch_id+"_"+entity_id，value为对应的对账明细集合
+		Map<Long, String> sectMap = new HashMap<>();
+		Map<Long, String> cspMap = new HashMap<>();
+		Map<Long, Long> cspSectMap = new HashMap<>();
+		
+		for (MsaBaseOriginReconFile reconFile : fileList) {
 			
+			try {
+				MsaTradePayOrder order = new MsaTradePayOrder();
+				//先确定交易类型，是消费还是退款
+				if (TRAN_TYPE_FUND.equals(reconFile.getTranType())) {	//消费处理	
+					order.setId(reconFile.getOrderId());
+				}else if (TRAN_TYPE_REFUND.equals(reconFile.getTranType())) {	//退货处理
+					order.setId(reconFile.getOriginOrderId());	//退款根据原交易ID查找
+				}
+				
+				order = msaTradePayOrderMapper.selectByPrimaryKey(order);	//查询订单表
+				if (order == null) {	//未在订单表中查询到，说明漏交易
+					reconFile.setRemark("漏交易");
+					if (msaBaseOriginReconFileMapper.updateByPrimaryKey(reconFile)!=1) {
+						throw new BusinessException("更新对账文件原始信息表失败， id : " + reconFile.getId());
+					}
+					
+				}else {	//能匹配上的，保存对账明细
+					
+					MsaBaseCheckDetail detail = new MsaBaseCheckDetail();
+					detail.setId(snowFlake.nextId());
+					detail.setOrderId(reconFile.getOrderId());
+					detail.setTranAmt(reconFile.getTranAmt());
+					String payProStr = reconFile.getPayProduct();
+					String reconPayMethod = payProductMap.get(payProStr);
+					String payMethod = order.getPayMethod();
+					if (!reconPayMethod.equals(payMethod)) {
+						logger.error("对账文件记录的支付方式与实际交易记录不符， 交易ID ： " + order.getId() + ", 实际支付方式： " + reconPayMethod);
+					}
+					detail.setPayMethod(payProductMap.get(payProStr));
+					detail.setPayProduct(order.getPayProduct());
+					detail.setTranDate(reconFile.getTranDate());
+					detail.setTranTime(reconFile.getTranTime());
+					detail.setConsultRate(order.getConsultRate());
+					detail.setConsultAmt(order.getConsultAmt());
+					detail.setChannelRate(FeeCalculator.calculateFeeRate(reconFile.getFeeAmt(), reconFile.getTranAmt()));
+					detail.setChannelAmt(reconFile.getFeeAmt());
+					detail.setMchNo(order.getMchNo());
+					detail.setSectName(order.getSectName());
+					detail.setSectId(order.getSectId());
+					detail.setCspName(order.getCspName());
+					detail.setCspId(order.getCspId());
+					
+					if (TRAN_TYPE_REFUND.equals(reconFile.getTranType())) {	//退货处理
+						detail.setOriginOrderId(reconFile.getOriginOrderId());	//原交易ID
+						detail.setOriginTranDate(reconFile.getOriginTranDate());	//原交易日期
+					}
+					
+					Long sect_id = order.getSectId();	//小区ID
+					Long entity_id = order.getEntityId(); 	//清算实体ID
+					Long mch_id = order.getMchId();	//商户号
+					
+					if (!sectMap.containsKey(sect_id)) {
+						sectMap.put(sect_id, order.getSectName());
+					}
+					if (!cspMap.containsKey(order.getCspId())) {
+						cspMap.put(order.getCspId(), order.getCspName());
+					}
+					if (!cspSectMap.containsKey(sect_id)) {
+						cspSectMap.put(sect_id, order.getCspId());
+					}
+					
+					String key = sect_id + "_" + mch_id + "_" + entity_id;
+					if (!checkMap.containsKey(key)) {
+						List<MsaBaseCheckDetail> detailList = new ArrayList<>();
+						detailList.add(detail);
+						checkMap.put(key, detailList);
+					}else {
+						List<MsaBaseCheckDetail> detailList = checkMap.get(key);
+						detailList.add(detail);
+					}
+					
+				}
+			} catch (Exception e) {
+
+				logger.error(e.getMessage(), e);
+			}
+			
+		}
+		
+		Iterator<Map.Entry<String, List<MsaBaseCheckDetail>>> it = checkMap.entrySet().iterator();
+		while(it.hasNext()) {
+			
+			Map.Entry<String, List<MsaBaseCheckDetail>> entry = it.next();
+			String key = entry.getKey();
+			List<MsaBaseCheckDetail> detailList = entry.getValue();
+			
+			//保存对账汇总
+			long sumId = snowFlake.nextId();	//生成对账汇总ID
+			BigDecimal sumTranAmt = BigDecimal.ZERO;
+			BigDecimal sumAcctAmt = BigDecimal.ZERO;
+			int totalCount = 0;
+			
+			//开启手动控制事务，一条明细一个事务。失败的明细不计入汇总
+			for (MsaBaseCheckDetail msaBaseCheckDetail : detailList) {
+				
+//				transacionUtil.transact(consumer->{
+//					sumTranAmt = sumTranAmt.add(msaBaseCheckDetail.getTranAmt());	//汇总 应结算金额
+//					BigDecimal unitAcctAmt = msaBaseCheckDetail.getTranAmt().subtract(msaBaseCheckDetail.getChannelAmt());	//TODO 是不是这么减？
+//					sumAcctAmt = sumAcctAmt.add(unitAcctAmt);	//汇总 到账金额
+//					msaBaseCheckDetail.setCheckId(sumId);		//设置对账汇总ID
+//					msaBaseCheckDetailMapper.insert(msaBaseCheckDetail);
+//				});
+				
+				TransactionStatus status = transactionManager.getTransaction(new DefaultTransactionDefinition());	//开新事务
+				try {
+					/*汇总累计 start*/
+					sumTranAmt = sumTranAmt.add(msaBaseCheckDetail.getTranAmt());	//汇总 应结算金额
+					BigDecimal unitAcctAmt = msaBaseCheckDetail.getTranAmt().subtract(msaBaseCheckDetail.getChannelAmt());	//TODO 是不是这么减？
+					sumAcctAmt = sumAcctAmt.add(unitAcctAmt);	//汇总 到账金额
+					totalCount++;	//明细笔数+1
+					/*汇总累计 end*/
+					
+					/*保存对账明细 start */
+					msaBaseCheckDetail.setCheckId(sumId);		//设置对账汇总ID
+					if (msaBaseCheckDetailMapper.insert(msaBaseCheckDetail)!=1) {	
+						throw new BusinessException("保存对账明细失败！支付订单ID：" + msaBaseCheckDetail.getOrderId());
+					}
+					/*保存对账明细 end */
+					
+					/*更新对账文件状态 start*/
+					MsaBaseOriginReconFile oriFile = new MsaBaseOriginReconFile();
+					oriFile.setOrderId(msaBaseCheckDetail.getOrderId());	//根据交易订单号查询出 对应的 原始对账文件信息
+					oriFile = msaBaseOriginReconFileMapper.selectOne(oriFile);
+					oriFile.setCheckFlag(IsFlag.Shi.toString());	//将文件状态置为已对账
+					if (msaBaseOriginReconFileMapper.updateByPrimaryKey(oriFile)!=1) {
+						throw new BusinessException("更新原始对账文件状态失败！支付订单ID：" + oriFile.getOrderId());
+					}
+					/*更新对账文件状态 end*/
+					
+					transactionManager.commit(status);
+					
+				} catch (Exception e) {
+					
+					logger.error(e.getMessage(), e);
+					transactionManager.rollback(status);
+				}
+				
+				
+			}
+			
+			/*保存对账汇总。 同个小区同个清算实体保存一条*/
+			String[]tmpKey = key.split("_");
+			String sect_id = tmpKey[0];
+			String mch_id = tmpKey[1];	
+			String entity_id = tmpKey[2];	//entity_id可能建立交易时还未填上，所以此处可能未空。
+			
+			MsaBaseCheckSum checkSum = new MsaBaseCheckSum();
+			checkSum.setId(sumId);
+			checkSum.setShouldPayAmt(sumTranAmt);
+			checkSum.setShouldDate(DateUtil.getSysDate());	//TODO 到底那天
+			checkSum.setAccountAmt(sumAcctAmt);
+			checkSum.setAccountDate(DateUtil.getSysDate());	//TODO
+			checkSum.setPayNum(totalCount);
+			checkSum.setAccountStatus(AccountStatus.WeiJieSuan.toString());
+			checkSum.setEntityId(Long.valueOf(entity_id));	//清算实体ID
+			
+			if (ObjectUtil.isEmpty(entity_id)) {	//如果清算实体id为空，则查询商户表
+				
+				MsaBaseMchInfo mchInfo = new MsaBaseMchInfo();
+				mchInfo.setMchNo(mch_id);
+				mchInfo = msaBaseMchInfoMapper.selectByPrimaryKey(mchInfo);
+				Long entityId = mchInfo.getEntityId();	//清算实体ID
+				if (entityId == null) {	//仍旧没有填写
+					//TODO ???如何处理 
+					
+				}else {
+					entity_id = String.valueOf(entityId);
+				}
+			}
+			
+			if (!ObjectUtil.isEmpty(entity_id)) {	//如果清算实体ID不为空，则填写以下字段
+				MsaBaseAcctInfo acctInfo = new MsaBaseAcctInfo();
+				acctInfo.setId(checkSum.getEntityId());	//根据清算实体ID找出结算账户信息
+				acctInfo = msaBaseAcctInfoMapper.selectByPrimaryKey(acctInfo);
+				checkSum.setEntityName(acctInfo.getEntityName());	//实体名称
+				checkSum.setAccountNo(acctInfo.getAccountNo());	//结算账户
+			}
+			
+			checkSum.setSectId(Long.valueOf(sect_id));
+			checkSum.setCspId(cspSectMap.get(Long.valueOf(sect_id)));
+			checkSum.setSectName(sectMap.get(checkSum.getSectId()));
+			checkSum.setCspName(cspMap.get(checkSum.getCspId()));
+			
+			if (msaBaseCheckSumMapper.insert(checkSum)!=1) {
+				throw new BusinessException("保存对账汇总表失败。");
+			}
 		}
 		
 	}
 	
-
-	@Override
-	public void runReconcil() {
-
-		
-	}
 	
 	
+
 
 
 	

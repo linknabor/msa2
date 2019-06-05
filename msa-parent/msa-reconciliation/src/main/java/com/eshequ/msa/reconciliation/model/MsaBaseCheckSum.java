@@ -3,7 +3,11 @@ package com.eshequ.msa.reconciliation.model;
 import com.eshequ.msa.common.BaseModel;
 import java.math.BigDecimal;
 
+import javax.persistence.Id;
+
 public class MsaBaseCheckSum extends BaseModel {
+	
+	@Id
     private Long id;
 
     private BigDecimal shouldPayAmt;
@@ -14,11 +18,11 @@ public class MsaBaseCheckSum extends BaseModel {
 
     private String accountDate;
 
-    private BigDecimal payNum;
+    private Integer payNum;
 
     private String accountStatus;
 
-    private String entityId;
+    private Long entityId;
 
     private String entityName;
 
@@ -27,6 +31,14 @@ public class MsaBaseCheckSum extends BaseModel {
     private String remark;
 
     private Long mchId;
+
+    private Long sectId;
+
+    private String sectName;
+
+    private Long cspId;
+
+    private String cspName;
 
     public Long getId() {
         return id;
@@ -68,11 +80,11 @@ public class MsaBaseCheckSum extends BaseModel {
         this.accountDate = accountDate;
     }
 
-    public BigDecimal getPayNum() {
+    public Integer getPayNum() {
         return payNum;
     }
 
-    public void setPayNum(BigDecimal payNum) {
+    public void setPayNum(Integer payNum) {
         this.payNum = payNum;
     }
 
@@ -84,11 +96,11 @@ public class MsaBaseCheckSum extends BaseModel {
         this.accountStatus = accountStatus;
     }
 
-    public String getEntityId() {
+    public Long getEntityId() {
         return entityId;
     }
 
-    public void setEntityId(String entityId) {
+    public void setEntityId(Long entityId) {
         this.entityId = entityId;
     }
 
@@ -122,5 +134,37 @@ public class MsaBaseCheckSum extends BaseModel {
 
     public void setMchId(Long mchId) {
         this.mchId = mchId;
+    }
+
+    public Long getSectId() {
+        return sectId;
+    }
+
+    public void setSectId(Long sectId) {
+        this.sectId = sectId;
+    }
+
+    public String getSectName() {
+        return sectName;
+    }
+
+    public void setSectName(String sectName) {
+        this.sectName = sectName;
+    }
+
+    public Long getCspId() {
+        return cspId;
+    }
+
+    public void setCspId(Long cspId) {
+        this.cspId = cspId;
+    }
+
+    public String getCspName() {
+        return cspName;
+    }
+
+    public void setCspName(String cspName) {
+        this.cspName = cspName;
     }
 }

@@ -74,7 +74,12 @@ public class UnionPayUtil {
         return RSAUtil.verifyByKeyPath(signatureStr, signature, TRUST_STORE_FILE, DEFAULT_CHARSET);
     }
 	
-	public static Map<String, String> pullRespToMap(String str) {
+	/**
+	 * 将银联对账接口返回的消息转换成map
+	 * @param str
+	 * @return
+	 */
+	public Map<String, String> convertRespToMap(String str) {
 		Map<String, String> map = new HashMap<String, String>();
 		String data[] = str.split("&");
         for (int i = 0; i < data.length; i++) {

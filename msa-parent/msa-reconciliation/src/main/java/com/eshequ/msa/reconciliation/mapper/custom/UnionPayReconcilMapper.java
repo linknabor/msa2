@@ -1,7 +1,6 @@
 package com.eshequ.msa.reconciliation.mapper.custom;
 
 import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -20,4 +19,7 @@ public interface UnionPayReconcilMapper {
 	 */
 	public List<MsaBaseMchInfo> getUnreconcilTradeMch(@Param("tranStatus")String tranStatus, @Param("tranDate")String tranDate, 
 			@Param("payChannel")String payChannel, @Param("mchStatus")String mchStatus);
+
+
+
 }

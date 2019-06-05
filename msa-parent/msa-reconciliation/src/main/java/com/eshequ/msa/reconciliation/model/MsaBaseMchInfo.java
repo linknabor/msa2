@@ -44,7 +44,7 @@ public class MsaBaseMchInfo extends BaseModel {
 
     private String remark;
 
-    private String entityId;
+    private Long entityId;
 
     public Long getId() {
         return id;
@@ -206,11 +206,11 @@ public class MsaBaseMchInfo extends BaseModel {
         this.remark = remark;
     }
 
-    public String getEntityId() {
+    public Long getEntityId() {
         return entityId;
     }
 
-    public void setEntityId(String entityId) {
+    public void setEntityId(Long entityId) {
         this.entityId = entityId;
     }
 }
