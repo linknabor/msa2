@@ -116,8 +116,8 @@ CONSTRAINT MSA_BASE_HOLIDAY_PK PRIMARY KEY(ID,HOLIDAY)   );
 #账户实体信息表
 DROP TABLE IF EXISTS MSA_BASE_ACCT_INFO ;
 CREATE TABLE MSA_BASE_ACCT_INFO(
-ID                                                CHAR(10) NOT NULL, #ID
-LIQUIDATION_CYCLE                                 DECIMAL(10) default 0 NOT NULL, #结算周期
+ID                                                BIGINT default 0 NOT NULL, #ID
+LIQUIDATION_CYCLE                                 INTEGER default 0 NOT NULL, #结算周期
 ENTITY_NAME                                       VARCHAR(80) NOT NULL, #实体名称
 BANK_NAME                                         VARCHAR(40) NOT NULL, #开户行名称
 ACCOUNT_NAME                                      VARCHAR(80) NOT NULL, #结算账户名称
@@ -138,14 +138,20 @@ SHOULD_PAY_AMT                                    DECIMAL(16,2) default 0 NOT NU
 SHOULD_DATE                                       CHAR(8) NOT NULL, #应结日期
 ACCOUNT_AMT                                       DECIMAL(16,2) default 0 NULL, #到账金额
 ACCOUNT_DATE                                      CHAR(8) NULL, #到账日期
-PAY_NUM                                           DECIMAL(10) default 0 NOT NULL, #交易笔数
+PAY_NUM                                           INTEGER default 0 NOT NULL, #交易笔数
 ACCOUNT_STATUS                                    CHAR(1) NOT NULL, #清算状态
-ENTITY_ID                                         CHAR(10) NOT NULL, #ID
+ENTITY_ID                                         BIGINT default 0 NOT NULL, #ID
 ENTITY_NAME                                       VARCHAR(40) NULL, #实体名称
 ACCOUNT_NO                                        VARCHAR(40) NULL, #结算账户
 REMARK                                            VARCHAR(256) NULL, #备注
 MCH_ID                                            BIGINT default 0 NULL, #ID
+SECT_ID                                           BIGINT default 0 NOT NULL, #小区ID
+SECT_NAME                                         VARCHAR(40) NULL, #小区名称
+CSP_ID                                            BIGINT default 0 NOT NULL, #公司ID
+CSP_NAME                                          VARCHAR(40) NULL, #公司名称
 CONSTRAINT MSA_BASE_CHECK_SUM_PK PRIMARY KEY(ID)   );
+
+
 
 #对账明细表
 DROP TABLE IF EXISTS MSA_BASE_CHECK_DETAIL ;
@@ -199,6 +205,7 @@ OUTSIDE_ORDER_ID                                  VARCHAR(40) NULL, #外部订单ID
 FROM_SYS                                          VARCHAR(20) NULL, #来自平台
 ORDER_ATTACH                                      VARCHAR(256) NULL, #订单附加信息
 ORIGIN_ORDER_ID                                   BIGINT default 0 NOT NULL, #原支付订单号
+MCH_ID                                            BIGINT default 0 NOT NULL, #商户ID
 MCH_NO                                            VARCHAR(40) NOT NULL, #商户号
 MCH_NAME                                          VARCHAR(40) NULL, #商户名称
 MCH_ABBRE                                         VARCHAR(40) NULL, #商户简称
@@ -206,6 +213,9 @@ SECRET                                            VARCHAR(40) NULL, #商户密钥
 APPID                                             VARCHAR(20) NULL, #应用ID
 PAY_CHANNEL                                       CHAR(2) NOT NULL, #支付渠道
 PAY_PRODUCT                                       VARCHAR(20) NULL, #支付产品
+ENTITY_ID                                         BIGINT default 0 NOT NULL, #实体ID
+ACCOUNT_NAME                                      VARCHAR(40) NULL, #结算账户名称
+ACCOUNT_NO                                        VARCHAR(40) NULL, #结算账号
 CONSTRAINT MSA_TRADE_REFUND_ORDER_CHK3 CHECK(CONSULT_RATE<=100.00),
 CONSTRAINT MSA_TRADE_REFUND_ORDER_PK PRIMARY KEY(ID)   );
 
@@ -234,6 +244,7 @@ OWNER_CONSULT_AMT                                 DECIMAL(16,2) default 0 NULL, 
 OUTSIDE_ORDER_ID                                  VARCHAR(40) NULL, #外部订单ID
 FROM_SYS                                          VARCHAR(20) NULL, #来自平台
 ORDER_ATTACH                                      VARCHAR(256) NULL, #订单附加信息
+MCH_ID                                            BIGINT default 0 NOT NULL, #商户ID
 MCH_NO                                            VARCHAR(40) NOT NULL, #商户号
 MCH_NAME                                          VARCHAR(40) NULL, #商户名称
 MCH_ABBRE                                         VARCHAR(40) NULL, #商户简称
@@ -241,6 +252,9 @@ SECRET                                            VARCHAR(40) NULL, #商户密钥
 APPID                                             VARCHAR(20) NULL, #应用ID
 PAY_CHANNEL                                       CHAR(2) NOT NULL, #支付渠道
 PAY_PRODUCT                                       VARCHAR(20) NULL, #支付产品
+ENTITY_ID                                         BIGINT default 0 NOT NULL, #实体ID
+ACCOUNT_NAME                                      VARCHAR(40) NULL, #结算账户名称
+ACCOUNT_NO                                        VARCHAR(40) NULL, #结算账号
 CONSTRAINT MSA_TRADE_PAY_ORDER_CHK3 CHECK(CONSULT_RATE<=100.00),
 CONSTRAINT MSA_TRADE_PAY_ORDER_PK PRIMARY KEY(ID)   );
 
