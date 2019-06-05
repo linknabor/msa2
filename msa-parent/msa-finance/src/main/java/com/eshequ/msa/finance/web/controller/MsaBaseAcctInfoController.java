@@ -91,7 +91,7 @@ public class MsaBaseAcctInfoController {
 			if (!StringUtils.isEmpty(data)) {
 				msaBaseAcctInfo = mapper.readValue(data, MsaBaseAcctInfo.class);
 			}
-			String id = msaBaseAcctInfo.getId();
+			long id = msaBaseAcctInfo.getId();
 			if (StringUtils.isEmpty(id)) {
 				return BaseResult.failure(ResultCode.FAILURE("查询的信息ID不能为空"));
 			}
@@ -143,8 +143,8 @@ public class MsaBaseAcctInfoController {
 			if (!StringUtils.isEmpty(data)) {
 				msaBaseAcctInfo = mapper.readValue(data, MsaBaseAcctInfo.class);
 			}
-			String id = msaBaseAcctInfo.getId();
-			if (!StringUtils.isEmpty(id)) {
+			long id = msaBaseAcctInfo.getId();
+			if (StringUtils.isEmpty(id)) {
 				return BaseResult.failure(ResultCode.FAILURE("查询的信息ID不能为空"));
 			}
 			

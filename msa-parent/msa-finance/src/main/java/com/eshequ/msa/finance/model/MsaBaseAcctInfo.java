@@ -1,15 +1,14 @@
 package com.eshequ.msa.finance.model;
 
-import com.eshequ.msa.common.BaseModel;
-import java.math.BigDecimal;
-
 import javax.persistence.Id;
+
+import com.eshequ.msa.common.BaseModel;
 
 public class MsaBaseAcctInfo extends BaseModel {
 	@Id
-    private String id;
+    private Long id;
 
-    private BigDecimal liquidationCycle;
+    private Integer liquidationCycle;
 
     private String entityName;
 
@@ -31,19 +30,19 @@ public class MsaBaseAcctInfo extends BaseModel {
 
     private String remark;
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public BigDecimal getLiquidationCycle() {
+    public Integer getLiquidationCycle() {
         return liquidationCycle;
     }
 
-    public void setLiquidationCycle(BigDecimal liquidationCycle) {
+    public void setLiquidationCycle(Integer liquidationCycle) {
         this.liquidationCycle = liquidationCycle;
     }
 
@@ -126,12 +125,4 @@ public class MsaBaseAcctInfo extends BaseModel {
     public void setRemark(String remark) {
         this.remark = remark;
     }
-
-	@Override
-	public String toString() {
-		return "MsaBaseAcctInfo [id=" + id + ", liquidationCycle=" + liquidationCycle + ", entityName=" + entityName
-				+ ", bankName=" + bankName + ", accountName=" + accountName + ", accountNo=" + accountNo + ", custName="
-				+ custName + ", province=" + province + ", phone=" + phone + ", city=" + city + ", status=" + status
-				+ ", remark=" + remark + "]";
-	}
 }

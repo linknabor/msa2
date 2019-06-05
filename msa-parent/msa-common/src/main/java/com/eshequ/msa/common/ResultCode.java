@@ -37,6 +37,10 @@ public class ResultCode {
 		return new ResultCode("9999", "失败");
 	}
 	
+	public static ResultCode FAILURE(String code, String msg) {
+		return new ResultCode(code, msg);
+	}
+	
 	public static ResultCode FAILURE(String msg) {
 		return new ResultCode("9999", msg);
 	}
