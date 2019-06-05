@@ -9,7 +9,7 @@ import java.util.concurrent.Executors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.eshequ.msa.reconciliation.service.cfg.CollectionCfg;
+import com.eshequ.msa.reconciliation.service.cfg.ReconcilCfg;
 
 /**
  * @author david
@@ -26,8 +26,8 @@ public class ReconcilStarter {
 	 */
 	public void start(String collectionDate) {
 		
-		ExecutorService pool = Executors.newFixedThreadPool(CollectionCfg.collectionQueue.size());	//几种对账就开几个线程。每个线程单独处理自己的任务
-		for (String collectionType : CollectionCfg.collectionQueue) {
+		ExecutorService pool = Executors.newFixedThreadPool(ReconcilCfg.collectionQueue.size());	//几种对账就开几个线程。每个线程单独处理自己的任务
+		for (String collectionType : ReconcilCfg.collectionQueue) {
 			ReconcilService service = collectionFactory.getCollectionInstance(collectionType);
 			pool.execute(new ReconcilExecutor<Object>(collectionDate, service));
 		}
@@ -36,7 +36,7 @@ public class ReconcilStarter {
 	
 	public void test() {
 		
-		ReconcilService service = collectionFactory.getCollectionInstance(CollectionCfg.collectionQueue.get(0));
+		ReconcilService service = collectionFactory.getCollectionInstance(ReconcilCfg.collectionQueue.get(0));
 		service.runReconcil();
 	}
 	

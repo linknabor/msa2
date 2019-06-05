@@ -34,7 +34,7 @@ public class ReconcilExecutor<T> implements Runnable {
 			//2.解析文件
 			ReconcilFileDTO dto = reconcilService.paseFile(filePath);
 			//3.文件落表
-			reconcilService.collection(dto);
+			reconcilService.saveFile2DB(dto);
 		}
 		
 		

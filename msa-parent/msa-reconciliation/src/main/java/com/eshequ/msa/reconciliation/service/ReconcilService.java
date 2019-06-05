@@ -13,23 +13,26 @@ public interface ReconcilService {
 	
 	/**
 	 * 下载文件
+	 * @param reconcilDate
+	 * @return
 	 */
-	List<String> downloadFile(String collectionDate);
+	List<String> downloadFile(String batchDate);
 	
 	/**
 	 * 解析文件
-	 * @param <T>
+	 * @param filePath
+	 * @return
 	 */
 	ReconcilFileDTO paseFile(String filePath);
 	
 	/**
-	 * 保存文件到表
-	 * @param <T>
+	 * 处理对账文件并保存到数据库
+	 * @param dto
 	 */
-	void collection(ReconcilFileDTO dto);
+	void saveFile2DB(ReconcilFileDTO dto);
 	
 	/**
-	 * 对账跑批
+	 * 对账处理
 	 */
 	void runReconcil();
 }

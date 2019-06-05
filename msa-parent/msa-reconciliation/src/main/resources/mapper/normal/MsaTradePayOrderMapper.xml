@@ -24,11 +24,16 @@
     <result column="OUTSIDE_ORDER_ID" jdbcType="VARCHAR" property="outsideOrderId" />
     <result column="FROM_SYS" jdbcType="VARCHAR" property="fromSys" />
     <result column="ORDER_ATTACH" jdbcType="VARCHAR" property="orderAttach" />
+    <result column="MCH_ID" jdbcType="BIGINT" property="mchId" />
     <result column="MCH_NO" jdbcType="VARCHAR" property="mchNo" />
     <result column="MCH_NAME" jdbcType="VARCHAR" property="mchName" />
     <result column="MCH_ABBRE" jdbcType="VARCHAR" property="mchAbbre" />
     <result column="SECRET" jdbcType="VARCHAR" property="secret" />
     <result column="APPID" jdbcType="VARCHAR" property="appid" />
     <result column="PAY_CHANNEL" jdbcType="CHAR" property="payChannel" />
+    <result column="PAY_PRODUCT" jdbcType="VARCHAR" property="payProduct" />
+    <result column="ENTITY_ID" jdbcType="BIGINT" property="entityId" />
+    <result column="ACCOUNT_NAME" jdbcType="VARCHAR" property="accountName" />
+    <result column="ACCOUNT_NO" jdbcType="VARCHAR" property="accountNo" />
   </resultMap>
 </mapper>

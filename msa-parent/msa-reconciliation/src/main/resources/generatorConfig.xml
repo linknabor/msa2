@@ -60,14 +60,7 @@
 			<property name="rootInterface" value="com.eshequ.msa.common.CommonMapper"/>
 		</javaClientGenerator>
      	
-<!-- 		<table schema="msa_trade" tableName="msa_base_acct_info" enableCountByExample="false"
-			enableUpdateByExample="false" enableDeleteByExample="false"
-			enableSelectByExample="false" selectByExampleQueryId="false">
-			<property name="useActualColumnNames" value="false"/>
-			<property name ="modelOnly" value="true" />
-		</table>
-		
-		<table schema="msa_trade" tableName="msa_base_check_detail" enableCountByExample="false"
+<!-- 		<table schema="msa_trade" tableName="msa_base_check_detail" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 			<property name="useActualColumnNames" value="false"/>
@@ -109,6 +102,20 @@
 			<property name ="modelOnly" value="true" />
 		</table>
 		
+		<table schema="msa_trade" tableName="msa_base_origin_recon_file" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+			<property name="useActualColumnNames" value="false"/>
+			<property name ="modelOnly" value="true" />
+		</table>
+		
+		<table schema="msa_trade" tableName="msa_base_acct_info" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+			<property name="useActualColumnNames" value="false"/>
+			<property name ="modelOnly" value="true" />
+		</table>
+		
 		<table schema="msa_trade" tableName="msa_trade_pay_order" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
@@ -122,20 +129,14 @@
 			<property name="useActualColumnNames" value="false"/>
 			<property name ="modelOnly" value="true" />
 		</table>
-		
-		<table schema="msa_trade" tableName="msa_base_mch_info" enableCountByExample="false"
+		 -->
+		 
+		 <table schema="msa_trade" tableName="msa_base_mch_info" enableCountByExample="false"
 			enableUpdateByExample="false" enableDeleteByExample="false"
 			enableSelectByExample="false" selectByExampleQueryId="false">
 			<property name="useActualColumnNames" value="false"/>
 			<property name ="modelOnly" value="true" />
-		</table> -->
-		
-		<table schema="msa_trade" tableName="msa_base_origin_reconcil_file" enableCountByExample="false"
-			enableUpdateByExample="false" enableDeleteByExample="false"
-			enableSelectByExample="false" selectByExampleQueryId="false">
-			<property name="useActualColumnNames" value="false"/>
-			<property name ="modelOnly" value="true" />
-		</table>
+		</table> 
 		
 	</context>
 

@@ -1,12 +1,11 @@
 package com.eshequ.msa.reconciliation.model;
 
 import com.eshequ.msa.common.BaseModel;
-import java.math.BigDecimal;
 
 public class MsaBaseAcctInfo extends BaseModel {
-    private String id;
+    private Long id;
 
-    private BigDecimal liquidationCycle;
+    private Integer liquidationCycle;
 
     private String entityName;
 
@@ -28,19 +27,19 @@ public class MsaBaseAcctInfo extends BaseModel {
 
     private String remark;
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public BigDecimal getLiquidationCycle() {
+    public Integer getLiquidationCycle() {
         return liquidationCycle;
     }
 
-    public void setLiquidationCycle(BigDecimal liquidationCycle) {
+    public void setLiquidationCycle(Integer liquidationCycle) {
         this.liquidationCycle = liquidationCycle;
     }
 

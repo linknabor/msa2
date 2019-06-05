@@ -3,7 +3,10 @@ package com.eshequ.msa.reconciliation.model;
 import com.eshequ.msa.common.BaseModel;
 import java.math.BigDecimal;
 
+import javax.persistence.Id;
+
 public class MsaTradeRefundOrder extends BaseModel {
+	@Id
     private Long id;
 
     private String tranStatus;
@@ -48,6 +51,8 @@ public class MsaTradeRefundOrder extends BaseModel {
 
     private Long originOrderId;
 
+    private Long mchId;
+
     private String mchNo;
 
     private String mchName;
@@ -59,6 +64,14 @@ public class MsaTradeRefundOrder extends BaseModel {
     private String appid;
 
     private String payChannel;
+
+    private String payProduct;
+
+    private Long entityId;
+
+    private String accountName;
+
+    private String accountNo;
 
     public Long getId() {
         return id;
@@ -236,6 +249,14 @@ public class MsaTradeRefundOrder extends BaseModel {
         this.originOrderId = originOrderId;
     }
 
+    public Long getMchId() {
+        return mchId;
+    }
+
+    public void setMchId(Long mchId) {
+        this.mchId = mchId;
+    }
+
     public String getMchNo() {
         return mchNo;
     }
@@ -282,5 +303,37 @@ public class MsaTradeRefundOrder extends BaseModel {
 
     public void setPayChannel(String payChannel) {
         this.payChannel = payChannel;
+    }
+
+    public String getPayProduct() {
+        return payProduct;
+    }
+
+    public void setPayProduct(String payProduct) {
+        this.payProduct = payProduct;
+    }
+
+    public Long getEntityId() {
+        return entityId;
+    }
+
+    public void setEntityId(Long entityId) {
+        this.entityId = entityId;
+    }
+
+    public String getAccountName() {
+        return accountName;
+    }
+
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
+    }
+
+    public String getAccountNo() {
+        return accountNo;
+    }
+
+    public void setAccountNo(String accountNo) {
+        this.accountNo = accountNo;
     }
 }

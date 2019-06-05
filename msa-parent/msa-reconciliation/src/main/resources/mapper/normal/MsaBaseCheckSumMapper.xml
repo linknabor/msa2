@@ -7,12 +7,16 @@
     <result column="SHOULD_DATE" jdbcType="CHAR" property="shouldDate" />
     <result column="ACCOUNT_AMT" jdbcType="DECIMAL" property="accountAmt" />
     <result column="ACCOUNT_DATE" jdbcType="CHAR" property="accountDate" />
-    <result column="PAY_NUM" jdbcType="DECIMAL" property="payNum" />
+    <result column="PAY_NUM" jdbcType="INTEGER" property="payNum" />
     <result column="ACCOUNT_STATUS" jdbcType="CHAR" property="accountStatus" />
-    <result column="ENTITY_ID" jdbcType="CHAR" property="entityId" />
+    <result column="ENTITY_ID" jdbcType="BIGINT" property="entityId" />
     <result column="ENTITY_NAME" jdbcType="VARCHAR" property="entityName" />
     <result column="ACCOUNT_NO" jdbcType="VARCHAR" property="accountNo" />
     <result column="REMARK" jdbcType="VARCHAR" property="remark" />
     <result column="MCH_ID" jdbcType="BIGINT" property="mchId" />
+    <result column="SECT_ID" jdbcType="BIGINT" property="sectId" />
+    <result column="SECT_NAME" jdbcType="VARCHAR" property="sectName" />
+    <result column="CSP_ID" jdbcType="BIGINT" property="cspId" />
+    <result column="CSP_NAME" jdbcType="VARCHAR" property="cspName" />
   </resultMap>
 </mapper>

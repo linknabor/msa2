@@ -3,7 +3,11 @@ package com.eshequ.msa.reconciliation.model;
 import com.eshequ.msa.common.BaseModel;
 import java.math.BigDecimal;
 
-public class MsaBaseOriginReconcilFile extends BaseModel {
+import javax.persistence.Id;
+
+public class MsaBaseOriginReconFile extends BaseModel {
+	
+	@Id
     private Long id;
 
     private String fileCreateDate;
@@ -31,6 +35,8 @@ public class MsaBaseOriginReconcilFile extends BaseModel {
     private String originTranDate;
 
     private String checkFlag;
+
+    private String payChannel;
 
     private String remark;
 
@@ -144,6 +150,14 @@ public class MsaBaseOriginReconcilFile extends BaseModel {
 
     public void setCheckFlag(String checkFlag) {
         this.checkFlag = checkFlag;
+    }
+
+    public String getPayChannel() {
+        return payChannel;
+    }
+
+    public void setPayChannel(String payChannel) {
+        this.payChannel = payChannel;
     }
 
     public String getRemark() {
