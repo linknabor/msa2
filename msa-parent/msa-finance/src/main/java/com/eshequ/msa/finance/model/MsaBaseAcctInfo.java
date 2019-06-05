@@ -3,7 +3,10 @@ package com.eshequ.msa.finance.model;
 import com.eshequ.msa.common.BaseModel;
 import java.math.BigDecimal;
 
+import javax.persistence.Id;
+
 public class MsaBaseAcctInfo extends BaseModel {
+	@Id
     private String id;
 
     private BigDecimal liquidationCycle;
@@ -123,4 +126,12 @@ public class MsaBaseAcctInfo extends BaseModel {
     public void setRemark(String remark) {
         this.remark = remark;
     }
+
+	@Override
+	public String toString() {
+		return "MsaBaseAcctInfo [id=" + id + ", liquidationCycle=" + liquidationCycle + ", entityName=" + entityName
+				+ ", bankName=" + bankName + ", accountName=" + accountName + ", accountNo=" + accountNo + ", custName="
+				+ custName + ", province=" + province + ", phone=" + phone + ", city=" + city + ", status=" + status
+				+ ", remark=" + remark + "]";
+	}
 }

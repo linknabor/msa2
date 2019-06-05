@@ -65,5 +65,10 @@ public class BaseResult implements Serializable {
 		this.result = result;
 	}
 
+	@Override
+	public String toString() {
+		return "BaseResult [respCode=" + respCode + ", respDesc=" + respDesc + ", result=" + result + "]";
+	}
+
 	
 }

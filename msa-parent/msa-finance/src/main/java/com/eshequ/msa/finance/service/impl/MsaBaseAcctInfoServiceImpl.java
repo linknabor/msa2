@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cglib.beans.BeanMap;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.eshequ.msa.codes.MchStatus;
 import com.eshequ.msa.finance.mapper.custom.UnreconcilAcctInfoMapper;
 import com.eshequ.msa.finance.mapper.normal.MsaBaseAcctInfoMapper;
 import com.eshequ.msa.finance.model.MsaBaseAcctInfo;
@@ -30,6 +32,12 @@ public class MsaBaseAcctInfoServiceImpl implements MsaBaseAcctInfoService{
 	@Override
 	public List<MsaBaseAcctInfo> getAcctInfo(String entity_name, String cust_name, String account_name,
 			String account_no, String status) {
+		
+		LOGGER.info(entity_name);
+		LOGGER.info(cust_name);
+		LOGGER.info(account_name);
+		LOGGER.info(account_no);
+		LOGGER.info(status);
 		return unreconcilAcctInfoMapper.getUnreconcilAcctInfo(entity_name, cust_name, account_name, account_no, status);
 	}
 
@@ -40,7 +48,11 @@ public class MsaBaseAcctInfoServiceImpl implements MsaBaseAcctInfoService{
 
 	@Override
 	public int addAcctInfo(MsaBaseAcctInfo msaBaseAcctInfo) {
-		return msaBaseAcctInfoMapper.insertSelective(msaBaseAcctInfo);
+		msaBaseAcctInfo.setStatus(MchStatus.WeiQiYong.toString());
+		LOGGER.info(msaBaseAcctInfo.toString());
+		int i = msaBaseAcctInfoMapper.insertSelective(msaBaseAcctInfo);
+		LOGGER.info(i+"");
+		return i;
 	}
 
 	@Override
