@@ -1,4 +1,4 @@
-#　系统的引用值个数:9
+#　系统的引用值个数:11
 #　本引用值的代码个数:11 -------i==1
 delete from code_info where ci_sp_class='1';
 INSERT INTO CODE_INFO  VALUES ('01', '1', '支付方式', '现金', 'PayMethod');
@@ -64,3 +64,14 @@ delete from code_info where ci_sp_class='11';
 INSERT INTO CODE_INFO  VALUES ('0', '11', '流程状态', '待审核', 'ProcessStatus');
 INSERT INTO CODE_INFO  VALUES ('1', '11', '流程状态', '审核通过', 'ProcessStatus');
 INSERT INTO CODE_INFO  VALUES ('2', '11', '流程状态', '审核驳回', 'ProcessStatus');
+#　本引用值的代码个数:4 -------i==10
+delete from code_info where ci_sp_class='12';
+INSERT INTO CODE_INFO  VALUES ('0', '12', '地区类别', '全国', 'ReginType');
+INSERT INTO CODE_INFO  VALUES ('1', '12', '地区类别', '省', 'ReginType');
+INSERT INTO CODE_INFO  VALUES ('2', '12', '地区类别', '市', 'ReginType');
+INSERT INTO CODE_INFO  VALUES ('3', '12', '地区类别', '区', 'ReginType');
+#　本引用值的代码个数:3 -------i==11
+delete from code_info where ci_sp_class='13';
+INSERT INTO CODE_INFO  VALUES ('01', '13', '数据来源', '上海SaaS', 'DataSource');
+INSERT INTO CODE_INFO  VALUES ('02', '13', '数据来源', '河北SaaS', 'DataSource');
+INSERT INTO CODE_INFO  VALUES ('03', '13', '数据来源', '浙江SaaS', 'DataSource');
