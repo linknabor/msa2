@@ -197,7 +197,6 @@ CSP_ID                                            BIGINT default 0 NULL, #物业公
 CSP_NAME                                          VARCHAR(40) NULL, #公司名称
 SECT_ID                                           BIGINT default 0 NULL, #物业项目ID
 SECT_NAME                                         VARCHAR(40) NULL, #项目名称
-PLAT_CHANNEL                                      CHAR(1) NULL, #支付平台
 CARD_TYPE                                         CHAR(1) NULL, #银行卡类型
 OPER_NAME                                         VARCHAR(80) NULL, #操作人
 OWNER_CONSULT_AMT                                 DECIMAL(16,2) default 0 NULL, #业主承担费率金额
@@ -237,7 +236,6 @@ CSP_ID                                            BIGINT default 0 NULL, #物业公
 CSP_NAME                                          VARCHAR(40) NULL, #公司名称
 SECT_ID                                           BIGINT default 0 NULL, #物业项目ID
 SECT_NAME                                         VARCHAR(40) NULL, #项目名称
-PLAT_CHANNEL                                      CHAR(1) NOT NULL, #支付平台
 CARD_TYPE                                         CHAR(1) NULL, #银行卡类型
 STAFF_NAME                                        VARCHAR(80) NOT NULL, #员工名称
 OWNER_CONSULT_AMT                                 DECIMAL(16,2) default 0 NULL, #业主承担费率金额
