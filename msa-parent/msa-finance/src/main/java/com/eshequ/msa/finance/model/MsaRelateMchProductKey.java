@@ -2,10 +2,10 @@ package com.eshequ.msa.finance.model;
 
 import com.eshequ.msa.common.BaseModel;
 
-public class MsaRelateMchCustKey extends BaseModel {
+public class MsaRelateMchProductKey extends BaseModel {
     private Long mchId;
 
-    private Long custId;
+    private Long productId;
 
     public Long getMchId() {
         return mchId;
@@ -15,11 +15,11 @@ public class MsaRelateMchCustKey extends BaseModel {
         this.mchId = mchId;
     }
 
-    public Long getCustId() {
-        return custId;
+    public Long getProductId() {
+        return productId;
     }
 
-    public void setCustId(Long custId) {
-        this.custId = custId;
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 }

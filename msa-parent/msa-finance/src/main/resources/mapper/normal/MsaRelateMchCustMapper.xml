@@ -2,10 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.eshequ.msa.finance.custom.mapper.MsaRelateMchCustMapper">
   <resultMap id="BaseResultMap" type="com.eshequ.msa.finance.model.MsaRelateMchCust">
-    <id column="SECT_ID" jdbcType="BIGINT" property="sectId" />
     <id column="MCH_ID" jdbcType="BIGINT" property="mchId" />
-    <result column="CSP_ID" jdbcType="BIGINT" property="cspId" />
+    <id column="CUST_ID" jdbcType="BIGINT" property="custId" />
+    <result column="COMPANY_ID" jdbcType="BIGINT" property="companyId" />
     <result column="CUST_NAME" jdbcType="VARCHAR" property="custName" />
-    <result column="CUST_ADDR" jdbcType="VARCHAR" property="custAddr" />
+    <result column="ENTITY_ID" jdbcType="BIGINT" property="entityId" />
   </resultMap>
 </mapper>

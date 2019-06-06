@@ -21,21 +21,18 @@ MCH_ADDR                                          VARCHAR(128) NULL, #ÉÌ»§µØÖ·
 INDUSTRY_TYPE                                     VARCHAR(10) NOT NULL, #ÐÐÒµÀà±ð
 REMARK                                            VARCHAR(256) NULL, #±¸×¢
 DATA_SOURCE                                       CHAR(2) NOT NULL, #ËùÊôÆ½Ì¨
-ENTITY_ID                                         BIGINT default 0 NULL, #ID
-PRODUCT_ID                                        BIGINT default 0 NOT NULL, #ID
-PRODUCT_NAME                                      VARCHAR(40) NOT NULL, #Ö§¸¶²úÆ·Ãû³Æ
 CONSTRAINT MSA_BASE_MCH_INFO_CHK9 CHECK(CONSULT_RATE<=100.00),
 CONSTRAINT MSA_BASE_MCH_INFO_PK PRIMARY KEY(ID)   );
 
 #¿Í»§ÉÌ»§¹ØÏµ±í
 DROP TABLE IF EXISTS MSA_RELATE_MCH_CUST ;
 CREATE TABLE MSA_RELATE_MCH_CUST(
-SECT_ID                                           BIGINT default 0 NOT NULL, #ÏîÄ¿ID
 MCH_ID                                            BIGINT default 0 NOT NULL, #ID
-CSP_ID                                            BIGINT default 0 NOT NULL, #¹«Ë¾ID
+CUST_ID                                           BIGINT default 0 NOT NULL, #¿Í»§ID
+COMPANY_ID                                        BIGINT default 0 NULL, #¿Í»§¹éÊôÆóÒµID
 CUST_NAME                                         VARCHAR(160) NULL, #¿Í»§Ãû³Æ
-CUST_ADDR                                         VARCHAR(80) NULL, #¿Í»§µØÖ·
-CONSTRAINT MSA_RELATE_MCH_CUST_PK PRIMARY KEY(SECT_ID,MCH_ID)   );
+ENTITY_ID                                         BIGINT default 0 NULL, #ID
+CONSTRAINT MSA_RELATE_MCH_CUST_PK PRIMARY KEY(MCH_ID,CUST_ID)   );
 
 #Ô­Ê¼¶ÔÕËÐÅÏ¢±í
 DROP TABLE IF EXISTS MSA_BASE_ORIGIN_RECON_FILE ;
@@ -113,7 +110,7 @@ HOLIDAY                                           CHAR(8) NOT NULL, #ÈÕÆÚ
 REMARK                                            VARCHAR(256) NULL, #±¸×¢
 CONSTRAINT MSA_BASE_HOLIDAY_PK PRIMARY KEY(ID,HOLIDAY)   );
 
-#ÕË»§ÊµÌåÐÅÏ¢±í
+#ÇåËãÖ÷ÌåÐÅÏ¢±í
 DROP TABLE IF EXISTS MSA_BASE_ACCT_INFO ;
 CREATE TABLE MSA_BASE_ACCT_INFO(
 ID                                                BIGINT default 0 NOT NULL, #ID
@@ -122,14 +119,14 @@ ENTITY_NAME                                       VARCHAR(80) NOT NULL, #ÊµÌåÃû³
 BANK_NAME                                         VARCHAR(40) NOT NULL, #¿ª»§ÐÐÃû³Æ
 ACCOUNT_NAME                                      VARCHAR(80) NOT NULL, #½áËãÕË»§Ãû³Æ
 ACCOUNT_NO                                        VARCHAR(40) NOT NULL, #½áËãÕËºÅ
-PROVINCE                                          VARCHAR(20) NOT NULL, #¿ª»§ÐÐËùÔÚÊ¡·Ý
 PHONE                                             VARCHAR(20) NOT NULL, #½áËãÕË»§Ô¤ÁôÊÖ»úºÅ
-CITY                                              VARCHAR(20) NOT NULL, #¿ª»§ÐÐËùÔÚ³ÇÊÐ
 STATUS                                            CHAR(1) NOT NULL, #×´Ì¬
 DATA_SOURCE                                       CHAR(2) NOT NULL, #ËùÊôÆ½Ì¨
-CSP_ID                                            BIGINT default 0 NOT NULL, #¹«Ë¾ID
+COMPANY_ID                                        BIGINT default 0 NOT NULL, #¹éÊôÆóÒµID
 CSP_NAME                                          VARCHAR(40) NOT NULL, #¹«Ë¾Ãû³Æ
 REMARK                                            VARCHAR(256) NULL, #±¸×¢
+PROVINCE_ID                                       BIGINT default 0 NOT NULL, #ID
+CITY_ID                                           BIGINT default 0 NOT NULL, #ID
 CONSTRAINT MSA_BASE_ACCT_INFO_PK PRIMARY KEY(ID)   );
 
 #¶ÔÕË»ã×Ü±í
@@ -271,5 +268,12 @@ CREATE TABLE SP_BASE_PRODUCT_INFO(
 ID                                                BIGINT default 0 NOT NULL, #ID
 PRODUCT_NAME                                      VARCHAR(40) NOT NULL, #²úÆ·Ãû³Æ
 CONSTRAINT SP_BASE_PRODUCT_INFO_PK PRIMARY KEY(ID)   );
+
+#ÉÌ»§²úÆ·¹ØÏµ±í
+DROP TABLE IF EXISTS MSA_RELATE_MCH_PRODUCT ;
+CREATE TABLE MSA_RELATE_MCH_PRODUCT(
+MCH_ID                                            BIGINT default 0 NOT NULL, #ID
+PRODUCT_ID                                        BIGINT default 0 NOT NULL, #ID
+CONSTRAINT MSA_RELATE_MCH_PRODUCT_PK PRIMARY KEY(MCH_ID,PRODUCT_ID)   );
 
 

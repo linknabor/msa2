@@ -48,7 +48,7 @@ public class MsaBaseMchInfoController {
 			
 			String mch_name = msaBaseMchInfo.getMchName();
 			String mch_no = msaBaseMchInfo.getMchNo();
-			String pay_product = msaBaseMchInfo.getPayProduct();
+			String pay_product = "";
 			String method_type = msaBaseMchInfo.getMethodType();
 			String mch_status = msaBaseMchInfo.getMchStatus();
 			String data_source = msaBaseMchInfo.getDataSource();

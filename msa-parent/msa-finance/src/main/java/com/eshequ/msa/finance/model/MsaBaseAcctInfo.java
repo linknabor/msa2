@@ -18,21 +18,21 @@ public class MsaBaseAcctInfo extends BaseModel {
 
     private String accountNo;
 
-    private String province;
-
     private String phone;
-
-    private String city;
 
     private String status;
 
     private String dataSource;
 
-    private Long cspId;
+    private Long companyId;
 
     private String cspName;
 
     private String remark;
+
+    private Long provinceId;
+
+    private Long cityId;
 
     public Long getId() {
         return id;
@@ -82,28 +82,12 @@ public class MsaBaseAcctInfo extends BaseModel {
         this.accountNo = accountNo;
     }
 
-    public String getProvince() {
-        return province;
-    }
-
-    public void setProvince(String province) {
-        this.province = province;
-    }
-
     public String getPhone() {
         return phone;
     }
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
     }
 
     public String getStatus() {
@@ -122,12 +106,12 @@ public class MsaBaseAcctInfo extends BaseModel {
         this.dataSource = dataSource;
     }
 
-    public Long getCspId() {
-        return cspId;
+    public Long getCompanyId() {
+        return companyId;
     }
 
-    public void setCspId(Long cspId) {
-        this.cspId = cspId;
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
     }
 
     public String getCspName() {
@@ -144,5 +128,21 @@ public class MsaBaseAcctInfo extends BaseModel {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public Long getProvinceId() {
+        return provinceId;
+    }
+
+    public void setProvinceId(Long provinceId) {
+        this.provinceId = provinceId;
+    }
+
+    public Long getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(Long cityId) {
+        this.cityId = cityId;
     }
 }

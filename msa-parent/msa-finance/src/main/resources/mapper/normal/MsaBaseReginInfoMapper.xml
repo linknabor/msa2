@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eshequ.msa.finance.custom.mapper.MsaBaseReginInfoMapper">
+  <resultMap id="BaseResultMap" type="com.eshequ.msa.finance.model.MsaBaseReginInfo">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="REGIN_NAME" jdbcType="VARCHAR" property="reginName" />
+    <result column="REGIN_TYPE" jdbcType="CHAR" property="reginType" />
+    <result column="SUPER_ID" jdbcType="BIGINT" property="superId" />
+  </resultMap>
+</mapper>

@@ -1,18 +1,18 @@
 package com.eshequ.msa.finance.model;
 
 public class MsaRelateMchCust extends MsaRelateMchCustKey {
-    private Long cspId;
+    private Long companyId;
 
     private String custName;
 
-    private String custAddr;
+    private Long entityId;
 
-    public Long getCspId() {
-        return cspId;
+    public Long getCompanyId() {
+        return companyId;
     }
 
-    public void setCspId(Long cspId) {
-        this.cspId = cspId;
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
     }
 
     public String getCustName() {
@@ -23,11 +23,11 @@ public class MsaRelateMchCust extends MsaRelateMchCustKey {
         this.custName = custName;
     }
 
-    public String getCustAddr() {
-        return custAddr;
+    public Long getEntityId() {
+        return entityId;
     }
 
-    public void setCustAddr(String custAddr) {
-        this.custAddr = custAddr;
+    public void setEntityId(Long entityId) {
+        this.entityId = entityId;
     }
 }

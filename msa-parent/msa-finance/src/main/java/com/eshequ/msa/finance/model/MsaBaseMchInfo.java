@@ -24,8 +24,6 @@ public class MsaBaseMchInfo extends BaseModel {
 
     private BigDecimal consultLimit;
 
-    private String payProduct;
-
     private String payChannel;
 
     private String linkMan;
@@ -45,8 +43,6 @@ public class MsaBaseMchInfo extends BaseModel {
     private String remark;
 
     private String dataSource;
-
-    private Long entityId;
 
     public Long getId() {
         return id;
@@ -128,14 +124,6 @@ public class MsaBaseMchInfo extends BaseModel {
         this.consultLimit = consultLimit;
     }
 
-    public String getPayProduct() {
-        return payProduct;
-    }
-
-    public void setPayProduct(String payProduct) {
-        this.payProduct = payProduct;
-    }
-
     public String getPayChannel() {
         return payChannel;
     }
@@ -214,13 +202,5 @@ public class MsaBaseMchInfo extends BaseModel {
 
     public void setDataSource(String dataSource) {
         this.dataSource = dataSource;
-    }
-
-    public Long getEntityId() {
-        return entityId;
-    }
-
-    public void setEntityId(Long entityId) {
-        this.entityId = entityId;
     }
 }

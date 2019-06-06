@@ -1,4 +1,4 @@
-#　系统的引用值个数:11
+#　系统的引用值个数:12
 #　本引用值的代码个数:11 -------i==1
 delete from code_info where ci_sp_class='1';
 INSERT INTO CODE_INFO  VALUES ('01', '1', '支付方式', '现金', 'PayMethod');
@@ -75,3 +75,7 @@ delete from code_info where ci_sp_class='13';
 INSERT INTO CODE_INFO  VALUES ('01', '13', '数据来源', '上海SaaS', 'DataSource');
 INSERT INTO CODE_INFO  VALUES ('02', '13', '数据来源', '河北SaaS', 'DataSource');
 INSERT INTO CODE_INFO  VALUES ('03', '13', '数据来源', '浙江SaaS', 'DataSource');
+#　本引用值的代码个数:2 -------i==12
+delete from code_info where ci_sp_class='14';
+INSERT INTO CODE_INFO  VALUES ('01', '14', '渠道类型', '微信', 'MethodType');
+INSERT INTO CODE_INFO  VALUES ('02', '14', '渠道类型', '支付宝', 'MethodType');
