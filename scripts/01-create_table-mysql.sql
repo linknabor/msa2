@@ -8,10 +8,9 @@ MCH_NAME                                          VARCHAR(40) NOT NULL, #ÉÌ»§Ãû³
 MCH_ABBRE                                         VARCHAR(40) NOT NULL, #ÉÌ»§¼ò³Æ
 SECRET                                            VARCHAR(40) NULL, #ÉÌ»§ÃÜÔ¿
 APPID                                             VARCHAR(20) NULL, #Ó¦ÓÃID
-METHOD_TYPE                                       CHAR(10) NOT NULL, #ÇþµÀÀàÐÍ
+METHOD_TYPE                                       CHAR(2) NOT NULL, #ÇþµÀÀàÐÍ
 CONSULT_RATE                                      DECIMAL(5,2) NOT NULL, #·ÑÂÊ
 CONSULT_LIMIT                                     DECIMAL(16,2) default 0 NOT NULL, #·ÑÂÊÉÏÏÞ
-PAY_PRODUCT                                       VARCHAR(10) NOT NULL, #Ö§¸¶²úÆ·
 PAY_CHANNEL                                       CHAR(2) NOT NULL, #Ö§¸¶ÇþµÀ
 LINK_MAN                                          VARCHAR(80) NOT NULL, #ÁªÏµÈË
 CERT_NO                                           VARCHAR(40) NOT NULL, #Ö¤¼þºÅ
@@ -23,6 +22,8 @@ INDUSTRY_TYPE                                     VARCHAR(10) NOT NULL, #ÐÐÒµÀà±
 REMARK                                            VARCHAR(256) NULL, #±¸×¢
 DATA_SOURCE                                       CHAR(2) NOT NULL, #ËùÊôÆ½Ì¨
 ENTITY_ID                                         BIGINT default 0 NULL, #ID
+PRODUCT_ID                                        BIGINT default 0 NOT NULL, #ID
+PRODUCT_NAME                                      VARCHAR(40) NOT NULL, #Ö§¸¶²úÆ·Ãû³Æ
 CONSTRAINT MSA_BASE_MCH_INFO_CHK9 CHECK(CONSULT_RATE<=100.00),
 CONSTRAINT MSA_BASE_MCH_INFO_PK PRIMARY KEY(ID)   );
 
@@ -197,7 +198,6 @@ CSP_ID                                            BIGINT default 0 NULL, #ÎïÒµ¹«
 CSP_NAME                                          VARCHAR(40) NULL, #¹«Ë¾Ãû³Æ
 SECT_ID                                           BIGINT default 0 NULL, #ÎïÒµÏîÄ¿ID
 SECT_NAME                                         VARCHAR(40) NULL, #ÏîÄ¿Ãû³Æ
-PLAT_CHANNEL                                      CHAR(1) NOT NULL, #Ö§¸¶Æ½Ì¨
 CARD_TYPE                                         CHAR(1) NULL, #ÒøÐÐ¿¨ÀàÐÍ
 STAFF_NAME                                        VARCHAR(80) NOT NULL, #Ô±¹¤Ãû³Æ
 OWNER_CONSULT_AMT                                 DECIMAL(16,2) default 0 NULL, #ÒµÖ÷³Ðµ£·ÑÂÊ½ð¶î
@@ -235,7 +235,6 @@ CSP_ID                                            BIGINT default 0 NULL, #ÎïÒµ¹«
 CSP_NAME                                          VARCHAR(40) NULL, #¹«Ë¾Ãû³Æ
 SECT_ID                                           BIGINT default 0 NULL, #ÎïÒµÏîÄ¿ID
 SECT_NAME                                         VARCHAR(40) NULL, #ÏîÄ¿Ãû³Æ
-PLAT_CHANNEL                                      CHAR(1) NULL, #Ö§¸¶Æ½Ì¨
 CARD_TYPE                                         CHAR(1) NULL, #ÒøÐÐ¿¨ÀàÐÍ
 OPER_NAME                                         VARCHAR(80) NULL, #²Ù×÷ÈË
 OWNER_CONSULT_AMT                                 DECIMAL(16,2) default 0 NULL, #ÒµÖ÷³Ðµ£·ÑÂÊ½ð¶î
@@ -265,5 +264,12 @@ REGIN_NAME                                        VARCHAR(40) NOT NULL, #µØÇøÃû
 REGIN_TYPE                                        CHAR(1) NOT NULL, #ÇøÓòÀà±ð
 SUPER_ID                                          BIGINT default 0 NOT NULL, #ÉÏ¼¶ID
 CONSTRAINT MSA_BASE_REGIN_INFO_PK PRIMARY KEY(ID)   );
+
+#Ö§¸¶²úÆ·ÐÅÏ¢±í
+DROP TABLE IF EXISTS SP_BASE_PRODUCT_INFO ;
+CREATE TABLE SP_BASE_PRODUCT_INFO(
+ID                                                BIGINT default 0 NOT NULL, #ID
+PRODUCT_NAME                                      VARCHAR(40) NOT NULL, #²úÆ·Ãû³Æ
+CONSTRAINT SP_BASE_PRODUCT_INFO_PK PRIMARY KEY(ID)   );
 
 
