@@ -17,7 +17,6 @@
     <result column="CSP_NAME" jdbcType="VARCHAR" property="cspName" />
     <result column="SECT_ID" jdbcType="BIGINT" property="sectId" />
     <result column="SECT_NAME" jdbcType="VARCHAR" property="sectName" />
-    <result column="PLAT_CHANNEL" jdbcType="CHAR" property="platChannel" />
     <result column="CARD_TYPE" jdbcType="CHAR" property="cardType" />
     <result column="STAFF_NAME" jdbcType="VARCHAR" property="staffName" />
     <result column="OWNER_CONSULT_AMT" jdbcType="DECIMAL" property="ownerConsultAmt" />

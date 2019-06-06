@@ -23,7 +23,7 @@ public interface ReconcilService {
 	 * @param filePath
 	 * @return
 	 */
-	ReconcilFileDTO paseFile(String filePath);
+	ReconcilFileDTO parseFile(String filePath);
 	
 	/**
 	 * 处理对账文件并保存到数据库

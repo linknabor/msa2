@@ -37,8 +37,6 @@ public class MsaTradePayOrder extends BaseModel {
 
     private String sectName;
 
-    private String platChannel;
-
     private String cardType;
 
     private String staffName;
@@ -191,14 +189,6 @@ public class MsaTradePayOrder extends BaseModel {
 
     public void setSectName(String sectName) {
         this.sectName = sectName;
-    }
-
-    public String getPlatChannel() {
-        return platChannel;
-    }
-
-    public void setPlatChannel(String platChannel) {
-        this.platChannel = platChannel;
     }
 
     public String getCardType() {

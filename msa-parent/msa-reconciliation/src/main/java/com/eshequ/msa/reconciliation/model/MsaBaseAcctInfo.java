@@ -1,8 +1,11 @@
 package com.eshequ.msa.reconciliation.model;
 
+import javax.persistence.Id;
+
 import com.eshequ.msa.common.BaseModel;
 
 public class MsaBaseAcctInfo extends BaseModel {
+	@Id
     private Long id;
 
     private Integer liquidationCycle;
@@ -15,17 +18,21 @@ public class MsaBaseAcctInfo extends BaseModel {
 
     private String accountNo;
 
-    private String custName;
-
-    private String province;
-
     private String phone;
-
-    private String city;
 
     private String status;
 
+    private String dataSource;
+
+    private Long companyId;
+
+    private String cspName;
+
     private String remark;
+
+    private Long provinceId;
+
+    private Long cityId;
 
     public Long getId() {
         return id;
@@ -75,36 +82,12 @@ public class MsaBaseAcctInfo extends BaseModel {
         this.accountNo = accountNo;
     }
 
-    public String getCustName() {
-        return custName;
-    }
-
-    public void setCustName(String custName) {
-        this.custName = custName;
-    }
-
-    public String getProvince() {
-        return province;
-    }
-
-    public void setProvince(String province) {
-        this.province = province;
-    }
-
     public String getPhone() {
         return phone;
     }
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
     }
 
     public String getStatus() {
@@ -115,11 +98,51 @@ public class MsaBaseAcctInfo extends BaseModel {
         this.status = status;
     }
 
+    public String getDataSource() {
+        return dataSource;
+    }
+
+    public void setDataSource(String dataSource) {
+        this.dataSource = dataSource;
+    }
+
+    public Long getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
+    }
+
+    public String getCspName() {
+        return cspName;
+    }
+
+    public void setCspName(String cspName) {
+        this.cspName = cspName;
+    }
+
     public String getRemark() {
         return remark;
     }
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public Long getProvinceId() {
+        return provinceId;
+    }
+
+    public void setProvinceId(Long provinceId) {
+        this.provinceId = provinceId;
+    }
+
+    public Long getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(Long cityId) {
+        this.cityId = cityId;
     }
 }

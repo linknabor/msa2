@@ -6,6 +6,8 @@ import java.math.BigDecimal;
 public class MsaLiquidateOwnerSum extends BaseModel {
     private Long id;
 
+    private String processStatus;
+
     private String bankName;
 
     private String acctName;
@@ -32,7 +34,7 @@ public class MsaLiquidateOwnerSum extends BaseModel {
 
     private String liquidateStatus;
 
-    private BigDecimal liquidateCount;
+    private Integer liquidateCount;
 
     private String operName;
 
@@ -44,6 +46,14 @@ public class MsaLiquidateOwnerSum extends BaseModel {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getProcessStatus() {
+        return processStatus;
+    }
+
+    public void setProcessStatus(String processStatus) {
+        this.processStatus = processStatus;
     }
 
     public String getBankName() {
@@ -150,11 +160,11 @@ public class MsaLiquidateOwnerSum extends BaseModel {
         this.liquidateStatus = liquidateStatus;
     }
 
-    public BigDecimal getLiquidateCount() {
+    public Integer getLiquidateCount() {
         return liquidateCount;
     }
 
-    public void setLiquidateCount(BigDecimal liquidateCount) {
+    public void setLiquidateCount(Integer liquidateCount) {
         this.liquidateCount = liquidateCount;
     }
 

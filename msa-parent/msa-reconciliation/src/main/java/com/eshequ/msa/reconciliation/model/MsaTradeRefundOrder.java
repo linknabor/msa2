@@ -3,10 +3,7 @@ package com.eshequ.msa.reconciliation.model;
 import com.eshequ.msa.common.BaseModel;
 import java.math.BigDecimal;
 
-import javax.persistence.Id;
-
 public class MsaTradeRefundOrder extends BaseModel {
-	@Id
     private Long id;
 
     private String tranStatus;
@@ -34,8 +31,6 @@ public class MsaTradeRefundOrder extends BaseModel {
     private Long sectId;
 
     private String sectName;
-
-    private String platChannel;
 
     private String cardType;
 
@@ -183,14 +178,6 @@ public class MsaTradeRefundOrder extends BaseModel {
 
     public void setSectName(String sectName) {
         this.sectName = sectName;
-    }
-
-    public String getPlatChannel() {
-        return platChannel;
-    }
-
-    public void setPlatChannel(String platChannel) {
-        this.platChannel = platChannel;
     }
 
     public String getCardType() {

@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.eshequ.msa.reconciliation.mapper.custom.UnreconcilTradeMchMapper">
+<mapper namespace="com.eshequ.msa.reconciliation.mapper.custom.UnionPayReconcilMapper">
 	
 	<select id="getUnreconcilTradeMch" resultType="hashmap">
-	   
 	   select o.mch_no, o.secret, o.pay_channel, o.appid, o.mch_name from msa_trade_pay_order o 
 	   left join msa_base_check_detail cd on o.id = cd.order_id
 	   left join msa_base_mch_info mi on mi.mch_no = o.mch_no
@@ -12,7 +11,15 @@
 	   and o.tran_date &lt;= #{tranDate}
 	   and o.pay_channel = #{payChannel}
 	   and cd.id is null
-	   <![CDATA[and mch_status <> #{#mchStatus} ]]>
+	   and mch_status <![CDATA[<>]]> #{mchStatus}
+	</select>
+	
+	<select id="getAcctEntityByTrade" resultType="hashmap">
+	   select ai.* from msa_base_acct_info ai
+	   join msa_relate_mch_cust r on ai.id = r.entity_id
+	   where ai.status = #{status}
+	   and r.mch_id = #{mchId}
+	   and r.cust_id = #{custId} 
 	</select>
 
 

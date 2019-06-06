@@ -65,7 +65,7 @@ import com.eshequ.msa.util.TransactionUtil;
  *
  */
 @Service
-public class UnionPayReconcilServiceImpl<T> implements ReconcilService {
+public class UnionPayReconcilServiceImpl implements ReconcilService {
 
 	private static final String REQUEST_VERSION = "V1.1";
 	private static final String REQUEST_TYPE = "14";
@@ -74,23 +74,24 @@ public class UnionPayReconcilServiceImpl<T> implements ReconcilService {
 	
 	private static final String TRAN_TYPE_FUND = "消费";
 	private static final String TRAN_TYPE_REFUND = "退货";
+	private static final String TRAN_TYPE_DAIFU = "代付";
 	
 	private static final String WECHAT_MICROPAY = "微信.刷卡支付";
 	private static final String ALIPAY_MICROPAY = "支付宝.刷卡支付";
 	
 	private static String REQUEST_URL =  "https://www.zfzlpay.com/payment-gate-web/gateway/api/backTransReq";
 	
-	
 	private static Logger logger = LoggerFactory.getLogger(UnionPayReconcilServiceImpl.class);
-	
 	private static Map<String, String> payProductMap;
 	
-	static {
+	public void init() {
 		
 		try {
-			payProductMap = new HashMap<>();
-			payProductMap.put(WECHAT_MICROPAY, PayMethod.WechatMicropay.toString());
-			payProductMap.put(ALIPAY_MICROPAY, PayMethod.AliPayMicropay.toString());
+			if (payProductMap == null) {
+				payProductMap = new HashMap<>();
+				payProductMap.put(WECHAT_MICROPAY, PayMethod.WechatMicropay.toString());
+				payProductMap.put(ALIPAY_MICROPAY, PayMethod.AliPayMicropay.toString());
+			}
 		} catch (Exception e) {
 			logger.error(e.getMessage(), e);
 		}
@@ -145,7 +146,7 @@ public class UnionPayReconcilServiceImpl<T> implements ReconcilService {
 				reconcilDate, PayChannel.UnionPay.toString(), MchStatus.QiYong.toString());
 		
 		mchList.addAll(unReconcilMchlist);
-		return null;
+		return mchList;
 	}
 	
 	/**
@@ -155,16 +156,14 @@ public class UnionPayReconcilServiceImpl<T> implements ReconcilService {
 	@Override
 	public List<String> downloadFile(String batchDate) {
 		
-		String reconcilDate = DateUtil.getNextDateByNum(batchDate, -1);	//清算前一天的交易
-		
-		List<MsaBaseMchInfo> mchList = getMchList(reconcilDate);
+		List<MsaBaseMchInfo> mchList = getMchList(batchDate);
 		List<String> filePahtList = new ArrayList<>();
 		for (MsaBaseMchInfo msaBaseMchInfo : mchList) {
 			String mchNo = msaBaseMchInfo.getMchNo();
-			String respStr = getFileStr(reconcilDate, mchNo);
+			String respStr = getFileStr(batchDate, mchNo);
 			
 			if (!ObjectUtil.isEmpty(respStr)) {
-				String filePath = localFolder + reconcilDate+"_"+mchNo+".dat";
+				String filePath = localFolder + batchDate+"_"+mchNo+".dat";
 				try {
 					File localfile = new File(filePath);
 					if (!localfile.exists()) {
@@ -222,7 +221,7 @@ public class UnionPayReconcilServiceImpl<T> implements ReconcilService {
 	 * 解析文件
 	 */
 	@Override
-	public ReconcilFileDTO paseFile(String filePath) {
+	public ReconcilFileDTO parseFile(String filePath) {
 		
 		File file = new File(filePath);
 		List<String> dataList = new ArrayList<>(100);
@@ -260,7 +259,7 @@ public class UnionPayReconcilServiceImpl<T> implements ReconcilService {
 				body.setTranAmt(detailLines[7]);
 				body.setFeeAmt(detailLines[8]);
 				body.setLiquidateAmt(detailLines[9]);
-				body.setOrderId(detailLines[10]);
+				body.setOriOrderId(detailLines[10]);
 				body.setOriTranDateTime(detailLines[11]);
 				body.setRemark(detailLines[12]);
 				bodyList.add(body);
@@ -295,6 +294,10 @@ public class UnionPayReconcilServiceImpl<T> implements ReconcilService {
 		oriFile.setOrderId(Long.valueOf(reconcilFile.getOrderId()));
 		oriFile = msaBaseOriginReconFileMapper.selectOne(oriFile);
 		if (oriFile == null) {
+			
+			if (TRAN_TYPE_DAIFU.equals(reconcilFile.getTranType())) {	//代付的直接跳过不做处理。
+				return;
+			}
 			oriFile = new MsaBaseOriginReconFile();
 			oriFile.setId(snowFlake.nextId());
 			oriFile.setFileCreateDate(reconcilFile.getAcctDate());
@@ -304,10 +307,13 @@ public class UnionPayReconcilServiceImpl<T> implements ReconcilService {
 			oriFile.setTranAmt(new BigDecimal(reconcilFile.getTranAmt()));
 			oriFile.setFeeAmt(new BigDecimal(reconcilFile.getFeeAmt()));
 			oriFile.setPayProduct(reconcilFile.getPayPro());
-			oriFile.setTranTime(reconcilFile.getTranType());
+			oriFile.setTranType(reconcilFile.getTranType());
 			oriFile.setOrderId(Long.valueOf(reconcilFile.getOrderId()));
-			oriFile.setOriginOrderId(Long.valueOf(reconcilFile.getOriOrderId()));
-			oriFile.setOriginTranDate(reconcilFile.getOriTranDate());
+			if (TRAN_TYPE_REFUND.equals(reconcilFile.getTranType())) {
+				oriFile.setOriginOrderId(Long.valueOf(reconcilFile.getOriOrderId()));
+				oriFile.setOriginTranDate(reconcilFile.getOriTranDate());
+			}
+			oriFile.setPayChannel(PayChannel.UnionPay.toString());	//银联实现类写死银联
 			oriFile.setCheckFlag(IsFlag.Fou.toString());
 			msaBaseOriginReconFileMapper.insert(oriFile);
 		}
@@ -320,18 +326,21 @@ public class UnionPayReconcilServiceImpl<T> implements ReconcilService {
 	@Override
 	public void runReconcil() {
 		
+		init();
+		
 		MsaBaseOriginReconFile file = new MsaBaseOriginReconFile();
 		file.setCheckFlag(IsFlag.Fou.toString());
 		file.setPayChannel(PayChannel.UnionPay.toString());	//银联实现类只查银联渠道的
 		//获取未对账交易列表
 		List<MsaBaseOriginReconFile> fileList = msaBaseOriginReconFileMapper.select(file);
-		Map<String, List<MsaBaseCheckDetail>> checkMap = new HashMap<>(2<<8);	//key为sect_id+"_"+"_"+mch_id+"_"+entity_id，value为对应的对账明细集合
-		Map<Long, String> sectMap = new HashMap<>();
-		Map<Long, String> cspMap = new HashMap<>();
-		Map<Long, Long> cspSectMap = new HashMap<>();
+		Map<String, List<MsaBaseCheckDetail>> checkMap = new HashMap<>(2<<10);	//key为sect_id+"_"+"_"+mch_id+"_"+entity_id，value为对应的对账明细集合
+		Map<Long, String> sectMap = new HashMap<>();	//key->sect_id, value->sect_name
+		Map<Long, String> cspMap = new HashMap<>();		//key->csp_id, value->csp_name
+		Map<Long, Long> cspSectMap = new HashMap<>();	//key->sect_id, value->csp_id
 		
 		for (MsaBaseOriginReconFile reconFile : fileList) {
 			
+			TransactionStatus status = transactionManager.getTransaction(new DefaultTransactionDefinition());	//开新事务
 			try {
 				MsaTradePayOrder order = new MsaTradePayOrder();
 				//先确定交易类型，是消费还是退款
@@ -359,6 +368,12 @@ public class UnionPayReconcilServiceImpl<T> implements ReconcilService {
 					String payMethod = order.getPayMethod();
 					if (!reconPayMethod.equals(payMethod)) {
 						logger.error("对账文件记录的支付方式与实际交易记录不符， 交易ID ： " + order.getId() + ", 实际支付方式： " + reconPayMethod);
+					}
+					if (reconFile.getTranAmt().compareTo(order.getTranAmt())!=0) {	//文件金额与订单表中金额不符
+						reconFile.setRemark("对账文件交易金额与订单表中交易金额不符。交易ID ：" + order.getId());
+						if (msaBaseOriginReconFileMapper.updateByPrimaryKey(reconFile)!=1) {
+							throw new BusinessException("更新对账文件原始信息表失败， id : " + reconFile.getId());
+						}
 					}
 					detail.setPayMethod(payProductMap.get(payProStr));
 					detail.setPayProduct(order.getPayProduct());
@@ -393,7 +408,7 @@ public class UnionPayReconcilServiceImpl<T> implements ReconcilService {
 						cspSectMap.put(sect_id, order.getCspId());
 					}
 					
-					String key = sect_id + "_" + mch_id + "_" + entity_id;
+					String key = sect_id + "_" + mch_id + "_" + entity_id;	//key为sect_id+"_"+mch_id+"_"+entity_id，value为对应的对账明细集合
 					if (!checkMap.containsKey(key)) {
 						List<MsaBaseCheckDetail> detailList = new ArrayList<>();
 						detailList.add(detail);
@@ -404,9 +419,13 @@ public class UnionPayReconcilServiceImpl<T> implements ReconcilService {
 					}
 					
 				}
+				
+				transactionManager.commit(status);
+				
 			} catch (Exception e) {
 
 				logger.error(e.getMessage(), e);
+				transactionManager.rollback(status);
 			}
 			
 		}
@@ -427,16 +446,9 @@ public class UnionPayReconcilServiceImpl<T> implements ReconcilService {
 			//开启手动控制事务，一条明细一个事务。失败的明细不计入汇总
 			for (MsaBaseCheckDetail msaBaseCheckDetail : detailList) {
 				
-//				transacionUtil.transact(consumer->{
-//					sumTranAmt = sumTranAmt.add(msaBaseCheckDetail.getTranAmt());	//汇总 应结算金额
-//					BigDecimal unitAcctAmt = msaBaseCheckDetail.getTranAmt().subtract(msaBaseCheckDetail.getChannelAmt());	//TODO 是不是这么减？
-//					sumAcctAmt = sumAcctAmt.add(unitAcctAmt);	//汇总 到账金额
-//					msaBaseCheckDetail.setCheckId(sumId);		//设置对账汇总ID
-//					msaBaseCheckDetailMapper.insert(msaBaseCheckDetail);
-//				});
-				
 				TransactionStatus status = transactionManager.getTransaction(new DefaultTransactionDefinition());	//开新事务
 				try {
+					
 					/*汇总累计 start*/
 					sumTranAmt = sumTranAmt.add(msaBaseCheckDetail.getTranAmt());	//汇总 应结算金额
 					BigDecimal unitAcctAmt = msaBaseCheckDetail.getTranAmt().subtract(msaBaseCheckDetail.getChannelAmt());	//TODO 是不是这么减？
@@ -460,6 +472,10 @@ public class UnionPayReconcilServiceImpl<T> implements ReconcilService {
 						throw new BusinessException("更新原始对账文件状态失败！支付订单ID：" + oriFile.getOrderId());
 					}
 					/*更新对账文件状态 end*/
+					
+					if ("20190605".equals(msaBaseCheckDetail.getTranDate())) {
+						throw new BusinessException("test rollback !");
+					}
 					
 					transactionManager.commit(status);
 					
@@ -490,12 +506,11 @@ public class UnionPayReconcilServiceImpl<T> implements ReconcilService {
 			
 			if (ObjectUtil.isEmpty(entity_id)) {	//如果清算实体id为空，则查询商户表
 				
-				MsaBaseMchInfo mchInfo = new MsaBaseMchInfo();
-				mchInfo.setMchNo(mch_id);
-				mchInfo = msaBaseMchInfoMapper.selectByPrimaryKey(mchInfo);
-				Long entityId = mchInfo.getEntityId();	//清算实体ID
+				MsaBaseAcctInfo acctInfo = unionPayReconcilMapper.getAcctEntityByTrade(MchStatus.QiYong.toString(), mch_id, sect_id);
+				Long entityId = acctInfo.getId();	//清算实体ID
 				if (entityId == null) {	//仍旧没有填写
 					//TODO ???如何处理 
+					continue;
 					
 				}else {
 					entity_id = String.valueOf(entityId);
