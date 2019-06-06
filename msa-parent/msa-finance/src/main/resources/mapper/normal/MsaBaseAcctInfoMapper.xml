@@ -8,11 +8,13 @@
     <result column="BANK_NAME" jdbcType="VARCHAR" property="bankName" />
     <result column="ACCOUNT_NAME" jdbcType="VARCHAR" property="accountName" />
     <result column="ACCOUNT_NO" jdbcType="VARCHAR" property="accountNo" />
-    <result column="CUST_NAME" jdbcType="VARCHAR" property="custName" />
     <result column="PROVINCE" jdbcType="VARCHAR" property="province" />
     <result column="PHONE" jdbcType="VARCHAR" property="phone" />
     <result column="CITY" jdbcType="VARCHAR" property="city" />
     <result column="STATUS" jdbcType="CHAR" property="status" />
+    <result column="DATA_SOURCE" jdbcType="CHAR" property="dataSource" />
+    <result column="CSP_ID" jdbcType="BIGINT" property="cspId" />
+    <result column="CSP_NAME" jdbcType="VARCHAR" property="cspName" />
     <result column="REMARK" jdbcType="VARCHAR" property="remark" />
   </resultMap>
 </mapper>

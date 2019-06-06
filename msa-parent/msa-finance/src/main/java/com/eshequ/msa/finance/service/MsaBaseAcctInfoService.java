@@ -7,7 +7,7 @@ import com.eshequ.msa.finance.model.MsaBaseAcctInfo;
 public interface MsaBaseAcctInfoService {
 
 	//根据条件查询指定记录
-	List<MsaBaseAcctInfo> getAcctInfo(String entity_name, String cust_name, String account_name, String account_no, String status);
+	List<MsaBaseAcctInfo> getAcctInfo(String entity_name, String csp_name, String account_name, String account_no, String status, String data_source);
 	
 	//根据主键查询信息
 	MsaBaseAcctInfo queryAcctInfoById(long id);

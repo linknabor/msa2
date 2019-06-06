@@ -1,30 +1,18 @@
 package com.eshequ.msa.finance.model;
 
-import com.eshequ.msa.common.BaseModel;
-
-public class MsaRelateMchCust extends BaseModel {
-    private Long custId;
-
-    private Long mchId;
+public class MsaRelateMchCust extends MsaRelateMchCustKey {
+    private Long cspId;
 
     private String custName;
 
     private String custAddr;
 
-    public Long getCustId() {
-        return custId;
+    public Long getCspId() {
+        return cspId;
     }
 
-    public void setCustId(Long custId) {
-        this.custId = custId;
-    }
-
-    public Long getMchId() {
-        return mchId;
-    }
-
-    public void setMchId(Long mchId) {
-        this.mchId = mchId;
+    public void setCspId(Long cspId) {
+        this.cspId = cspId;
     }
 
     public String getCustName() {
