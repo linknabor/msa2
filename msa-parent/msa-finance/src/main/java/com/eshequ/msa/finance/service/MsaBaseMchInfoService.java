@@ -7,7 +7,7 @@ import com.eshequ.msa.finance.model.MsaRelateMchCust;
 public interface MsaBaseMchInfoService {
 
 	//根据条件查询指定记录
-	List<MsaBaseMchInfo> getMchInfo(String mch_name, String mch_no, String pay_product, String method_type, String mch_status, String data_source);
+	List<MsaBaseMchInfo> getMchInfo(String mch_name, String mch_no, long product_id, String method_type, String mch_status, String data_source);
 	
 	//根据主键查询信息
 	MsaBaseMchInfo queryMchInfoById(long id);

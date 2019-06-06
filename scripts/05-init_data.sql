@@ -328,23 +328,23 @@ insert into msa_base_regin_info(ID,regin_name,regin_type,super_id) values ('1100
 
 
 #支付产品信息表
-insert into sp_base_product_info(ID,product_name) values ('1','现金');
-insert into sp_base_product_info(ID,product_name) values ('2','微信');
-insert into sp_base_product_info(ID,product_name) values ('3','兴业收付直通车');
-insert into sp_base_product_info(ID,product_name) values ('4','杉德移动支付');
-insert into sp_base_product_info(ID,product_name) values ('5','通联移动支付');
-insert into sp_base_product_info(ID,product_name) values ('6','拉卡拉移动支付');
-insert into sp_base_product_info(ID,product_name) values ('8','杉德移动支付');
-insert into sp_base_product_info(ID,product_name) values ('9','通联移动支付');
-insert into sp_base_product_info(ID,product_name) values ('10','拉卡拉移动支付');
-insert into sp_base_product_info(ID,product_name) values ('11','兴业全网收单');
-insert into sp_base_product_info(ID,product_name) values ('12','杉德刷卡支付');
-insert into sp_base_product_info(ID,product_name) values ('13','通联刷卡支付');
-insert into sp_base_product_info(ID,product_name) values ('14','拉卡拉刷卡支付');
-insert into sp_base_product_info(ID,product_name) values ('15','财付通移动支付');
-insert into sp_base_product_info(ID,product_name) values ('16','银联支付');
-insert into sp_base_product_info(ID,product_name) values ('18','汇付刷卡支付');
-insert into sp_base_product_info(ID,product_name) values ('19','汇付扫码支付');
+insert into msa_base_product_info(ID,product_name) values ('1','现金');
+insert into msa_base_product_info(ID,product_name) values ('2','微信');
+insert into msa_base_product_info(ID,product_name) values ('3','兴业收付直通车');
+insert into msa_base_product_info(ID,product_name) values ('4','杉德移动支付');
+insert into msa_base_product_info(ID,product_name) values ('5','通联移动支付');
+insert into msa_base_product_info(ID,product_name) values ('6','拉卡拉移动支付');
+insert into msa_base_product_info(ID,product_name) values ('8','杉德移动支付');
+insert into msa_base_product_info(ID,product_name) values ('9','通联移动支付');
+insert into msa_base_product_info(ID,product_name) values ('10','拉卡拉移动支付');
+insert into msa_base_product_info(ID,product_name) values ('11','兴业全网收单');
+insert into msa_base_product_info(ID,product_name) values ('12','杉德刷卡支付');
+insert into msa_base_product_info(ID,product_name) values ('13','通联刷卡支付');
+insert into msa_base_product_info(ID,product_name) values ('14','拉卡拉刷卡支付');
+insert into msa_base_product_info(ID,product_name) values ('15','财付通移动支付');
+insert into msa_base_product_info(ID,product_name) values ('16','银联支付');
+insert into msa_base_product_info(ID,product_name) values ('18','汇付刷卡支付');
+insert into msa_base_product_info(ID,product_name) values ('19','汇付扫码支付');
 
 
 

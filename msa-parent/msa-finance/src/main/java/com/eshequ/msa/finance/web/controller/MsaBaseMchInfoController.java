@@ -19,6 +19,7 @@ import com.eshequ.msa.common.BaseResult;
 import com.eshequ.msa.common.ResultCode;
 import com.eshequ.msa.finance.model.MsaBaseMchInfo;
 import com.eshequ.msa.finance.model.MsaRelateMchCust;
+import com.eshequ.msa.finance.model.MsaRelateMchProductKey;
 import com.eshequ.msa.finance.service.MsaBaseMchInfoService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -41,39 +42,24 @@ public class MsaBaseMchInfoController {
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		MsaBaseMchInfo msaBaseMchInfo = new MsaBaseMchInfo();
+		MsaRelateMchProductKey msaRelateMchProductKey = new MsaRelateMchProductKey();
 		try {
 			if (!StringUtils.isEmpty(data)) {
 				msaBaseMchInfo = mapper.readValue(data, MsaBaseMchInfo.class);
+				msaRelateMchProductKey = mapper.readValue(data, MsaRelateMchProductKey.class);
 			}
 			
 			String mch_name = msaBaseMchInfo.getMchName();
 			String mch_no = msaBaseMchInfo.getMchNo();
-			String pay_product = "";
+			long product_id = msaRelateMchProductKey.getProductId();
 			String method_type = msaBaseMchInfo.getMethodType();
 			String mch_status = msaBaseMchInfo.getMchStatus();
 			String data_source = msaBaseMchInfo.getDataSource();
-			List<MsaBaseMchInfo> list = msaBaseMchInfoService.getMchInfo(mch_name, mch_no, pay_product, method_type, mch_status, data_source);
+			List<MsaBaseMchInfo> list = msaBaseMchInfoService.getMchInfo(mch_name, mch_no, product_id, method_type, mch_status, data_source);
 			return BaseResult.success(list);
 		} catch (Exception e) {
 			return BaseResult.failure(ResultCode.FAILURE(e.getMessage()));
 		}
-	}
-	
-	/**
-	 * 获取商户状态
-	 * @param request
-	 * @return
-	 */
-	@RequestMapping(value="/getMchStatusCode", method= RequestMethod.POST)
-	@ResponseBody
-	public BaseResult getMchCode(HttpServletRequest request) {
-		List<CodeInfo> rspList = new ArrayList<CodeInfo>();
-		try {
-			rspList = MchStatus.getCodeList();
-		}catch (Exception e) {
-			BaseResult.failure(ResultCode.FAILURE(e.getMessage()));
-		}
-		return BaseResult.success(rspList);
 	}
 	
 	/**

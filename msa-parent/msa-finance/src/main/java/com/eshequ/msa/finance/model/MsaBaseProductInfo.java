@@ -2,7 +2,7 @@ package com.eshequ.msa.finance.model;
 
 import com.eshequ.msa.common.BaseModel;
 
-public class SpBaseProductInfo extends BaseModel {
+public class MsaBaseProductInfo extends BaseModel {
     private Long id;
 
     private String productName;

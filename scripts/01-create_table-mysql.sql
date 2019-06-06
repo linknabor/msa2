@@ -123,7 +123,7 @@ PHONE                                             VARCHAR(20) NOT NULL, #Ω·À„’Àª
 STATUS                                            CHAR(1) NOT NULL, #◊¥Ã¨
 DATA_SOURCE                                       CHAR(2) NOT NULL, #À˘ Ù∆ΩÃ®
 COMPANY_ID                                        BIGINT default 0 NOT NULL, #πÈ Ù∆Û“µID
-CSP_NAME                                          VARCHAR(40) NOT NULL, #π´Àæ√˚≥∆
+COMPANY_NAME                                      VARCHAR(40) NOT NULL, #∆Û“µ√˚≥∆
 REMARK                                            VARCHAR(256) NULL, #±∏◊¢
 PROVINCE_ID                                       BIGINT default 0 NOT NULL, #ID
 CITY_ID                                           BIGINT default 0 NOT NULL, #ID
@@ -263,11 +263,11 @@ SUPER_ID                                          BIGINT default 0 NOT NULL, #…œ
 CONSTRAINT MSA_BASE_REGIN_INFO_PK PRIMARY KEY(ID)   );
 
 #÷ß∏∂≤˙∆∑–≈œ¢±Ì
-DROP TABLE IF EXISTS SP_BASE_PRODUCT_INFO ;
-CREATE TABLE SP_BASE_PRODUCT_INFO(
+DROP TABLE IF EXISTS MSA_BASE_PRODUCT_INFO ;
+CREATE TABLE MSA_BASE_PRODUCT_INFO(
 ID                                                BIGINT default 0 NOT NULL, #ID
 PRODUCT_NAME                                      VARCHAR(40) NOT NULL, #≤˙∆∑√˚≥∆
-CONSTRAINT SP_BASE_PRODUCT_INFO_PK PRIMARY KEY(ID)   );
+CONSTRAINT MSA_BASE_PRODUCT_INFO_PK PRIMARY KEY(ID)   );
 
 #…Ãªß≤˙∆∑πÿœµ±Ì
 DROP TABLE IF EXISTS MSA_RELATE_MCH_PRODUCT ;

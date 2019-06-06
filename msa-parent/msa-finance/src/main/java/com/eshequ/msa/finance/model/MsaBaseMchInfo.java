@@ -3,7 +3,10 @@ package com.eshequ.msa.finance.model;
 import com.eshequ.msa.common.BaseModel;
 import java.math.BigDecimal;
 
+import javax.persistence.Id;
+
 public class MsaBaseMchInfo extends BaseModel {
+	@Id
     private Long id;
 
     private String mchNo;

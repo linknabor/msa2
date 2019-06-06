@@ -47,33 +47,16 @@ public class MsaBaseAcctInfoController {
 			}
 			
 			String entity_name = msaBaseAcctInfo.getEntityName();
-			String csp_name = msaBaseAcctInfo.getCspName();
+			String company_name = msaBaseAcctInfo.getCompanyName();
 			String account_name = msaBaseAcctInfo.getAccountName();
 			String account_no = msaBaseAcctInfo.getAccountNo();
 			String status = msaBaseAcctInfo.getStatus();
 			String data_source = msaBaseAcctInfo.getDataSource();
-			List<MsaBaseAcctInfo> list = msaBaseAcctInfoService.getAcctInfo(entity_name, csp_name, account_name, account_no, status, data_source);
+			List<MsaBaseAcctInfo> list = msaBaseAcctInfoService.getAcctInfo(entity_name, company_name, account_name, account_no, status, data_source);
 			return BaseResult.success(list);
 		} catch (Exception e) {
 			return BaseResult.failure(ResultCode.FAILURE(e.getMessage()));
 		}
-	}
-	
-	/**
-	 * 获取实体账户状态
-	 * @param request
-	 * @return
-	 */
-	@RequestMapping(value="/getAcctStatusCode", method= RequestMethod.POST)
-	@ResponseBody
-	public BaseResult getAcctCode(HttpServletRequest request) {
-		List<CodeInfo> rspList = new ArrayList<CodeInfo>();
-		try {
-			rspList = MchStatus.getCodeList();
-		}catch (Exception e) {
-			BaseResult.failure(ResultCode.FAILURE(e.getMessage()));
-		}
-		return BaseResult.success(rspList);
 	}
 	
 	/**

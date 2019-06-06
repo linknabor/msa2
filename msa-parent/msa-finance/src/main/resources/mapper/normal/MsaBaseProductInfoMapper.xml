@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.eshequ.msa.finance.custom.mapper.SpBaseProductInfoMapper">
-  <resultMap id="BaseResultMap" type="com.eshequ.msa.finance.model.SpBaseProductInfo">
+<mapper namespace="com.eshequ.msa.finance.custom.mapper.MsaBaseProductInfoMapper">
+  <resultMap id="BaseResultMap" type="com.eshequ.msa.finance.model.MsaBaseProductInfo">
     <id column="ID" jdbcType="BIGINT" property="id" />
     <result column="PRODUCT_NAME" jdbcType="VARCHAR" property="productName" />
   </resultMap>

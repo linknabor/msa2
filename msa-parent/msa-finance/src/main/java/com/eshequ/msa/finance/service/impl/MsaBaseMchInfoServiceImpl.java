@@ -36,9 +36,9 @@ public class MsaBaseMchInfoServiceImpl implements MsaBaseMchInfoService{
 	SnowFlake snowFlake;
 	
 	@Override
-	public List<MsaBaseMchInfo> getMchInfo(String mch_name, String mch_no, String pay_product, String method_type,
+	public List<MsaBaseMchInfo> getMchInfo(String mch_name, String mch_no, long product_id, String method_type,
 			String mch_status, String data_source) {
-		return unreconcilMchInfoMapper.getUnreconcilMchInfo(mch_name, mch_no, pay_product, method_type, mch_status, data_source);
+		return unreconcilMchInfoMapper.getUnreconcilMchInfo(mch_name, mch_no, product_id, method_type, mch_status, data_source);
 	}
 
 	@Override
