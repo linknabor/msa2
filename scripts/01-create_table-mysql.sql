@@ -21,7 +21,7 @@ CUSTOMER_TEL                                      VARCHAR(20) NOT NULL, #¿Í·þµç»
 MCH_ADDR                                          VARCHAR(128) NULL, #ÉÌ»§µØÖ·
 INDUSTRY_TYPE                                     VARCHAR(10) NOT NULL, #ÐÐÒµÀà±ð
 REMARK                                            VARCHAR(256) NULL, #±¸×¢
-ENTITY_ID                                         CHAR(10) NULL, #ID
+ENTITY_ID                                         BIGINT default 0 NULL, #ID
 CONSTRAINT MSA_BASE_MCH_INFO_CHK9 CHECK(CONSULT_RATE<=100.00),
 CONSTRAINT MSA_BASE_MCH_INFO_PK PRIMARY KEY(ID)   );
 
