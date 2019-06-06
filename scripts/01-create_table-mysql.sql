@@ -21,6 +21,7 @@ CUSTOMER_TEL                                      VARCHAR(20) NOT NULL, #¿Í·þµç»
 MCH_ADDR                                          VARCHAR(128) NULL, #ÉÌ»§µØÖ·
 INDUSTRY_TYPE                                     VARCHAR(10) NOT NULL, #ÐÐÒµÀà±ð
 REMARK                                            VARCHAR(256) NULL, #±¸×¢
+DATA_SOURCE                                       CHAR(2) NOT NULL, #ËùÊôÆ½Ì¨
 ENTITY_ID                                         BIGINT default 0 NULL, #ID
 CONSTRAINT MSA_BASE_MCH_INFO_CHK9 CHECK(CONSULT_RATE<=100.00),
 CONSTRAINT MSA_BASE_MCH_INFO_PK PRIMARY KEY(ID)   );
@@ -28,12 +29,12 @@ CONSTRAINT MSA_BASE_MCH_INFO_PK PRIMARY KEY(ID)   );
 #¿Í»§ÉÌ»§¹ØÏµ±í
 DROP TABLE IF EXISTS MSA_RELATE_MCH_CUST ;
 CREATE TABLE MSA_RELATE_MCH_CUST(
-CUST_ID                                           BIGINT default 0 NOT NULL, #¿Í»§ID
+SECT_ID                                           BIGINT default 0 NOT NULL, #ÏîÄ¿ID
 MCH_ID                                            BIGINT default 0 NOT NULL, #ID
+CSP_ID                                            BIGINT default 0 NOT NULL, #¹«Ë¾ID
 CUST_NAME                                         VARCHAR(160) NULL, #¿Í»§Ãû³Æ
 CUST_ADDR                                         VARCHAR(80) NULL, #¿Í»§µØÖ·
-CONSTRAINT MSA_RELATE_MCH_CUST_PK PRIMARY KEY(CUST_ID)   );
-
+CONSTRAINT MSA_RELATE_MCH_CUST_PK PRIMARY KEY(SECT_ID,MCH_ID)   );
 
 #Ô­Ê¼¶ÔÕËÐÅÏ¢±í
 DROP TABLE IF EXISTS MSA_BASE_ORIGIN_RECON_FILE ;
@@ -56,11 +57,9 @@ PAY_CHANNEL                                       CHAR(2) NOT NULL, #Ö§¸¶ÇþµÀ
 REMARK                                            VARCHAR(256) NULL, #±¸×¢
 CONSTRAINT MSA_BASE_ORIGIN_RECON_FILE_PK PRIMARY KEY(ID)   );
 
-
-
 #×ÔÖ÷ÇåËãÃ÷Ï¸±í
-DROP TABLE IF EXISTS SP_LIQUIDATE_OWNER_DETAIL ;
-CREATE TABLE SP_LIQUIDATE_OWNER_DETAIL(
+DROP TABLE IF EXISTS MSA_LIQUIDATE_OWNER_DETAIL ;
+CREATE TABLE MSA_LIQUIDATE_OWNER_DETAIL(
 ID                                                BIGINT default 0 NOT NULL, #ID
 ORDER_ID                                          BIGINT default 0 NOT NULL, #ÒµÎñ¶©µ¥ºÅ
 TRAN_AMT                                          DECIMAL(16,2) default 0 NOT NULL, #½»Ò×½ð¶î
@@ -78,13 +77,13 @@ SECT_NAME                                         VARCHAR(80) NULL, #Ð¡ÇøÃû³Æ
 CSP_ID                                            BIGINT default 0 NULL, #¹«Ë¾ID
 CSP_NAME                                          VARCHAR(80) NULL, #¹«Ë¾Ãû³Æ
 LIQUIDATE_ID                                      BIGINT default 0 NOT NULL, #ID
-CONSTRAINT SP_LIQUIDATE_OWNER_DETAIL_CHK8 CHECK(CONSULT_RATE<=100.00),
-CONSTRAINT SP_LIQUIDATE_OWNER_DETAIL_CHK10 CHECK(CHANNEL_RATE<=100.00),
-CONSTRAINT SP_LIQUIDATE_OWNER_DETAIL_PK PRIMARY KEY(ID)   );
+CONSTRAINT MSA_LIQUIDATE_OWNER_DETAIL_CHK8 CHECK(CONSULT_RATE<=100.00),
+CONSTRAINT MSA_LIQUIDATE_OWNER_DETAIL_CHK10 CHECK(CHANNEL_RATE<=100.00),
+CONSTRAINT MSA_LIQUIDATE_OWNER_DETAIL_PK PRIMARY KEY(ID)   );
 
 #×ÔÖ÷ÇåËã»ã×Ü±í
-DROP TABLE IF EXISTS SP_LIQUIDATE_OWNER_SUM ;
-CREATE TABLE SP_LIQUIDATE_OWNER_SUM(
+DROP TABLE IF EXISTS MSA_LIQUIDATE_OWNER_SUM ;
+CREATE TABLE MSA_LIQUIDATE_OWNER_SUM(
 ID                                                BIGINT default 0 NOT NULL, #ID
 PROCESS_STATUS                                    CHAR(1) NOT NULL, #Á÷³Ì×´Ì¬
 BANK_NAME                                         VARCHAR(40) NULL, #¿ª»§ÐÐÃû³Æ
@@ -100,10 +99,10 @@ LIQUIDATE_TIME                                    CHAR(6) NOT NULL, #½áËãÊ±¼ä
 LIQUIDATE_AMT                                     DECIMAL(16,2) default 0 NOT NULL, #½áËã½ð¶î
 TRAN_AMT                                          DECIMAL(16,2) default 0 NOT NULL, #½»Ò×½ð¶î
 LIQUIDATE_STATUS                                  CHAR(1) NOT NULL, #ÇåËã×´Ì¬
-LIQUIDATE_COUNT                                   DECIMAL(10) default 0 NOT NULL, #ÇåËã±ÊÊý
+LIQUIDATE_COUNT                                   INTEGER default 0 NOT NULL, #ÇåËã±ÊÊý
 OPER_NAME                                         VARCHAR(40) NULL, #ÇåËãÈË
 LIQUIDATE_CONTENT                                 VARCHAR(256) NULL, #ÇåËãÄÚÈÝ
-CONSTRAINT SP_LIQUIDATE_OWNER_SUM_PK PRIMARY KEY(ID)   );
+CONSTRAINT MSA_LIQUIDATE_OWNER_SUM_PK PRIMARY KEY(ID)   );
 
 #½Ú¼ÙÈÕÐÅÏ¢±í
 DROP TABLE IF EXISTS MSA_BASE_HOLIDAY ;
@@ -122,11 +121,13 @@ ENTITY_NAME                                       VARCHAR(80) NOT NULL, #ÊµÌåÃû³
 BANK_NAME                                         VARCHAR(40) NOT NULL, #¿ª»§ÐÐÃû³Æ
 ACCOUNT_NAME                                      VARCHAR(80) NOT NULL, #½áËãÕË»§Ãû³Æ
 ACCOUNT_NO                                        VARCHAR(40) NOT NULL, #½áËãÕËºÅ
-CUST_NAME                                         VARCHAR(40) NOT NULL, #¿Í»§Ãû³Æ(ÆóÒµ)
 PROVINCE                                          VARCHAR(20) NOT NULL, #¿ª»§ÐÐËùÔÚÊ¡·Ý
 PHONE                                             VARCHAR(20) NOT NULL, #½áËãÕË»§Ô¤ÁôÊÖ»úºÅ
 CITY                                              VARCHAR(20) NOT NULL, #¿ª»§ÐÐËùÔÚ³ÇÊÐ
 STATUS                                            CHAR(1) NOT NULL, #×´Ì¬
+DATA_SOURCE                                       CHAR(2) NOT NULL, #ËùÊôÆ½Ì¨
+CSP_ID                                            BIGINT default 0 NOT NULL, #¹«Ë¾ID
+CSP_NAME                                          VARCHAR(40) NOT NULL, #¹«Ë¾Ãû³Æ
 REMARK                                            VARCHAR(256) NULL, #±¸×¢
 CONSTRAINT MSA_BASE_ACCT_INFO_PK PRIMARY KEY(ID)   );
 
@@ -150,8 +151,6 @@ SECT_NAME                                         VARCHAR(40) NULL, #Ð¡ÇøÃû³Æ
 CSP_ID                                            BIGINT default 0 NOT NULL, #¹«Ë¾ID
 CSP_NAME                                          VARCHAR(40) NULL, #¹«Ë¾Ãû³Æ
 CONSTRAINT MSA_BASE_CHECK_SUM_PK PRIMARY KEY(ID)   );
-
-
 
 #¶ÔÕËÃ÷Ï¸±í
 DROP TABLE IF EXISTS MSA_BASE_CHECK_DETAIL ;
@@ -180,6 +179,45 @@ CONSTRAINT MSA_BASE_CHECK_DETAIL_CHK8 CHECK(CONSULT_RATE<=100.00),
 CONSTRAINT MSA_BASE_CHECK_DETAIL_CHK10 CHECK(CHANNEL_RATE<=100.00),
 CONSTRAINT MSA_BASE_CHECK_DETAIL_PK PRIMARY KEY(ID)   );
 
+#Ö§¸¶¶©µ¥±í
+DROP TABLE IF EXISTS MSA_TRADE_PAY_ORDER ;
+CREATE TABLE MSA_TRADE_PAY_ORDER(
+ID                                                BIGINT default 0 NOT NULL, #Ö§¸¶¶©µ¥ID
+TRAN_STATUS                                       CHAR(2) NOT NULL, #½»Ò××´Ì¬
+CONSULT_RATE                                      DECIMAL(5,2) NOT NULL, #·ÑÂÊ
+CONSULT_AMT                                       DECIMAL(16,2) default 0 NOT NULL, #·ÑÂÊ½ð¶î
+TRAN_AMT                                          DECIMAL(16,2) default 0 NOT NULL, #½»Ò×½ð¶î
+PAY_METHOD                                        CHAR(2) NOT NULL, #Ö§¸¶·½Ê½
+TRAN_DATE                                         CHAR(8) NOT NULL, #½»Ò×ÈÕÆÚ
+TRAN_TIME                                         CHAR(6) NOT NULL, #½»Ò×Ê±¼ä
+ACCT_DATE                                         CHAR(8) NULL, #¼ÇÕËÈÕÆÚ
+ACCT_TIME                                         CHAR(6) NULL, #¼ÇÕËÊ±¼ä
+NEED_INVOICE                                      CHAR(1) NULL, #ÊÇ·ñÐèÒª·¢Æ±
+CSP_ID                                            BIGINT default 0 NULL, #ÎïÒµ¹«Ë¾ID
+CSP_NAME                                          VARCHAR(40) NULL, #¹«Ë¾Ãû³Æ
+SECT_ID                                           BIGINT default 0 NULL, #ÎïÒµÏîÄ¿ID
+SECT_NAME                                         VARCHAR(40) NULL, #ÏîÄ¿Ãû³Æ
+PLAT_CHANNEL                                      CHAR(1) NOT NULL, #Ö§¸¶Æ½Ì¨
+CARD_TYPE                                         CHAR(1) NULL, #ÒøÐÐ¿¨ÀàÐÍ
+STAFF_NAME                                        VARCHAR(80) NOT NULL, #Ô±¹¤Ãû³Æ
+OWNER_CONSULT_AMT                                 DECIMAL(16,2) default 0 NULL, #ÒµÖ÷³Ðµ£·ÑÂÊ½ð¶î
+OUTSIDE_ORDER_ID                                  VARCHAR(40) NULL, #Íâ²¿¶©µ¥ID
+FROM_SYS                                          VARCHAR(20) NULL, #À´×ÔÆ½Ì¨
+ORDER_ATTACH                                      VARCHAR(256) NULL, #¶©µ¥¸½¼ÓÐÅÏ¢
+MCH_ID                                            BIGINT default 0 NOT NULL, #ÉÌ»§ID
+MCH_NO                                            VARCHAR(40) NOT NULL, #ÉÌ»§ºÅ
+MCH_NAME                                          VARCHAR(40) NULL, #ÉÌ»§Ãû³Æ
+MCH_ABBRE                                         VARCHAR(40) NULL, #ÉÌ»§¼ò³Æ
+SECRET                                            VARCHAR(40) NULL, #ÉÌ»§ÃÜÔ¿
+APPID                                             VARCHAR(20) NULL, #Ó¦ÓÃID
+PAY_CHANNEL                                       CHAR(2) NOT NULL, #Ö§¸¶ÇþµÀ
+PAY_PRODUCT                                       VARCHAR(20) NULL, #Ö§¸¶²úÆ·
+ENTITY_ID                                         BIGINT default 0 NOT NULL, #ÊµÌåID
+ACCOUNT_NAME                                      VARCHAR(40) NULL, #½áËãÕË»§Ãû³Æ
+ACCOUNT_NO                                        VARCHAR(40) NULL, #½áËãÕËºÅ
+CONSTRAINT MSA_TRADE_PAY_ORDER_CHK3 CHECK(CONSULT_RATE<=100.00),
+CONSTRAINT MSA_TRADE_PAY_ORDER_PK PRIMARY KEY(ID)   );
+
 #ÍË¿î¶©µ¥±í
 DROP TABLE IF EXISTS MSA_TRADE_REFUND_ORDER ;
 CREATE TABLE MSA_TRADE_REFUND_ORDER(
@@ -197,6 +235,7 @@ CSP_ID                                            BIGINT default 0 NULL, #ÎïÒµ¹«
 CSP_NAME                                          VARCHAR(40) NULL, #¹«Ë¾Ãû³Æ
 SECT_ID                                           BIGINT default 0 NULL, #ÎïÒµÏîÄ¿ID
 SECT_NAME                                         VARCHAR(40) NULL, #ÏîÄ¿Ãû³Æ
+PLAT_CHANNEL                                      CHAR(1) NULL, #Ö§¸¶Æ½Ì¨
 CARD_TYPE                                         CHAR(1) NULL, #ÒøÐÐ¿¨ÀàÐÍ
 OPER_NAME                                         VARCHAR(80) NULL, #²Ù×÷ÈË
 OWNER_CONSULT_AMT                                 DECIMAL(16,2) default 0 NULL, #ÒµÖ÷³Ðµ£·ÑÂÊ½ð¶î
@@ -218,44 +257,13 @@ ACCOUNT_NO                                        VARCHAR(40) NULL, #½áËãÕËºÅ
 CONSTRAINT MSA_TRADE_REFUND_ORDER_CHK3 CHECK(CONSULT_RATE<=100.00),
 CONSTRAINT MSA_TRADE_REFUND_ORDER_PK PRIMARY KEY(ID)   );
 
-#Ö§¸¶¶©µ¥±í
-DROP TABLE IF EXISTS MSA_TRADE_PAY_ORDER ;
-CREATE TABLE MSA_TRADE_PAY_ORDER(
-ID                                                BIGINT default 0 NOT NULL, #Ö§¸¶¶©µ¥ID
-TRAN_STATUS                                       CHAR(2) NOT NULL, #½»Ò××´Ì¬
-CONSULT_RATE                                      DECIMAL(5,2) NOT NULL, #·ÑÂÊ
-CONSULT_AMT                                       DECIMAL(16,2) default 0 NOT NULL, #·ÑÂÊ½ð¶î
-TRAN_AMT                                          DECIMAL(16,2) default 0 NOT NULL, #½»Ò×½ð¶î
-PAY_METHOD                                        CHAR(2) NOT NULL, #Ö§¸¶·½Ê½
-TRAN_DATE                                         CHAR(8) NOT NULL, #½»Ò×ÈÕÆÚ
-TRAN_TIME                                         CHAR(6) NOT NULL, #½»Ò×Ê±¼ä
-ACCT_DATE                                         CHAR(8) NULL, #¼ÇÕËÈÕÆÚ
-ACCT_TIME                                         CHAR(6) NULL, #¼ÇÕËÊ±¼ä
-NEED_INVOICE                                      CHAR(1) NULL, #ÊÇ·ñÐèÒª·¢Æ±
-CSP_ID                                            BIGINT default 0 NULL, #ÎïÒµ¹«Ë¾ID
-CSP_NAME                                          VARCHAR(40) NULL, #¹«Ë¾Ãû³Æ
-SECT_ID                                           BIGINT default 0 NULL, #ÎïÒµÏîÄ¿ID
-SECT_NAME                                         VARCHAR(40) NULL, #ÏîÄ¿Ãû³Æ
-CARD_TYPE                                         CHAR(1) NULL, #ÒøÐÐ¿¨ÀàÐÍ
-STAFF_NAME                                        VARCHAR(80) NOT NULL, #Ô±¹¤Ãû³Æ
-OWNER_CONSULT_AMT                                 DECIMAL(16,2) default 0 NULL, #ÒµÖ÷³Ðµ£·ÑÂÊ½ð¶î
-OUTSIDE_ORDER_ID                                  VARCHAR(40) NULL, #Íâ²¿¶©µ¥ID
-FROM_SYS                                          VARCHAR(20) NULL, #À´×ÔÆ½Ì¨
-ORDER_ATTACH                                      VARCHAR(256) NULL, #¶©µ¥¸½¼ÓÐÅÏ¢
-MCH_ID                                            BIGINT default 0 NOT NULL, #ÉÌ»§ID
-MCH_NO                                            VARCHAR(40) NOT NULL, #ÉÌ»§ºÅ
-MCH_NAME                                          VARCHAR(40) NULL, #ÉÌ»§Ãû³Æ
-MCH_ABBRE                                         VARCHAR(40) NULL, #ÉÌ»§¼ò³Æ
-SECRET                                            VARCHAR(40) NULL, #ÉÌ»§ÃÜÔ¿
-APPID                                             VARCHAR(20) NULL, #Ó¦ÓÃID
-PAY_CHANNEL                                       CHAR(2) NOT NULL, #Ö§¸¶ÇþµÀ
-PAY_PRODUCT                                       VARCHAR(20) NULL, #Ö§¸¶²úÆ·
-ENTITY_ID                                         BIGINT default 0 NOT NULL, #ÊµÌåID
-ACCOUNT_NAME                                      VARCHAR(40) NULL, #½áËãÕË»§Ãû³Æ
-ACCOUNT_NO                                        VARCHAR(40) NULL, #½áËãÕËºÅ
-CONSTRAINT MSA_TRADE_PAY_ORDER_CHK3 CHECK(CONSULT_RATE<=100.00),
-CONSTRAINT MSA_TRADE_PAY_ORDER_PK PRIMARY KEY(ID)   );
-
-
+#µØÇøÐÅÏ¢±í
+DROP TABLE IF EXISTS MSA_BASE_REGIN_INFO ;
+CREATE TABLE MSA_BASE_REGIN_INFO(
+ID                                                BIGINT default 0 NOT NULL, #ID
+REGIN_NAME                                        VARCHAR(40) NOT NULL, #µØÇøÃû
+REGIN_TYPE                                        CHAR(1) NOT NULL, #ÇøÓòÀà±ð
+SUPER_ID                                          BIGINT default 0 NOT NULL, #ÉÏ¼¶ID
+CONSTRAINT MSA_BASE_REGIN_INFO_PK PRIMARY KEY(ID)   );
 
 

@@ -8,10 +8,11 @@
    <where>
    		true
    		<if test="entity_name!=null and entity_name!=''">and entity_name LIKE CONCAT(CONCAT('%',#{entity_name}),'%')</if>
-   		<if test="cust_name!=null and cust_name!=''">and cust_name LIKE CONCAT(CONCAT('%',#{cust_name}),'%')</if>
+   		<if test="csp_name!=null and csp_name!=''">and csp_name LIKE CONCAT(CONCAT('%',#{csp_name}),'%')</if>
    		<if test="account_name!=null and account_name!=''">and account_name LIKE CONCAT(CONCAT('%',#{account_name}),'%')</if>
    		<if test="account_no!=null and account_no!=''">and account_no LIKE CONCAT(CONCAT('%',#{account_no}),'%')</if>
    		<if test="status!=null and status!=''"> AND status = #{status}</if>
+   		<if test="data_source!=null and data_source!=''"> AND data_source = #{data_source}</if>
    </where>
 
 </select>

@@ -47,12 +47,12 @@ public class MsaBaseAcctInfoController {
 			}
 			
 			String entity_name = msaBaseAcctInfo.getEntityName();
-			String cust_name = msaBaseAcctInfo.getCustName();
+			String csp_name = msaBaseAcctInfo.getCspName();
 			String account_name = msaBaseAcctInfo.getAccountName();
 			String account_no = msaBaseAcctInfo.getAccountNo();
 			String status = msaBaseAcctInfo.getStatus();
-			
-			List<MsaBaseAcctInfo> list = msaBaseAcctInfoService.getAcctInfo(entity_name, cust_name, account_name, account_no, status);
+			String data_source = msaBaseAcctInfo.getDataSource();
+			List<MsaBaseAcctInfo> list = msaBaseAcctInfoService.getAcctInfo(entity_name, csp_name, account_name, account_no, status, data_source);
 			return BaseResult.success(list);
 		} catch (Exception e) {
 			return BaseResult.failure(ResultCode.FAILURE(e.getMessage()));

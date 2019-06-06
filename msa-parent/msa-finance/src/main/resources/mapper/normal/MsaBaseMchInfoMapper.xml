@@ -22,6 +22,7 @@
     <result column="MCH_ADDR" jdbcType="VARCHAR" property="mchAddr" />
     <result column="INDUSTRY_TYPE" jdbcType="VARCHAR" property="industryType" />
     <result column="REMARK" jdbcType="VARCHAR" property="remark" />
-    <result column="ENTITY_ID" jdbcType="CHAR" property="entityId" />
+    <result column="DATA_SOURCE" jdbcType="CHAR" property="dataSource" />
+    <result column="ENTITY_ID" jdbcType="BIGINT" property="entityId" />
   </resultMap>
 </mapper>

@@ -18,8 +18,6 @@ public class MsaBaseAcctInfo extends BaseModel {
 
     private String accountNo;
 
-    private String custName;
-
     private String province;
 
     private String phone;
@@ -27,6 +25,12 @@ public class MsaBaseAcctInfo extends BaseModel {
     private String city;
 
     private String status;
+
+    private String dataSource;
+
+    private Long cspId;
+
+    private String cspName;
 
     private String remark;
 
@@ -78,14 +82,6 @@ public class MsaBaseAcctInfo extends BaseModel {
         this.accountNo = accountNo;
     }
 
-    public String getCustName() {
-        return custName;
-    }
-
-    public void setCustName(String custName) {
-        this.custName = custName;
-    }
-
     public String getProvince() {
         return province;
     }
@@ -116,6 +112,30 @@ public class MsaBaseAcctInfo extends BaseModel {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getDataSource() {
+        return dataSource;
+    }
+
+    public void setDataSource(String dataSource) {
+        this.dataSource = dataSource;
+    }
+
+    public Long getCspId() {
+        return cspId;
+    }
+
+    public void setCspId(Long cspId) {
+        this.cspId = cspId;
+    }
+
+    public String getCspName() {
+        return cspName;
+    }
+
+    public void setCspName(String cspName) {
+        this.cspName = cspName;
     }
 
     public String getRemark() {
