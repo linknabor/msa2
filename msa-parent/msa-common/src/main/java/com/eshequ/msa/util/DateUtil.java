@@ -23,7 +23,6 @@ public class DateUtil {
 
 	private static final ThreadLocal<SimpleDateFormat> threadLocal = new ThreadLocal<SimpleDateFormat>();
 	private static final Object object = new Object();
-	private static ParsePosition parsePosition = new ParsePosition(0);
 
 	/**
 	 * 获取SimpleDateFormat
@@ -50,7 +49,7 @@ public class DateUtil {
 	}
 	
 	private static ParsePosition getDefaultParsePosition() {
-		return parsePosition;
+		return new ParsePosition(0);
 	}
 
 	/**
