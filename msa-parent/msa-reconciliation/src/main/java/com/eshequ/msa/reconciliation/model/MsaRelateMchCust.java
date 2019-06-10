@@ -1,30 +1,18 @@
 package com.eshequ.msa.reconciliation.model;
 
-import com.eshequ.msa.common.BaseModel;
-
-public class MsaRelateMchCust extends BaseModel {
-    private Long custId;
-
-    private Long mchId;
+public class MsaRelateMchCust extends MsaRelateMchCustKey {
+    private Long companyId;
 
     private String custName;
 
-    private String custAddr;
+    private Long entityId;
 
-    public Long getCustId() {
-        return custId;
+    public Long getCompanyId() {
+        return companyId;
     }
 
-    public void setCustId(Long custId) {
-        this.custId = custId;
-    }
-
-    public Long getMchId() {
-        return mchId;
-    }
-
-    public void setMchId(Long mchId) {
-        this.mchId = mchId;
+    public void setCompanyId(Long companyId) {
+        this.companyId = companyId;
     }
 
     public String getCustName() {
@@ -35,11 +23,11 @@ public class MsaRelateMchCust extends BaseModel {
         this.custName = custName;
     }
 
-    public String getCustAddr() {
-        return custAddr;
+    public Long getEntityId() {
+        return entityId;
     }
 
-    public void setCustAddr(String custAddr) {
-        this.custAddr = custAddr;
+    public void setEntityId(Long entityId) {
+        this.entityId = entityId;
     }
 }

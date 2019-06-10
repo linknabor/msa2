@@ -32,7 +32,10 @@ public class ReconcilExecutor<T> implements Runnable {
 		List<String> pathList = reconcilService.downloadFile(collectionDate);
 		for (String filePath : pathList) {
 			//2.解析文件
-			ReconcilFileDTO dto = reconcilService.paseFile(filePath);
+			ReconcilFileDTO dto = reconcilService.parseFile(filePath);
+			if (dto == null) {
+				continue;
+			}
 			//3.文件落表
 			reconcilService.saveFile2DB(dto);
 		}

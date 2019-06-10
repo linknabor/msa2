@@ -3,11 +3,7 @@ package com.eshequ.msa.reconciliation.model;
 import com.eshequ.msa.common.BaseModel;
 import java.math.BigDecimal;
 
-import javax.persistence.Id;
-
 public class MsaBaseCheckDetail extends BaseModel {
-	
-	@Id
     private Long id;
 
     private Long orderId;

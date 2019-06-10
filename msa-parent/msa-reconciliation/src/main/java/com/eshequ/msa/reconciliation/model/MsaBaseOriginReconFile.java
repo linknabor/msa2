@@ -6,7 +6,6 @@ import java.math.BigDecimal;
 import javax.persistence.Id;
 
 public class MsaBaseOriginReconFile extends BaseModel {
-	
 	@Id
     private Long id;
 

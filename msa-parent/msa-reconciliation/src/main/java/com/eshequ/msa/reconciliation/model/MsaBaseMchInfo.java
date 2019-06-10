@@ -3,7 +3,10 @@ package com.eshequ.msa.reconciliation.model;
 import com.eshequ.msa.common.BaseModel;
 import java.math.BigDecimal;
 
+import javax.persistence.Id;
+
 public class MsaBaseMchInfo extends BaseModel {
+	@Id
     private Long id;
 
     private String mchNo;
@@ -24,8 +27,6 @@ public class MsaBaseMchInfo extends BaseModel {
 
     private BigDecimal consultLimit;
 
-    private String payProduct;
-
     private String payChannel;
 
     private String linkMan;
@@ -44,7 +45,7 @@ public class MsaBaseMchInfo extends BaseModel {
 
     private String remark;
 
-    private Long entityId;
+    private String dataSource;
 
     public Long getId() {
         return id;
@@ -126,14 +127,6 @@ public class MsaBaseMchInfo extends BaseModel {
         this.consultLimit = consultLimit;
     }
 
-    public String getPayProduct() {
-        return payProduct;
-    }
-
-    public void setPayProduct(String payProduct) {
-        this.payProduct = payProduct;
-    }
-
     public String getPayChannel() {
         return payChannel;
     }
@@ -206,11 +199,11 @@ public class MsaBaseMchInfo extends BaseModel {
         this.remark = remark;
     }
 
-    public Long getEntityId() {
-        return entityId;
+    public String getDataSource() {
+        return dataSource;
     }
 
-    public void setEntityId(Long entityId) {
-        this.entityId = entityId;
+    public void setDataSource(String dataSource) {
+        this.dataSource = dataSource;
     }
 }
