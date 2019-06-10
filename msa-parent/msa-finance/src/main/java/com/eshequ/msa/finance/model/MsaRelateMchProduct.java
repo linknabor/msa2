@@ -2,7 +2,7 @@ package com.eshequ.msa.finance.model;
 
 import com.eshequ.msa.common.BaseModel;
 
-public class MsaRelateMchProductKey extends BaseModel {
+public class MsaRelateMchProduct extends BaseModel {
     private Long mchId;
 
     private Long productId;
@@ -22,4 +22,9 @@ public class MsaRelateMchProductKey extends BaseModel {
     public void setProductId(Long productId) {
         this.productId = productId;
     }
+
+	@Override
+	public String toString() {
+		return "MsaRelateMchProduct [mchId=" + mchId + ", productId=" + productId + "]";
+	}
 }

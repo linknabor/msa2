@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.eshequ.msa.codes.DataSource;
 import com.eshequ.msa.codes.MchStatus;
 import com.eshequ.msa.codes.MethodType;
@@ -20,7 +22,9 @@ import com.eshequ.msa.common.ResultCode;
 import com.eshequ.msa.finance.model.MsaBaseProductInfo;
 import com.eshequ.msa.finance.service.MsaBaseProductInfoService;
 
-@Controller
+import io.swagger.annotations.ApiOperation;
+
+@RestController
 @RequestMapping("/code")
 public class MsaBaseCodeInfoController {
 
@@ -32,6 +36,7 @@ public class MsaBaseCodeInfoController {
 	 * @param request
 	 * @return
 	 */
+	@ApiOperation(value="商户状态", notes="商户状态")
 	@RequestMapping(value="/getMchStatus", method= RequestMethod.POST)
 	@ResponseBody
 	public BaseResult getAcctCode(HttpServletRequest request) {
@@ -49,6 +54,7 @@ public class MsaBaseCodeInfoController {
 	 * @param request
 	 * @return
 	 */
+	@ApiOperation(value="数据来源", notes="数据来源")
 	@RequestMapping(value="/getDataSource", method= RequestMethod.POST)
 	@ResponseBody
 	public BaseResult getDataSource(HttpServletRequest request) {
@@ -66,6 +72,7 @@ public class MsaBaseCodeInfoController {
 	 * @param request
 	 * @return
 	 */
+	@ApiOperation(value="区域类别", notes="区域类别")
 	@RequestMapping(value="/getReginType", method= RequestMethod.POST)
 	@ResponseBody
 	public BaseResult getReginType(HttpServletRequest request) {
@@ -83,6 +90,7 @@ public class MsaBaseCodeInfoController {
 	 * @param request
 	 * @return
 	 */
+	@ApiOperation(value="渠道类型", notes="渠道类型")
 	@RequestMapping(value="/getMethodType", method= RequestMethod.POST)
 	@ResponseBody
 	public BaseResult getMethodType(HttpServletRequest request) {
@@ -100,6 +108,7 @@ public class MsaBaseCodeInfoController {
 	 * @param request
 	 * @return
 	 */
+	@ApiOperation(value="支付渠道", notes="支付渠道")
 	@RequestMapping(value="/getPayChannel", method= RequestMethod.POST)
 	@ResponseBody
 	public BaseResult getPayChannel(HttpServletRequest request) {
@@ -113,10 +122,11 @@ public class MsaBaseCodeInfoController {
 	}
 	
 	/**
-	 * 支付渠道
+	 * 支付产品
 	 * @param request
 	 * @return
 	 */
+	@ApiOperation(value="支付产品", notes="支付产品")
 	@RequestMapping(value="/getProductItem", method= RequestMethod.POST)
 	@ResponseBody
 	public BaseResult getProductItem(HttpServletRequest request) {

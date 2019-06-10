@@ -52,5 +52,7 @@ public class MchStatus extends CodesItem {
 	public static final MchStatus QiYong                                  		= getObject("0");
 	public static final MchStatus ZhuXiao                                 		= getObject("1");
 	public static final MchStatus WeiQiYong                               		= getObject("2");
+	public static final MchStatus DaiShenHe                               		= getObject("3");
+	public static final MchStatus ShenHeShiBai                            		= getObject("4");
 }
 

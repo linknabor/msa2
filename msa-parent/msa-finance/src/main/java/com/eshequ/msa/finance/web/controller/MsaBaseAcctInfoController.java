@@ -1,8 +1,6 @@
 package com.eshequ.msa.finance.web.controller;
 
-import java.util.ArrayList;
 import java.util.List;
-import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import com.eshequ.msa.codes.MchStatus;
-import com.eshequ.msa.codes.model.CodeInfo;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.eshequ.msa.common.BaseResult;
 import com.eshequ.msa.common.ResultCode;
 import com.eshequ.msa.finance.model.MsaBaseAcctInfo;
@@ -21,7 +19,9 @@ import com.eshequ.msa.finance.service.MsaBaseAcctInfoService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@Controller
+import io.swagger.annotations.ApiOperation;
+
+@RestController
 @RequestMapping("/acctInfo")
 public class MsaBaseAcctInfoController {
 
@@ -29,21 +29,22 @@ public class MsaBaseAcctInfoController {
 	
 	@Autowired
 	MsaBaseAcctInfoService msaBaseAcctInfoService;
-	
+	@Autowired
+	ObjectMapper objectMapper;
 	/**
-	 * 获取全部实体账户信息
+	 * 获取全部主体账户信息
 	 * @param request
 	 * @return
 	 */
+	@ApiOperation(value="查询清算主体信息", notes="根据条件查询清算主体信息")
 	@RequestMapping(value="/acctInfoList", method= RequestMethod.POST)
 	@ResponseBody
 	public BaseResult getAllAcctInfo(@RequestBody String data) {
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		MsaBaseAcctInfo msaBaseAcctInfo = new MsaBaseAcctInfo();
 		try {
 			if (!StringUtils.isEmpty(data)) {
-				msaBaseAcctInfo = mapper.readValue(data, MsaBaseAcctInfo.class);
+				msaBaseAcctInfo = objectMapper.readValue(data, MsaBaseAcctInfo.class);
 			}
 			
 			String entity_name = msaBaseAcctInfo.getEntityName();
@@ -64,17 +65,17 @@ public class MsaBaseAcctInfoController {
 	 * @param data
 	 * @return
 	 */
+	@ApiOperation(value="根据主键查询主体信息", notes="根据主键ID查询主体信息")
 	@RequestMapping(value="/getAcctInfoById", method= RequestMethod.POST)
 	@ResponseBody
 	public BaseResult queryAcctInfoById(@RequestBody String data) {
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		MsaBaseAcctInfo msaBaseAcctInfo = new MsaBaseAcctInfo();
 		try {
 			if (!StringUtils.isEmpty(data)) {
-				msaBaseAcctInfo = mapper.readValue(data, MsaBaseAcctInfo.class);
+				msaBaseAcctInfo = objectMapper.readValue(data, MsaBaseAcctInfo.class);
 			}
-			long id = msaBaseAcctInfo.getId();
+			Long id = msaBaseAcctInfo.getId();
 			if (StringUtils.isEmpty(id)) {
 				return BaseResult.failure(ResultCode.FAILURE("查询的信息ID不能为空"));
 			}
@@ -90,16 +91,16 @@ public class MsaBaseAcctInfoController {
 	 * @param data
 	 * @return
 	 */
+	@ApiOperation(value="添加清算主体信息", notes="添加清算主体信息")
 	@RequestMapping(value="/addAcctInfo", method = RequestMethod.POST)
 	@ResponseBody
 	public BaseResult addAcctInfo(@RequestBody String data) {
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		MsaBaseAcctInfo msaBaseAcctInfo = new MsaBaseAcctInfo();
 		
 		try {
 			if (!StringUtils.isEmpty(data)) {
-				msaBaseAcctInfo = mapper.readValue(data, MsaBaseAcctInfo.class);
+				msaBaseAcctInfo = objectMapper.readValue(data, MsaBaseAcctInfo.class);
 			}
 			int i = msaBaseAcctInfoService.addAcctInfo(msaBaseAcctInfo);
 			if (i<=0) {
@@ -112,21 +113,21 @@ public class MsaBaseAcctInfoController {
 	}
 	
 	/**
-	 * 删除账户实体
+	 * 删除清算主体实体
 	 * @param data
 	 */
+	@ApiOperation(value="删除清算主体信息", notes="根据主键ID删除清算主体信息")
 	@RequestMapping(value="/deleteAcctInfo", method = RequestMethod.POST)
 	@ResponseBody
 	public BaseResult deleteAcctInfo(@RequestBody String data) {
-		ObjectMapper mapper = new ObjectMapper();
-		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		MsaBaseAcctInfo msaBaseAcctInfo = new MsaBaseAcctInfo();
 		
 		try {
 			if (!StringUtils.isEmpty(data)) {
-				msaBaseAcctInfo = mapper.readValue(data, MsaBaseAcctInfo.class);
+				msaBaseAcctInfo = objectMapper.readValue(data, MsaBaseAcctInfo.class);
 			}
-			long id = msaBaseAcctInfo.getId();
+			Long id = msaBaseAcctInfo.getId();
 			if (StringUtils.isEmpty(id)) {
 				return BaseResult.failure(ResultCode.FAILURE("查询的信息ID不能为空"));
 			}

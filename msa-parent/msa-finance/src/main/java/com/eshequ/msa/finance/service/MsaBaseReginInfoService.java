@@ -6,5 +6,5 @@ import com.eshequ.msa.finance.model.MsaBaseReginInfo;
 
 public interface MsaBaseReginInfoService {
 
-	List<MsaBaseReginInfo> getReginInfoList(String regin_type, long super_id);
+	List<MsaBaseReginInfo> getReginInfoList(String regin_type, Long super_id);
 }

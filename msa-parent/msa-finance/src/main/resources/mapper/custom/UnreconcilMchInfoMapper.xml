@@ -4,9 +4,10 @@
 <mapper namespace="com.eshequ.msa.finance.mapper.custom.UnreconcilMchInfoMapper">
 <select id="getUnreconcilMchInfo" resultType="hashmap">
    
-   select a.*, b.sect_id, b.cust_name,b.csp_id from msa_base_mch_info a
-   join msa_relate_mch_cust b on a.ID = b.mch_id
+   select a.*, b.cust_id, b.cust_name,b.company_id,d.product_name from msa_base_mch_info a
+   left join msa_relate_mch_cust b on a.ID = b.mch_id
    join msa_relate_mch_product c on a.id = c.mch_id
+   join msa_base_product_info d on c.product_id = d.id
    <where>
    		true
    		<if test="mch_name!=null and mch_name!=''">and a.mch_name LIKE CONCAT(CONCAT('%',#{mch_name}),'%')</if>

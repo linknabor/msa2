@@ -18,7 +18,7 @@ public class MsaBaseReginInfoServiceImpl implements MsaBaseReginInfoService{
 	UnreconcilReginInfoMapper unreconcilReginInfoMapper;
 	
 	@Override
-	public List<MsaBaseReginInfo> getReginInfoList(String regin_type, long super_id) {
+	public List<MsaBaseReginInfo> getReginInfoList(String regin_type, Long super_id) {
 		return unreconcilReginInfoMapper.getReginInfoList(regin_type, super_id);
 	}
 

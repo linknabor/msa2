@@ -83,7 +83,6 @@ CONSTRAINT MSA_LIQUIDATE_OWNER_DETAIL_PK PRIMARY KEY(ID)   );
 DROP TABLE IF EXISTS MSA_LIQUIDATE_OWNER_SUM ;
 CREATE TABLE MSA_LIQUIDATE_OWNER_SUM(
 ID                                                BIGINT default 0 NOT NULL, #ID
-PROCESS_STATUS                                    CHAR(1) NOT NULL, #流程状态
 BANK_NAME                                         VARCHAR(40) NULL, #开户行名称
 ACCT_NAME                                         VARCHAR(40) NULL, #结算账户名称
 ACCT_NO                                           VARCHAR(40) NULL, #结算账号
@@ -100,6 +99,7 @@ LIQUIDATE_STATUS                                  CHAR(1) NOT NULL, #清算状态
 LIQUIDATE_COUNT                                   INTEGER default 0 NOT NULL, #清算笔数
 OPER_NAME                                         VARCHAR(40) NULL, #清算人
 LIQUIDATE_CONTENT                                 VARCHAR(256) NULL, #清算内容
+REMARK                                            VARCHAR(40) NULL, #备注
 CONSTRAINT MSA_LIQUIDATE_OWNER_SUM_PK PRIMARY KEY(ID)   );
 
 #节假日信息表
@@ -275,5 +275,12 @@ CREATE TABLE MSA_RELATE_MCH_PRODUCT(
 MCH_ID                                            BIGINT default 0 NOT NULL, #ID
 PRODUCT_ID                                        BIGINT default 0 NOT NULL, #ID
 CONSTRAINT MSA_RELATE_MCH_PRODUCT_PK PRIMARY KEY(MCH_ID,PRODUCT_ID)   );
+
+#清算对账关系表
+DROP TABLE IF EXISTS MSA_RELATE_LIQUIDATE_CHECK ;
+CREATE TABLE MSA_RELATE_LIQUIDATE_CHECK(
+LIQUIDATE_ID                                      BIGINT default 0 NOT NULL, #ID
+CHECK_ID                                          BIGINT default 0 NOT NULL, #ID
+CONSTRAINT MSA_RELATE_LIQUIDATE_CHECK_PK PRIMARY KEY(LIQUIDATE_ID,CHECK_ID)   );
 
 

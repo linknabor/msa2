@@ -33,7 +33,7 @@ public class MsaBaseAcctInfoServiceImpl implements MsaBaseAcctInfoService{
 	}
 
 	@Override
-	public MsaBaseAcctInfo queryAcctInfoById(long id) {
+	public MsaBaseAcctInfo queryAcctInfoById(Long id) {
 		return msaBaseAcctInfoMapper.selectByPrimaryKey(id);
 	}
 
@@ -45,7 +45,7 @@ public class MsaBaseAcctInfoServiceImpl implements MsaBaseAcctInfoService{
 	}
 
 	@Override
-	public int delAcctInfo(long id) {
+	public int delAcctInfo(Long id) {
 		return msaBaseAcctInfoMapper.deleteByPrimaryKey(id);
 	}
 

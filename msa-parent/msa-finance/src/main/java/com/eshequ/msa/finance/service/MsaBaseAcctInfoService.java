@@ -10,11 +10,11 @@ public interface MsaBaseAcctInfoService {
 	List<MsaBaseAcctInfo> getAcctInfo(String entity_name, String company_name, String account_name, String account_no, String status, String data_source);
 	
 	//根据主键查询信息
-	MsaBaseAcctInfo queryAcctInfoById(long id);
+	MsaBaseAcctInfo queryAcctInfoById(Long id);
 	
 	//添加账户实体信息
 	int addAcctInfo(MsaBaseAcctInfo msaBaseAcctInfo);
 	
 	//删除账户实体信息
-	int delAcctInfo(long id);
+	int delAcctInfo(Long id);
 }
