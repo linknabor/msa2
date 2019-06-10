@@ -14,13 +14,30 @@
 	   and mch_status <![CDATA[<>]]> #{mchStatus}
 	</select>
 	
-	<select id="getAcctEntityByTrade" resultType="hashmap">
+	<select id="getAcctEntityByTrade" resultMap="acctInfo">
 	   select ai.* from msa_base_acct_info ai
 	   join msa_relate_mch_cust r on ai.id = r.entity_id
 	   where ai.status = #{status}
 	   and r.mch_id = #{mchId}
 	   and r.cust_id = #{custId} 
 	</select>
+	
+	<resultMap id="acctInfo" type="com.eshequ.msa.reconciliation.model.MsaBaseAcctInfo">
+	    <id column="ID" jdbcType="BIGINT" property="id" />
+	    <result column="LIQUIDATION_CYCLE" jdbcType="INTEGER" property="liquidationCycle" />
+	    <result column="ENTITY_NAME" jdbcType="VARCHAR" property="entityName" />
+	    <result column="BANK_NAME" jdbcType="VARCHAR" property="bankName" />
+	    <result column="ACCOUNT_NAME" jdbcType="VARCHAR" property="accountName" />
+	    <result column="ACCOUNT_NO" jdbcType="VARCHAR" property="accountNo" />
+	    <result column="PHONE" jdbcType="VARCHAR" property="phone" />
+	    <result column="STATUS" jdbcType="CHAR" property="status" />
+	    <result column="DATA_SOURCE" jdbcType="CHAR" property="dataSource" />
+	    <result column="COMPANY_ID" jdbcType="BIGINT" property="companyId" />
+	    <result column="CSP_NAME" jdbcType="VARCHAR" property="cspName" />
+	    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+	    <result column="PROVINCE_ID" jdbcType="BIGINT" property="provinceId" />
+	    <result column="CITY_ID" jdbcType="BIGINT" property="cityId" />
+	  </resultMap>
 
 
 

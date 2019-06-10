@@ -43,7 +43,7 @@ import junit.framework.TestCase;
 public class AppTest extends TestCase {
 
 	@Autowired
-	private SnowFlake SnowFlake;
+	private SnowFlake snowFlake;
 	@Autowired
 	private MsaBaseMchInfoMapper msaBaseMchInfoMapper;
 	@Autowired
@@ -62,7 +62,7 @@ public class AppTest extends TestCase {
 	public void createMch() {
 		
 		MsaBaseMchInfo msaBaseMchInfo = new MsaBaseMchInfo();
-		msaBaseMchInfo.setId(SnowFlake.nextId());
+		msaBaseMchInfo.setId(snowFlake.nextId());
 		msaBaseMchInfo.setMchNo("888290059501308");
 		msaBaseMchInfo.setMchStatus(MchStatus.QiYong.toString());
 		msaBaseMchInfo.setMchName("测试商户");
@@ -88,17 +88,40 @@ public class AppTest extends TestCase {
 	@Test
 	public void createAccount() {
 		
+//		MsaBaseAcctInfo msaBaseAcctInfo = new MsaBaseAcctInfo();
+//		msaBaseAcctInfo.setId(SnowFlake.nextId());
+//		msaBaseAcctInfo.setLiquidationCycle(1);
+//		msaBaseAcctInfo.setEntityName("测试商户");
+//		msaBaseAcctInfo.setBankName("兴业银行");
+//		msaBaseAcctInfo.setAccountName("格拉摩根伯爵");
+//		msaBaseAcctInfo.setAccountNo("6212345672345723");
+//		msaBaseAcctInfo.setPhone("1234512578324");
+//		msaBaseAcctInfo.setStatus(MchStatus.QiYong.toString());
+//		msaBaseAcctInfo.setDataSource("1");
+//		msaBaseAcctInfo.setCspName("格拉摩根伯爵");
+//		msaBaseAcctInfo.setCompanyId(130320100000000059l);
+//		msaBaseAcctInfo.setCityId(0l);
+//		msaBaseAcctInfo.setProvinceId(1l);
+//		msaBaseAcctInfoMapper.insert(msaBaseAcctInfo);
+//		
+//		//创建客户商户关系
+//		MsaRelateMchCust msaRelateMchCust = new MsaRelateMchCust();
+//		msaRelateMchCust.setEntityId(msaBaseAcctInfo.getId());
+//		msaRelateMchCust.setMchId(109495968801624064l);
+//		msaRelateMchCust.setCustId(130320100000000083l);
+//		msaRelateMchCustMapper.insert(msaRelateMchCust);
+		
 		MsaBaseAcctInfo msaBaseAcctInfo = new MsaBaseAcctInfo();
-		msaBaseAcctInfo.setId(SnowFlake.nextId());
+		msaBaseAcctInfo.setId(snowFlake.nextId());
 		msaBaseAcctInfo.setLiquidationCycle(1);
-		msaBaseAcctInfo.setEntityName("测试商户");
+		msaBaseAcctInfo.setEntityName("测试商户2");
 		msaBaseAcctInfo.setBankName("兴业银行");
-		msaBaseAcctInfo.setAccountName("格拉摩根伯爵");
-		msaBaseAcctInfo.setAccountNo("6212345672345723");
-		msaBaseAcctInfo.setPhone("1234512578324");
+		msaBaseAcctInfo.setAccountName("兰开斯特公爵");
+		msaBaseAcctInfo.setAccountNo("6289345672345724");
+		msaBaseAcctInfo.setPhone("2345675678543");
 		msaBaseAcctInfo.setStatus(MchStatus.QiYong.toString());
 		msaBaseAcctInfo.setDataSource("1");
-		msaBaseAcctInfo.setCspName("格拉摩根伯爵");
+		msaBaseAcctInfo.setCspName("兰开斯特公爵");
 		msaBaseAcctInfo.setCompanyId(130320100000000059l);
 		msaBaseAcctInfo.setCityId(0l);
 		msaBaseAcctInfo.setProvinceId(1l);
@@ -108,7 +131,7 @@ public class AppTest extends TestCase {
 		MsaRelateMchCust msaRelateMchCust = new MsaRelateMchCust();
 		msaRelateMchCust.setEntityId(msaBaseAcctInfo.getId());
 		msaRelateMchCust.setMchId(109495968801624064l);
-		msaRelateMchCust.setCustId(130320100000000083l);
+		msaRelateMchCust.setCustId(130320100000000084l);
 		msaRelateMchCustMapper.insert(msaRelateMchCust);
 		
 	}
@@ -223,5 +246,7 @@ public class AppTest extends TestCase {
 		ReconcilService reconcilService = reconcilFactory.getCollectionInstance(ReconcilCfg.UnionPay);
 		reconcilService.runReconcil();
 	}
+	
+	
 	
 }
