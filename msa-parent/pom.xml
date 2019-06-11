@@ -27,6 +27,7 @@
 		<commons-net.version>3.6</commons-net.version>
 		<commons-io.version>2.6</commons-io.version>
 		<msa.common.version>0.0.1-SNAPSHOT</msa.common.version>
+		<swagger.version>2.9.2</swagger.version>
 	</properties>
 
 	<dependencies>
