@@ -83,7 +83,6 @@ CONSTRAINT MSA_LIQUIDATE_OWNER_DETAIL_PK PRIMARY KEY(ID)   );
 DROP TABLE IF EXISTS MSA_LIQUIDATE_OWNER_SUM ;
 CREATE TABLE MSA_LIQUIDATE_OWNER_SUM(
 ID                                                BIGINT default 0 NOT NULL, #ID
-PROCESS_STATUS                                    CHAR(1) NOT NULL, #¡˜≥Ã◊¥Ã¨
 BANK_NAME                                         VARCHAR(40) NULL, #ø™ªß––√˚≥∆
 ACCT_NAME                                         VARCHAR(40) NULL, #Ω·À„’Àªß√˚≥∆
 ACCT_NO                                           VARCHAR(40) NULL, #Ω·À„’À∫≈
@@ -100,6 +99,7 @@ LIQUIDATE_STATUS                                  CHAR(1) NOT NULL, #«ÂÀ„◊¥Ã¨
 LIQUIDATE_COUNT                                   INTEGER default 0 NOT NULL, #«ÂÀ„±  ˝
 OPER_NAME                                         VARCHAR(40) NULL, #«ÂÀ„»À
 LIQUIDATE_CONTENT                                 VARCHAR(256) NULL, #«ÂÀ„ƒ⁄»›
+REMARK                                            VARCHAR(40) NULL, #±∏◊¢
 CONSTRAINT MSA_LIQUIDATE_OWNER_SUM_PK PRIMARY KEY(ID)   );
 
 #Ω⁄ºŸ»’–≈œ¢±Ì
@@ -123,7 +123,7 @@ PHONE                                             VARCHAR(20) NOT NULL, #Ω·À„’Àª
 STATUS                                            CHAR(1) NOT NULL, #◊¥Ã¨
 DATA_SOURCE                                       CHAR(2) NOT NULL, #À˘ Ù∆ΩÃ®
 COMPANY_ID                                        BIGINT default 0 NOT NULL, #πÈ Ù∆Û“µID
-CSP_NAME                                          VARCHAR(40) NOT NULL, #π´Àæ√˚≥∆
+COMPANY_NAME                                      VARCHAR(40) NOT NULL, #∆Û“µ√˚≥∆
 REMARK                                            VARCHAR(256) NULL, #±∏◊¢
 PROVINCE_ID                                       BIGINT default 0 NOT NULL, #ID
 CITY_ID                                           BIGINT default 0 NOT NULL, #ID
@@ -263,11 +263,11 @@ SUPER_ID                                          BIGINT default 0 NOT NULL, #…œ
 CONSTRAINT MSA_BASE_REGIN_INFO_PK PRIMARY KEY(ID)   );
 
 #÷ß∏∂≤˙∆∑–≈œ¢±Ì
-DROP TABLE IF EXISTS SP_BASE_PRODUCT_INFO ;
-CREATE TABLE SP_BASE_PRODUCT_INFO(
+DROP TABLE IF EXISTS MSA_BASE_PRODUCT_INFO ;
+CREATE TABLE MSA_BASE_PRODUCT_INFO(
 ID                                                BIGINT default 0 NOT NULL, #ID
 PRODUCT_NAME                                      VARCHAR(40) NOT NULL, #≤˙∆∑√˚≥∆
-CONSTRAINT SP_BASE_PRODUCT_INFO_PK PRIMARY KEY(ID)   );
+CONSTRAINT MSA_BASE_PRODUCT_INFO_PK PRIMARY KEY(ID)   );
 
 #…Ãªß≤˙∆∑πÿœµ±Ì
 DROP TABLE IF EXISTS MSA_RELATE_MCH_PRODUCT ;
@@ -275,5 +275,12 @@ CREATE TABLE MSA_RELATE_MCH_PRODUCT(
 MCH_ID                                            BIGINT default 0 NOT NULL, #ID
 PRODUCT_ID                                        BIGINT default 0 NOT NULL, #ID
 CONSTRAINT MSA_RELATE_MCH_PRODUCT_PK PRIMARY KEY(MCH_ID,PRODUCT_ID)   );
+
+#«ÂÀ„∂‘’Àπÿœµ±Ì
+DROP TABLE IF EXISTS MSA_RELATE_LIQUIDATE_CHECK ;
+CREATE TABLE MSA_RELATE_LIQUIDATE_CHECK(
+LIQUIDATE_ID                                      BIGINT default 0 NOT NULL, #ID
+CHECK_ID                                          BIGINT default 0 NOT NULL, #ID
+CONSTRAINT MSA_RELATE_LIQUIDATE_CHECK_PK PRIMARY KEY(LIQUIDATE_ID,CHECK_ID)   );
 
 

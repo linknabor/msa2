@@ -42,4 +42,10 @@ public class MsaBaseReginInfo extends BaseModel {
     public void setSuperId(Long superId) {
         this.superId = superId;
     }
+
+	@Override
+	public String toString() {
+		return "MsaBaseReginInfo [id=" + id + ", reginName=" + reginName + ", reginType=" + reginType + ", superId="
+				+ superId + "]";
+	}
 }

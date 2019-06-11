@@ -50,7 +50,10 @@ public class AccountStatus extends CodesItem {
 
 
 	public static final AccountStatus WeiJieSuan                              		= getObject("0");
-	public static final AccountStatus JieSuanZhong                            		= getObject("1");
-	public static final AccountStatus YiJieSuan                               		= getObject("2");
+	public static final AccountStatus DaiShenHe                               		= getObject("1");
+	public static final AccountStatus JieSuanZhong                            		= getObject("2");
+	public static final AccountStatus YiJieSuan                               		= getObject("3");
+	public static final AccountStatus ShenHeBoHui                             		= getObject("4");
+	public static final AccountStatus QingSuanShiBai                          		= getObject("9");
 }
 

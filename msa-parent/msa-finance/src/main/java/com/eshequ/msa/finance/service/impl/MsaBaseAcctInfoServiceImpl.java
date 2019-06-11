@@ -27,13 +27,13 @@ public class MsaBaseAcctInfoServiceImpl implements MsaBaseAcctInfoService{
 	SnowFlake snowFlake;
 	
 	@Override
-	public List<MsaBaseAcctInfo> getAcctInfo(String entity_name, String csp_name, String account_name,
+	public List<MsaBaseAcctInfo> getAcctInfo(String entity_name, String company_name, String account_name,
 			String account_no, String status, String data_source) {
-		return unreconcilAcctInfoMapper.getUnreconcilAcctInfo(entity_name, csp_name, account_name, account_no, status, data_source);
+		return unreconcilAcctInfoMapper.getUnreconcilAcctInfo(entity_name, company_name, account_name, account_no, status, data_source);
 	}
 
 	@Override
-	public MsaBaseAcctInfo queryAcctInfoById(long id) {
+	public MsaBaseAcctInfo queryAcctInfoById(Long id) {
 		return msaBaseAcctInfoMapper.selectByPrimaryKey(id);
 	}
 
@@ -45,7 +45,7 @@ public class MsaBaseAcctInfoServiceImpl implements MsaBaseAcctInfoService{
 	}
 
 	@Override
-	public int delAcctInfo(long id) {
+	public int delAcctInfo(Long id) {
 		return msaBaseAcctInfoMapper.deleteByPrimaryKey(id);
 	}
 

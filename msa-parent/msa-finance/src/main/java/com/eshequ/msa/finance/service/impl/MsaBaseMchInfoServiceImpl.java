@@ -1,20 +1,19 @@
 package com.eshequ.msa.finance.service.impl;
 
 import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import org.springframework.util.StringUtils;
 import com.eshequ.msa.codes.MchStatus;
 import com.eshequ.msa.finance.mapper.custom.UnreconcilMchInfoMapper;
 import com.eshequ.msa.finance.mapper.custom.UnreconcilRelateMchCustMapper;
 import com.eshequ.msa.finance.mapper.normal.MsaBaseMchInfoMapper;
-import com.eshequ.msa.finance.mapper.normal.MsaRelateMchCustMapper;
+import com.eshequ.msa.finance.mapper.normal.MsaRelateMchProductMapper;
 import com.eshequ.msa.finance.model.MsaBaseMchInfo;
-import com.eshequ.msa.finance.model.MsaRelateMchCust;
+import com.eshequ.msa.finance.model.MsaRelateMchProduct;
 import com.eshequ.msa.finance.service.MsaBaseMchInfoService;
 import com.eshequ.msa.util.SnowFlake;
 
@@ -27,7 +26,7 @@ public class MsaBaseMchInfoServiceImpl implements MsaBaseMchInfoService{
 	@Autowired
 	MsaBaseMchInfoMapper msaBaseMchInfoMapper;
 	@Autowired
-	MsaRelateMchCustMapper msaRelateMchCustMapper;
+	MsaRelateMchProductMapper msaRelateMchProductMapper;
 	@Autowired
 	UnreconcilMchInfoMapper unreconcilMchInfoMapper;
 	@Autowired
@@ -36,30 +35,35 @@ public class MsaBaseMchInfoServiceImpl implements MsaBaseMchInfoService{
 	SnowFlake snowFlake;
 	
 	@Override
-	public List<MsaBaseMchInfo> getMchInfo(String mch_name, String mch_no, String pay_product, String method_type,
+	public List<MsaBaseMchInfo> getMchInfo(String mch_name, String mch_no, Long product_id, String method_type,
 			String mch_status, String data_source) {
-		return unreconcilMchInfoMapper.getUnreconcilMchInfo(mch_name, mch_no, pay_product, method_type, mch_status, data_source);
+		return unreconcilMchInfoMapper.getUnreconcilMchInfo(mch_name, mch_no, product_id, method_type, mch_status, data_source);
 	}
 
 	@Override
-	public MsaBaseMchInfo queryMchInfoById(long id) {
+	public MsaBaseMchInfo queryMchInfoById(Long id) {
 		return msaBaseMchInfoMapper.selectByPrimaryKey(id);
 	}
 
 	@Override
-	public int addMchInfo(MsaBaseMchInfo msaBaseMchInfo, MsaRelateMchCust msaRelateMchCust) {
+	public int addMchInfo(MsaBaseMchInfo msaBaseMchInfo, MsaRelateMchProduct msaRelateMchProductKey) {
+		
+		Long product_id = msaRelateMchProductKey.getProductId();
+		if (StringUtils.isEmpty(product_id)) {
+			return 0;
+		}
+		
 		msaBaseMchInfo.setId(snowFlake.nextId());
 		msaBaseMchInfo.setMchStatus(MchStatus.WeiQiYong.toString());
-		
 		msaBaseMchInfoMapper.insertSelective(msaBaseMchInfo);
 		
-		msaRelateMchCust.setMchId(msaBaseMchInfo.getId());
-		msaRelateMchCustMapper.insertSelective(msaRelateMchCust);
+		msaRelateMchProductKey.setMchId(msaBaseMchInfo.getId());
+		msaRelateMchProductMapper.insertSelective(msaRelateMchProductKey);
 		return 1;
 	}
 
 	@Override
-	public int delMchInfo(long id) {
+	public int delMchInfo(Long id) {
 		msaBaseMchInfoMapper.deleteByPrimaryKey(id);
 		unreconcilRelateMchCustMapper.delRelateMchCust(id);
 		return 1;

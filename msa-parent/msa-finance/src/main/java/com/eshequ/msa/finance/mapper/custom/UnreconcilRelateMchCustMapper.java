@@ -6,5 +6,5 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface UnreconcilRelateMchCustMapper {
 
-	public void delRelateMchCust(@Param("mch_id") long mch_id);
+	public void delRelateMchCust(@Param("mch_id") Long mch_id);
 }

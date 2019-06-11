@@ -3,7 +3,6 @@
 <mapper namespace="com.eshequ.msa.finance.custom.mapper.MsaLiquidateOwnerSumMapper">
   <resultMap id="BaseResultMap" type="com.eshequ.msa.finance.model.MsaLiquidateOwnerSum">
     <id column="ID" jdbcType="BIGINT" property="id" />
-    <result column="PROCESS_STATUS" jdbcType="CHAR" property="processStatus" />
     <result column="BANK_NAME" jdbcType="VARCHAR" property="bankName" />
     <result column="ACCT_NAME" jdbcType="VARCHAR" property="acctName" />
     <result column="ACCT_NO" jdbcType="VARCHAR" property="acctNo" />
@@ -20,5 +19,6 @@
     <result column="LIQUIDATE_COUNT" jdbcType="INTEGER" property="liquidateCount" />
     <result column="OPER_NAME" jdbcType="VARCHAR" property="operName" />
     <result column="LIQUIDATE_CONTENT" jdbcType="VARCHAR" property="liquidateContent" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
   </resultMap>
 </mapper>

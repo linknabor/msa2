@@ -3,7 +3,10 @@ package com.eshequ.msa.finance.model;
 import com.eshequ.msa.common.BaseModel;
 import java.math.BigDecimal;
 
+import javax.persistence.Id;
+
 public class MsaBaseMchInfo extends BaseModel {
+	@Id
     private Long id;
 
     private String mchNo;
@@ -203,4 +206,14 @@ public class MsaBaseMchInfo extends BaseModel {
     public void setDataSource(String dataSource) {
         this.dataSource = dataSource;
     }
+
+	@Override
+	public String toString() {
+		return "MsaBaseMchInfo [id=" + id + ", mchNo=" + mchNo + ", mchStatus=" + mchStatus + ", mchName=" + mchName
+				+ ", mchAbbre=" + mchAbbre + ", secret=" + secret + ", appid=" + appid + ", methodType=" + methodType
+				+ ", consultRate=" + consultRate + ", consultLimit=" + consultLimit + ", payChannel=" + payChannel
+				+ ", linkMan=" + linkMan + ", certNo=" + certNo + ", tel=" + tel + ", email=" + email + ", customerTel="
+				+ customerTel + ", mchAddr=" + mchAddr + ", industryType=" + industryType + ", remark=" + remark
+				+ ", dataSource=" + dataSource + "]";
+	}
 }

@@ -32,8 +32,6 @@ public class CodesItem {
 	
 	protected static final String payChannel=new String("9");
 	
-	protected static final String processStatus=new String("11");
-	
 	protected static final String reginType=new String("12");
 	
 	protected static final String dataSource=new String("13");
@@ -51,7 +49,6 @@ public class CodesItem {
 		mapCat.put("MchStatus",mchStatus);
 		mapCat.put("AccountStatus",accountStatus);
 		mapCat.put("PayChannel",payChannel);
-		mapCat.put("ProcessStatus",processStatus);
 		mapCat.put("ReginType",reginType);
 		mapCat.put("DataSource",dataSource);
 		mapCat.put("MethodType",methodType);

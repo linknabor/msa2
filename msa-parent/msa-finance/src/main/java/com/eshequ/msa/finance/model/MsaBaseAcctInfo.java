@@ -26,7 +26,7 @@ public class MsaBaseAcctInfo extends BaseModel {
 
     private Long companyId;
 
-    private String cspName;
+    private String companyName;
 
     private String remark;
 
@@ -114,12 +114,12 @@ public class MsaBaseAcctInfo extends BaseModel {
         this.companyId = companyId;
     }
 
-    public String getCspName() {
-        return cspName;
+    public String getCompanyName() {
+        return companyName;
     }
 
-    public void setCspName(String cspName) {
-        this.cspName = cspName;
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
     public String getRemark() {
