@@ -12,7 +12,7 @@ import com.eshequ.msa.reconciliation.service.dto.ReconcilFileDTO;
  * @param <T>
  *
  */
-public class ReconcilExecutor<T> implements Runnable {
+public class ReconcilExecutor implements Runnable {
 
 	private ReconcilService reconcilService;
 	private String collectionDate;

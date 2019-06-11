@@ -112,6 +112,34 @@
 		    <artifactId>springfox-swagger-ui</artifactId>
 		    <version>${swagger.version}</version>
 		</dependency>
-
+		
 	</dependencies>
+	
+	<!-- 下面是MAVEN打包时用的，不要删除，否则不能成功打包!!! -->
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+                    <skip>true</skip>
+                </configuration>
+			</plugin>
+
+		</plugins>
+	</build>
+	
+	<distributionManagement>
+		<repository>
+			<id>releases</id>
+			<name>eshequ releases</name>
+			<url>http://svn-service.chinacloudapp.cn:8081/nexus/content/repositories/releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>snapshots</id>
+			<name>eshequ snapshots</name>
+			<url>http://svn-service.chinacloudapp.cn:8081/nexus/content/repositories/snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
+	
 </project>

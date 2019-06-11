@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE xml>
 <configuration scan="true" scanPeriod="1800 seconds"
-	debug="true">
+	debug="false">
 	<!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径 -->
 	<property name="LOG_HOME" value="/logs/msa/reconciliation" />
 	<!-- 控制台输出 -->
@@ -38,8 +38,8 @@
 	</appender>
 	
 	<!-- mybatis日志打印-->
-	<logger name="org.springframework" level="debug" />
-    <logger name="org.apache.ibatis" level="DEBUG" />
+	<logger name="org.springframework" level="INFO" />
+    <logger name="org.apache.ibatis" level="INFO" />
     <logger name="java.sql" level="DEBUG" />
 
     <!--  项目 mapper 路径
@@ -50,7 +50,7 @@
     
 
 	<!-- 日志输出级别 -->
-	<root level="DEBUG">
+	<root level="INFO">
 		<appender-ref ref="STDOUT" />
 		<appender-ref ref="FILE" />
 	</root>
