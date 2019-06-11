@@ -35,4 +35,11 @@ public interface ReconcilService {
 	 * 对账处理
 	 */
 	void runReconcil();
+	
+	
+	/**
+	 * 删除某一天的对账
+	 */
+	void del(String batchDate);
+	
 }

@@ -366,14 +366,20 @@ public class UnionPayReconcilServiceImpl implements ReconcilService {
 				continue;
 			}
 			
+			boolean isRefund = false; //是否退款
+			if (TRAN_TYPE_REFUND.equals(reconFile.getTranType())) {	//退款的
+				isRefund = true;
+			}else if (TRAN_TYPE_FUND.equals(reconFile.getTranType())) {
+				//do nothing
+			}
 			TransactionStatus status = transactionManager.getTransaction(new DefaultTransactionDefinition());	//开新事务
 			try {
 				MsaTradePayOrder order = new MsaTradePayOrder();
 				//先确定交易类型，是消费还是退款
-				if (TRAN_TYPE_FUND.equals(reconFile.getTranType())) {	//消费处理	
-					order.setId(reconFile.getOrderId());
-				}else if (TRAN_TYPE_REFUND.equals(reconFile.getTranType())) {	//退货处理
+				if (isRefund) {
 					order.setId(reconFile.getOriginOrderId());	//退款根据原交易ID查找
+				}else {
+					order.setId(reconFile.getOrderId());
 				}
 				
 				order = msaTradePayOrderMapper.selectByPrimaryKey(order);	//查询订单表
@@ -395,12 +401,25 @@ public class UnionPayReconcilServiceImpl implements ReconcilService {
 					if (!reconPayMethod.equals(payMethod)) {
 						logger.error("对账文件记录的支付方式与实际交易记录不符， 交易ID ： " + order.getId() + ", 实际支付方式： " + reconPayMethod);
 					}
-					if (reconFile.getTranAmt().compareTo(order.getTranAmt())!=0) {	//文件金额与订单表中金额不符
-						reconFile.setRemark("对账文件交易金额与订单表中交易金额不符。交易ID ：" + order.getId());
-						if (msaBaseOriginReconFileMapper.updateByPrimaryKey(reconFile)!=1) {
-							throw new BusinessException("更新对账文件原始信息表失败， id : " + reconFile.getId());
+					
+					//校验对账文件中的金额与订单表中的金额是否相同，不同的话打标记
+					if (isRefund) {
+						//退款比较金额的时候，金额要取绝对值
+						if (reconFile.getTranAmt().abs().compareTo(order.getTranAmt())!=0) {	//文件金额与订单表中金额不符
+							reconFile.setRemark("对账文件退款金额与订单表中交易金额不符。交易ID ：" + order.getId());
+							if (msaBaseOriginReconFileMapper.updateByPrimaryKey(reconFile)!=1) {
+								throw new BusinessException("更新对账文件原始信息表失败， id : " + reconFile.getId());
+							}
+						}
+					}else {
+						if (reconFile.getTranAmt().compareTo(order.getTranAmt())!=0) {	//文件金额与订单表中金额不符
+							reconFile.setRemark("对账文件交易金额与订单表中交易金额不符。交易ID ：" + order.getId());
+							if (msaBaseOriginReconFileMapper.updateByPrimaryKey(reconFile)!=1) {
+								throw new BusinessException("更新对账文件原始信息表失败， id : " + reconFile.getId());
+							}
 						}
 					}
+					
 					detail.setPayMethod(payProductMap.get(payProStr));
 					detail.setPayProduct(order.getPayProduct());
 					detail.setTranDate(reconFile.getTranDate());
@@ -415,7 +434,7 @@ public class UnionPayReconcilServiceImpl implements ReconcilService {
 					detail.setCspName(order.getCspName());
 					detail.setCspId(order.getCspId());
 					
-					if (TRAN_TYPE_REFUND.equals(reconFile.getTranType())) {	//退货处理
+					if (isRefund) {	//退货处理
 						detail.setOriginOrderId(reconFile.getOriginOrderId());	//原交易ID
 						detail.setOriginTranDate(reconFile.getOriginTranDate());	//原交易日期
 					}
@@ -470,6 +489,8 @@ public class UnionPayReconcilServiceImpl implements ReconcilService {
 		Map<Long, String> cspMap = dto.getCspMap();
 		Map<Long, Long> cspSectMap = dto.getCspSectMap();
 		Iterator<Map.Entry<String, List<MsaBaseCheckDetail>>> it = checkMap.entrySet().iterator();
+		
+		long sumId = 0l;
 		while(it.hasNext()) {
 			
 			TransactionStatus status = transactionManager.getTransaction(new DefaultTransactionDefinition());	//开新事务，一条汇总一个事务
@@ -480,49 +501,39 @@ public class UnionPayReconcilServiceImpl implements ReconcilService {
 				List<MsaBaseCheckDetail> detailList = entry.getValue();
 				
 				//保存对账汇总
-				long sumId = snowFlake.nextId();	//生成对账汇总ID
-				BigDecimal sumTranAmt = BigDecimal.ZERO;
-				BigDecimal sumAcctAmt = BigDecimal.ZERO;
-				int totalCount = 0;
+				sumId = snowFlake.nextId();	//生成对账汇总ID
 				
 				//循环保存明细
 				for (MsaBaseCheckDetail msaBaseCheckDetail : detailList) {
 					
+					TransactionStatus detailStatus = null;
 					try {
-						
-						/*汇总累计 start*/
-						sumTranAmt = sumTranAmt.add(msaBaseCheckDetail.getTranAmt());	//汇总 应结算金额
-						BigDecimal unitAcctAmt = msaBaseCheckDetail.getTranAmt().subtract(msaBaseCheckDetail.getChannelAmt());	//TODO 是不是这么减？
-						sumAcctAmt = sumAcctAmt.add(unitAcctAmt);	//汇总 到账金额
-						totalCount++;	//明细笔数+1
-						/*汇总累计 end*/
+						//开新事务，一条明细一个事务
+						detailStatus = transactionManager.getTransaction(new DefaultTransactionDefinition(TransactionDefinition.PROPAGATION_REQUIRES_NEW));
 						
 						/*更新对账文件状态 start*/
 						MsaBaseOriginReconFile oriFile = new MsaBaseOriginReconFile();
 						oriFile.setOrderId(msaBaseCheckDetail.getOrderId());	//根据交易订单号查询出 对应的 原始对账文件信息
 						oriFile = msaBaseOriginReconFileMapper.selectOne(oriFile);
 						oriFile.setCheckFlag(IsFlag.Shi.toString());	//将文件状态置为已对账
-						
 						if (msaBaseOriginReconFileMapper.updateByPrimaryKey(oriFile)!=1) {
 							throw new BusinessException("更新原始对账文件状态失败！支付订单ID：" + oriFile.getOrderId());
 						}
 						/*更新对账文件状态 end*/
-						
-						if (190429170117993890l == oriFile.getOrderId()) {
-							throw new BusinessException("test rollback 1");
-						}
 						
 						/*保存对账明细 start */
 						msaBaseCheckDetail.setCheckId(sumId);		//设置对账汇总ID
 						if (msaBaseCheckDetailMapper.insert(msaBaseCheckDetail)!=1) {	
 							throw new BusinessException("保存对账明细失败！支付订单ID：" + msaBaseCheckDetail.getOrderId());
 						}
-						/*保存对账明细 end */
 						
+						/*保存对账明细 end */
+						transactionManager.commit(detailStatus);
 						
 					} catch (Exception e) {
 						
 						logger.error(e.getMessage(), e);
+						transactionManager.rollback(detailStatus);
 					}
 					
 					
@@ -534,13 +545,22 @@ public class UnionPayReconcilServiceImpl implements ReconcilService {
 				String mch_id = tmpKey[1];	
 				String entity_id = tmpKey[2];	//entity_id可能建立交易时还未填上，所以此处可能未空。
 				
+				Map<String, Object> sumMap = unionPayReconcilMapper.getSumDetailByCheckId(sumId);
+				if (sumMap.isEmpty()) {
+					logger.info("当前汇总没有明细。汇总ID：" + sumId);
+					continue;
+				}
+				BigDecimal sum_tran_amt = (BigDecimal) sumMap.get("sum_tran_amt");
+				BigDecimal sum_acct_amt = (BigDecimal) sumMap.get("sum_acct_amt");
+				Long counts = (Long) sumMap.get("counts");
+				
 				MsaBaseCheckSum checkSum = new MsaBaseCheckSum();
 				checkSum.setId(sumId);
-				checkSum.setShouldPayAmt(sumTranAmt);
+				checkSum.setShouldPayAmt(sum_tran_amt);
 				checkSum.setShouldDate(DateUtil.getSysDate());	//TODO 到底那天
-				checkSum.setAccountAmt(sumAcctAmt);
+				checkSum.setAccountAmt(sum_acct_amt);
 				checkSum.setAccountDate(DateUtil.getSysDate());	//TODO
-				checkSum.setPayNum(totalCount);
+				checkSum.setPayNum(counts.intValue());
 				checkSum.setAccountStatus(AccountStatus.WeiJieSuan.toString());
 				if ("null".equalsIgnoreCase(entity_id)) {	//如果清算实体id为空，则查询商户表
 					MsaBaseAcctInfo acctInfo = unionPayReconcilMapper.getAcctEntityByTrade(MchStatus.QiYong.toString(), mch_id, sect_id);
@@ -569,15 +589,25 @@ public class UnionPayReconcilServiceImpl implements ReconcilService {
 				if (msaBaseCheckSumMapper.insert(checkSum)!=1) {
 					throw new BusinessException("保存对账汇总表失败。");
 				}
-				
 				transactionManager.commit(status);
 				
 			} catch (Exception e) {
 
 				logger.error(e.getMessage(), e);
+				transactionManager.rollback(status);
 			}
 			
 		}
+	}
+
+	/**
+	 * 删除某一天的对账
+	 */
+	@Override
+	public void del(String batchDate) {
+
+		
+		
 	}
 
 

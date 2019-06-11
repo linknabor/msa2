@@ -4,6 +4,7 @@
 package com.eshequ.msa.reconciliation.service.dto;
 
 import java.beans.Transient;
+import java.math.BigDecimal;
 
 import com.eshequ.msa.util.DateUtil;
 import com.eshequ.msa.util.ObjectUtil;
@@ -154,7 +155,8 @@ public class ReconcilFileBody {
 	}
 
 	public void setTranAmt(String tranAmt) {
-		this.tranAmt = tranAmt;
+		BigDecimal amt = fen2yuan(tranAmt);
+		this.tranAmt = String.valueOf(amt);
 	}
 
 	public String getFeeAmt() {
@@ -162,7 +164,8 @@ public class ReconcilFileBody {
 	}
 
 	public void setFeeAmt(String feeAmt) {
-		this.feeAmt = feeAmt;
+		BigDecimal amt = fen2yuan(feeAmt);
+		this.feeAmt = String.valueOf(amt);
 	}
 
 	public String getLiquidateAmt() {
@@ -170,7 +173,8 @@ public class ReconcilFileBody {
 	}
 
 	public void setLiquidateAmt(String liquidateAmt) {
-		this.liquidateAmt = liquidateAmt;
+		BigDecimal amt = fen2yuan(liquidateAmt);
+		this.liquidateAmt = String.valueOf(amt);
 	}
 
 	public String getOriTranDateTime() {
@@ -189,5 +193,15 @@ public class ReconcilFileBody {
 		this.remark = remark;
 	}
 
+	/**
+	 * 分转元
+	 * @return
+	 */
+	private BigDecimal fen2yuan(String amt) {
+		if (ObjectUtil.isEmpty(amt)) {
+			return BigDecimal.ZERO;
+		}
+		return new BigDecimal(amt).divide(new BigDecimal(100));
+	}
 	
 }

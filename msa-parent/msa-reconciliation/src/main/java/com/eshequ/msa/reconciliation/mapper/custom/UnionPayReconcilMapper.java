@@ -31,5 +31,12 @@ public interface UnionPayReconcilMapper {
 	 * @return
 	 */
 	public MsaBaseAcctInfo getAcctEntityByTrade(@Param("status") String status, @Param("mchId") String mchId, @Param("custId") String custId);
+	
+	/**
+	 * 根据对账汇总ID获取对账明细的汇总
+	 * @param checkId
+	 * @return
+	 */
+	public Map<String,Object> getSumDetailByCheckId(@Param("checkId") long checkId);
 
 }
