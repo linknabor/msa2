@@ -177,6 +177,6 @@
 	<modules>
 		<module>msa-finance</module>
 		<module>msa-common</module>
-    	<module>msa-reconciliation</module>
+    	<module>msa-batch</module>
   </modules>
 </project>

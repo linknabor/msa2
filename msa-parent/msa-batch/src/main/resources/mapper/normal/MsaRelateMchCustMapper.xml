@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eshequ.msa.batch.mapper.normal.MsaRelateMchCustMapper">
+  <resultMap id="BaseResultMap" type="com.eshequ.msa.batch.model.MsaRelateMchCust">
+    <id column="MCH_ID" jdbcType="BIGINT" property="mchId" />
+    <id column="CUST_ID" jdbcType="BIGINT" property="custId" />
+    <result column="COMPANY_ID" jdbcType="BIGINT" property="companyId" />
+    <result column="CUST_NAME" jdbcType="VARCHAR" property="custName" />
+    <result column="ENTITY_ID" jdbcType="BIGINT" property="entityId" />
+  </resultMap>
+</mapper>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eshequ.msa.batch.mapper.normal.MsaBaseAcctInfoMapper">
+  <resultMap id="BaseResultMap" type="com.eshequ.msa.batch.model.MsaBaseAcctInfo">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="LIQUIDATION_CYCLE" jdbcType="INTEGER" property="liquidationCycle" />
+    <result column="ENTITY_NAME" jdbcType="VARCHAR" property="entityName" />
+    <result column="BANK_NAME" jdbcType="VARCHAR" property="bankName" />
+    <result column="ACCOUNT_NAME" jdbcType="VARCHAR" property="accountName" />
+    <result column="ACCOUNT_NO" jdbcType="VARCHAR" property="accountNo" />
+    <result column="PHONE" jdbcType="VARCHAR" property="phone" />
+    <result column="STATUS" jdbcType="CHAR" property="status" />
+    <result column="DATA_SOURCE" jdbcType="CHAR" property="dataSource" />
+    <result column="COMPANY_ID" jdbcType="BIGINT" property="companyId" />
+    <result column="COMPANY_NAME" jdbcType="VARCHAR" property="companyName" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+    <result column="PROVINCE_ID" jdbcType="BIGINT" property="provinceId" />
+    <result column="CITY_ID" jdbcType="BIGINT" property="cityId" />
+  </resultMap>
+</mapper>

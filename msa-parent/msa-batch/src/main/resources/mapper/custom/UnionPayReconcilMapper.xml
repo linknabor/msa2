@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.eshequ.msa.batch.mapper.custom.UnionPayReconcilMapper">
+	
+	<resultMap id="acctInfo" type="com.eshequ.msa.batch.model.MsaBaseAcctInfo">
+	    <id column="ID" jdbcType="BIGINT" property="id" />
+	    <result column="LIQUIDATION_CYCLE" jdbcType="INTEGER" property="liquidationCycle" />
+	    <result column="ENTITY_NAME" jdbcType="VARCHAR" property="entityName" />
+	    <result column="BANK_NAME" jdbcType="VARCHAR" property="bankName" />
+	    <result column="ACCOUNT_NAME" jdbcType="VARCHAR" property="accountName" />
+	    <result column="ACCOUNT_NO" jdbcType="VARCHAR" property="accountNo" />
+	    <result column="PHONE" jdbcType="VARCHAR" property="phone" />
+	    <result column="STATUS" jdbcType="CHAR" property="status" />
+	    <result column="DATA_SOURCE" jdbcType="CHAR" property="dataSource" />
+	    <result column="COMPANY_ID" jdbcType="BIGINT" property="companyId" />
+	    <result column="CSP_NAME" jdbcType="VARCHAR" property="cspName" />
+	    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+	    <result column="PROVINCE_ID" jdbcType="BIGINT" property="provinceId" />
+	    <result column="CITY_ID" jdbcType="BIGINT" property="cityId" />
+	  </resultMap>
+	
+	
+	<select id="getUnreconcilTradeMch" resultType="hashmap">
+	   select o.mch_no, o.secret, o.pay_channel, o.appid, o.mch_name from msa_trade_pay_order o 
+	   left join msa_base_check_detail cd on o.id = cd.order_id
+	   left join msa_base_mch_info mi on mi.mch_no = o.mch_no
+	   where o.tran_status = #{tranStatus}
+	   and o.tran_date &lt;= #{tranDate}
+	   and o.pay_channel = #{payChannel}
+	   and cd.id is null
+	   and mch_status <![CDATA[<>]]> #{mchStatus}
+	</select>
+	
+	<select id="getAcctEntityByTrade" resultMap="acctInfo">
+	   select ai.* from msa_base_acct_info ai
+	   join msa_relate_mch_cust r on ai.id = r.entity_id
+	   where ai.status = #{status}
+	   and r.mch_id = #{mchId}
+	   and r.cust_id = #{custId} 
+	</select>
+	
+	<select id="getSumDetailByCheckId" resultType="hashmap" >
+		select sum(cd.tran_amt) as 'sum_tran_amt', sum(cd.tran_amt-cd.channel_amt) as 'sum_acct_amt',
+		count(1) as 'counts' from msa_base_check_detail cd where cd.check_id = #{checkId}
+	</select>
+
+</mapper>
