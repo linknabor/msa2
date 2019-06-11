@@ -606,10 +606,34 @@ public class UnionPayReconcilServiceImpl implements ReconcilService {
 	@Override
 	public void del(String batchDate) {
 
+		MsaBaseCheckSum record = new MsaBaseCheckSum();
+		record.setCreateDate(batchDate);
+		List<MsaBaseCheckSum> list = msaBaseCheckSumMapper.select(record);
+		if (list == null || list.size() == 0) {
+			return;
+		}
+		
+		for (MsaBaseCheckSum msaBaseCheckSum : list) {
+			transacionUtil.transact(consumer->delByGroup(msaBaseCheckSum));
+		}
 		
 		
 	}
 
-
+	/**
+	 * 分组删除，一条汇总一删
+	 * @param msaBaseCheckSum
+	 */
+	private void delByGroup(MsaBaseCheckSum msaBaseCheckSum) {
+		
+		MsaBaseCheckDetail detail = new MsaBaseCheckDetail();
+		detail.setCheckId(msaBaseCheckSum.getId());
+		List<MsaBaseCheckDetail> detailList = msaBaseCheckDetailMapper.select(detail);
+		for (MsaBaseCheckDetail msaBaseCheckDetail : detailList) {
+			msaBaseCheckDetailMapper.deleteByPrimaryKey(msaBaseCheckDetail.getId());
+		}
+		msaBaseCheckSumMapper.deleteByPrimaryKey(msaBaseCheckSum.getId());
+		
+	}
 	
 }

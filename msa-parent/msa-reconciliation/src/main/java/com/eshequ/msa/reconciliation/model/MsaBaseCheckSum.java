@@ -3,8 +3,13 @@ package com.eshequ.msa.reconciliation.model;
 import com.eshequ.msa.common.BaseModel;
 import java.math.BigDecimal;
 
+import javax.persistence.Id;
+
 public class MsaBaseCheckSum extends BaseModel {
+	@Id
     private Long id;
+
+    private String createDate;
 
     private BigDecimal shouldPayAmt;
 
@@ -42,6 +47,14 @@ public class MsaBaseCheckSum extends BaseModel {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(String createDate) {
+        this.createDate = createDate;
     }
 
     public BigDecimal getShouldPayAmt() {

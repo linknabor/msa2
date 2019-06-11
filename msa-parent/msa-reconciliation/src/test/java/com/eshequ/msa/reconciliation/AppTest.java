@@ -121,7 +121,7 @@ public class AppTest extends TestCase {
 		msaBaseAcctInfo.setPhone("2345675678543");
 		msaBaseAcctInfo.setStatus(MchStatus.QiYong.toString());
 		msaBaseAcctInfo.setDataSource("1");
-		msaBaseAcctInfo.setCspName("兰开斯特公爵");
+		msaBaseAcctInfo.setCompanyName("兰开斯特公爵");
 		msaBaseAcctInfo.setCompanyId(130320100000000059l);
 		msaBaseAcctInfo.setCityId(0l);
 		msaBaseAcctInfo.setProvinceId(1l);

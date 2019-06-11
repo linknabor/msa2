@@ -12,7 +12,7 @@
     <result column="STATUS" jdbcType="CHAR" property="status" />
     <result column="DATA_SOURCE" jdbcType="CHAR" property="dataSource" />
     <result column="COMPANY_ID" jdbcType="BIGINT" property="companyId" />
-    <result column="CSP_NAME" jdbcType="VARCHAR" property="cspName" />
+    <result column="COMPANY_NAME" jdbcType="VARCHAR" property="companyName" />
     <result column="REMARK" jdbcType="VARCHAR" property="remark" />
     <result column="PROVINCE_ID" jdbcType="BIGINT" property="provinceId" />
     <result column="CITY_ID" jdbcType="BIGINT" property="cityId" />

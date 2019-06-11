@@ -3,6 +3,7 @@
 <mapper namespace="com.eshequ.msa.reconciliation.mapper.normal.MsaBaseCheckSumMapper">
   <resultMap id="BaseResultMap" type="com.eshequ.msa.reconciliation.model.MsaBaseCheckSum">
     <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="CREATE_DATE" jdbcType="CHAR" property="createDate" />
     <result column="SHOULD_PAY_AMT" jdbcType="DECIMAL" property="shouldPayAmt" />
     <result column="SHOULD_DATE" jdbcType="CHAR" property="shouldDate" />
     <result column="ACCOUNT_AMT" jdbcType="DECIMAL" property="accountAmt" />
