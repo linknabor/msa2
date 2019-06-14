@@ -5,6 +5,7 @@ package com.eshequ.msa.common;
 
 import java.io.Serializable;
 
+import javax.persistence.Id;
 import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -14,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  *
  */
 public class BaseModel implements Serializable {
-
+	
 	/**
 	 * 
 	 */

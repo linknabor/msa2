@@ -178,5 +178,7 @@
 		<module>msa-finance</module>
 		<module>msa-common</module>
     	<module>msa-batch</module>
+    <module>tranlsnr</module>
+    <module>msa-tranlsnr</module>
   </modules>
 </project>

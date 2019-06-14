@@ -65,6 +65,11 @@ public class RedisConfig {
 		return stringRedisTemplate;
 	}
 
+	/**
+	 * TODO
+	 * 使用jedisPool的时候请自行调用jedis.close()归还链接到jedisPool，否则最多只支持8个链接，一旦超过就无法取得链接 
+	 * @return
+	 */
 	@Bean
 	public JedisPool jedisPoolFactory() {
 

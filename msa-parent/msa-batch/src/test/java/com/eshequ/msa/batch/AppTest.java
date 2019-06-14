@@ -1,14 +1,20 @@
 package com.eshequ.msa.batch;
 
 import java.io.File;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.math.BigDecimal;
 import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.util.ReflectionUtils;
 
 import com.eshequ.msa.batch.config.AppInit;
 import com.eshequ.msa.batch.mapper.normal.MsaBaseAcctInfoMapper;
@@ -24,18 +30,26 @@ import com.eshequ.msa.batch.service.reconciliation.ReconcilService;
 import com.eshequ.msa.batch.service.reconciliation.cfg.ReconcilCfg;
 import com.eshequ.msa.batch.service.reconciliation.dto.ReconcilFileBody;
 import com.eshequ.msa.batch.service.reconciliation.dto.ReconcilFileDTO;
+import com.eshequ.msa.batch.service.tranlsnr.TranDTO;
 import com.eshequ.msa.codes.MchStatus;
 import com.eshequ.msa.codes.MergerStatus;
 import com.eshequ.msa.codes.PayChannel;
 import com.eshequ.msa.codes.PayMethod;
+import com.eshequ.msa.util.BeanUtil;
 import com.eshequ.msa.util.DateUtil;
 import com.eshequ.msa.util.FeeCalculator;
+import com.eshequ.msa.util.ReflectUtil;
 import com.eshequ.msa.util.SnowFlake;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import junit.framework.TestCase;
+import springfox.documentation.spring.web.json.Json;
 
 /**
  * Unit test for simple App.
+ * 
+ * @param <T>
  * @param <T>
  */
 @RunWith(SpringRunner.class)
@@ -54,13 +68,13 @@ public class AppTest extends TestCase {
 	private MsaTradePayOrderMapper msaTradePayOrderMapper;
 	@Autowired
 	private MsaRelateMchCustMapper msaRelateMchCustMapper;
-	
+
 	/**
 	 * 添加商户测试数据
 	 */
 	@Test
 	public void createMch() {
-		
+
 		MsaBaseMchInfo msaBaseMchInfo = new MsaBaseMchInfo();
 		msaBaseMchInfo.setId(snowFlake.nextId());
 		msaBaseMchInfo.setMchNo("888290059501308");
@@ -79,15 +93,15 @@ public class AppTest extends TestCase {
 		msaBaseMchInfo.setConsultLimit(new BigDecimal("1"));
 		msaBaseMchInfo.setDataSource("1");
 		msaBaseMchInfoMapper.insert(msaBaseMchInfo);
-		
+
 	}
-	
+
 	/**
 	 * 创建账户信息
 	 */
 	@Test
 	public void createAccount() {
-		
+
 		MsaBaseAcctInfo msaBaseAcctInfo = new MsaBaseAcctInfo();
 		msaBaseAcctInfo.setId(snowFlake.nextId());
 		msaBaseAcctInfo.setLiquidationCycle(1);
@@ -103,14 +117,14 @@ public class AppTest extends TestCase {
 		msaBaseAcctInfo.setCityId(0l);
 		msaBaseAcctInfo.setProvinceId(1l);
 		msaBaseAcctInfoMapper.insert(msaBaseAcctInfo);
-		
-		//创建客户商户关系
+
+		// 创建客户商户关系
 		MsaRelateMchCust msaRelateMchCust = new MsaRelateMchCust();
 		msaRelateMchCust.setEntityId(msaBaseAcctInfo.getId());
 		msaRelateMchCust.setMchId(109495968801624064l);
 		msaRelateMchCust.setCustId(130320100000000083l);
 		msaRelateMchCustMapper.insert(msaRelateMchCust);
-		
+
 		msaBaseAcctInfo = new MsaBaseAcctInfo();
 		msaBaseAcctInfo.setId(snowFlake.nextId());
 		msaBaseAcctInfo.setLiquidationCycle(1);
@@ -126,37 +140,36 @@ public class AppTest extends TestCase {
 		msaBaseAcctInfo.setCityId(0l);
 		msaBaseAcctInfo.setProvinceId(1l);
 		msaBaseAcctInfoMapper.insert(msaBaseAcctInfo);
-		
-		//创建客户商户关系
+
+		// 创建客户商户关系
 		msaRelateMchCust = new MsaRelateMchCust();
 		msaRelateMchCust.setEntityId(msaBaseAcctInfo.getId());
 		msaRelateMchCust.setMchId(109495968801624064l);
 		msaRelateMchCust.setCustId(130320100000000084l);
 		msaRelateMchCustMapper.insert(msaRelateMchCust);
-		
+
 	}
-	
-	
+
 	@Test
 	public void testDownloadFile() {
-		
+
 		String beginDate = "20190606";
 		String endDate = DateUtil.getSysDate();
-		while(DateUtil.dateMargin(beginDate, endDate) >= 0) {
+		while (DateUtil.dateMargin(beginDate, endDate) >= 0) {
 			ReconcilService reconcilService = reconcilFactory.getCollectionInstance(ReconcilCfg.UnionPay);
 			reconcilService.downloadFile(beginDate);
 			beginDate = DateUtil.getNextDateByNum(beginDate, 1);
 		}
 	}
-	
+
 	@Test
 	public void createTrade() {
-		
+
 		String folderPath = "D:\\unionpay\\data\\";
 		File folder = new File(folderPath);
-		String[]files = folder.list();
+		String[] files = folder.list();
 		for (String file : files) {
-			
+
 			String filePath = folderPath + file;
 			ReconcilService reconcilService = reconcilFactory.getCollectionInstance(ReconcilCfg.UnionPay);
 			ReconcilFileDTO dto = reconcilService.parseFile(filePath);
@@ -165,20 +178,21 @@ public class AppTest extends TestCase {
 			}
 			List<ReconcilFileBody> detailList = dto.getBody();
 			for (ReconcilFileBody detail : detailList) {
-				
+
 				if ("消费".equals(detail.getTranType())) {
 					MsaTradePayOrder order = new MsaTradePayOrder();
 					order.setId(Long.valueOf(detail.getOrderId()));
 					order.setTranStatus(MergerStatus.YiZhiFu.toString());
 					order.setConsultRate(new BigDecimal("0.03"));
-					BigDecimal consultAmt = FeeCalculator.calculateConsultAmt(new BigDecimal(detail.getTranAmt()), order.getConsultRate());
+					BigDecimal consultAmt = FeeCalculator.calculateConsultAmt(new BigDecimal(detail.getTranAmt()),
+							order.getConsultRate());
 					order.setConsultAmt(consultAmt);
 					order.setTranAmt(new BigDecimal(detail.getTranAmt()));
 					String payPro = detail.getPayPro();
 					String paymethod = PayMethod.WechatMicropay.toString();
 					if (payPro.contains("微信")) {
-						//do nothing
-					}else {
+						// do nothing
+					} else {
 						paymethod = PayMethod.AliPayMicropay.toString();
 					}
 					order.setPayMethod(paymethod);
@@ -192,40 +206,39 @@ public class AppTest extends TestCase {
 					order.setSectName("森兰明轩（演示）");
 					order.setStaffName("瓦拉几亚国王");
 					order.setOrderAttach(detail.getRemark());
-					
+
 					MsaBaseMchInfo mchInfo = msaBaseMchInfoMapper.selectByPrimaryKey(111302473800617984l);
 					order.setMchId(mchInfo.getId());
 					order.setMchNo(mchInfo.getMchNo());
 					order.setMchName(mchInfo.getMchName());
 					order.setMchAbbre(mchInfo.getMchAbbre());
 					order.setPayChannel(PayChannel.UnionPay.toString());
-					
+
 					MsaBaseAcctInfo acctInfo = msaBaseAcctInfoMapper.selectByPrimaryKey(111303355682394112l);
 					order.setAccountName(acctInfo.getAccountName());
 					order.setAccountNo(acctInfo.getAccountNo());
-					
+
 					msaTradePayOrderMapper.insert(order);
-					
-					
+
 				}
-				
+
 			}
-			
+
 		}
-		
+
 	}
-	
+
 	/**
-	 *文件落表
+	 * 文件落表
 	 */
 	@Test
 	public void testSaveFile() {
-		
+
 		String folderPath = "D:\\unionpay\\data\\";
 		File folder = new File(folderPath);
-		String[]files = folder.list();
+		String[] files = folder.list();
 		for (String file : files) {
-			
+
 			String filePath = folderPath + file;
 			ReconcilService reconcilService = reconcilFactory.getCollectionInstance(ReconcilCfg.UnionPay);
 			ReconcilFileDTO dto = reconcilService.parseFile(filePath);
@@ -234,19 +247,48 @@ public class AppTest extends TestCase {
 			}
 			reconcilService.saveFile2DB(dto);
 		}
-		
+
 	}
-	
+
 	/**
 	 * 对账
 	 */
 	@Test
 	public void runReconcil() {
-			
+
 		ReconcilService reconcilService = reconcilFactory.getCollectionInstance(ReconcilCfg.UnionPay);
 		reconcilService.runReconcil();
 	}
 	
-	
-	
+	@Test
+	public void insertBean() {
+		try {
+			MsaTradePayOrder order = msaTradePayOrderMapper.selectByPrimaryKey(190528100468646329l);
+			TranDTO<MsaTradePayOrder> dto = new TranDTO<>();
+			dto.setEntity(order);
+			dto.setEntityName("MsaTradePayOrder");
+			
+			ObjectMapper objectMapper = new ObjectMapper();
+			String json = objectMapper.writeValueAsString(dto);
+			
+			JsonNode jsonNode = objectMapper.readTree(json);
+			List<String> node = jsonNode.findValuesAsText("entityName");
+			String entityName = node.get(0);
+			System.out.println(node);
+			
+			JsonNode entityNode = jsonNode.findValue("entity");
+			Object o = objectMapper.readValue(entityNode.toString(), ReflectUtil.getNamespace(entityName));
+			Class<?> clazz = ReflectUtil.getMapper(entityName);
+			
+			Method method = clazz.getMethod("insert", Object.class);
+			method.invoke(BeanUtil.getBean(clazz), o);
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+
+
 }

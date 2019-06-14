@@ -22,9 +22,9 @@ public class AppInit implements CommandLineRunner {
 
 	public static void main(String[] args) {
 
-		args = new String[2];
-		args[0] = "1";
-		args[1] = "20190510";
+//		args = new String[2];
+//		args[0] = "1";
+//		args[1] = "20190510";
 		
 		SpringApplication app = new SpringApplication(AppInit.class);
 	    app.run(args);
@@ -52,6 +52,9 @@ public class AppInit implements CommandLineRunner {
 //			}else if ("2".equals(args[0])) {
 //				logger.warn("开始删除日期为"+args[1]+"的对账...");
 //				reconcilStarter.del(args[1]);
+//			}else if ("3".equals(args[0])) {
+//				logger.warn("开始监听交易同步。");
+//				//TODO
 //			}else {
 //				logger.error("参数错误！");
 //			}
