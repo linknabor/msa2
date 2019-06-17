@@ -31,6 +31,8 @@ import com.eshequ.msa.batch.service.reconciliation.cfg.ReconcilCfg;
 import com.eshequ.msa.batch.service.reconciliation.dto.ReconcilFileBody;
 import com.eshequ.msa.batch.service.reconciliation.dto.ReconcilFileDTO;
 import com.eshequ.msa.batch.service.tranlsnr.TranDTO;
+import com.eshequ.msa.batch.service.tranlsnr.TranlsnrService;
+import com.eshequ.msa.batch.service.tranlsnr.TranlsnrStarter;
 import com.eshequ.msa.codes.MchStatus;
 import com.eshequ.msa.codes.MergerStatus;
 import com.eshequ.msa.codes.PayChannel;
@@ -287,6 +289,15 @@ public class AppTest extends TestCase {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	@Autowired
+	private TranlsnrStarter tranlsnrStarter;
+	
+	@Test
+	public void testRedisPop() {
+		
+		tranlsnrStarter.startLisnter();
 	}
 
 

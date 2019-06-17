@@ -1,9 +1,11 @@
 package com.eshequ.msa.batch.service.tranlsnr;
 
 public class TranDTO<T> {
-	
+
+	private String callMethod;
 	private String entityName;
 	private T entity;
+	
 	public String getEntityName() {
 		return entityName;
 	}
@@ -15,6 +17,12 @@ public class TranDTO<T> {
 	}
 	public void setEntity(T entity) {
 		this.entity = entity;
+	}
+	public String getCallMethod() {
+		return callMethod;
+	}
+	public void setCallMethod(String callMethod) {
+		this.callMethod = callMethod;
 	}
 	
 	
