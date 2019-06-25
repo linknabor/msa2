@@ -391,7 +391,7 @@ public class UnionPayReconcilServiceImpl implements ReconcilService {
 					
 				}else {	//能匹配上的，先set对账明细
 					
-					MsaBaseCheckDetail detail = new MsaBaseCheckDetail();
+					MsaBaseCheckDetail detail = new MsaBaseCheckDetail();	//对账明细表
 					detail.setId(snowFlake.nextId());
 					detail.setOrderId(reconFile.getOrderId());
 					detail.setTranAmt(reconFile.getTranAmt());
@@ -425,7 +425,11 @@ public class UnionPayReconcilServiceImpl implements ReconcilService {
 					detail.setTranDate(reconFile.getTranDate());
 					detail.setTranTime(reconFile.getTranTime());
 					detail.setConsultRate(order.getConsultRate());
-					detail.setConsultAmt(order.getConsultAmt());
+					if (isRefund) {
+						detail.setConsultAmt(order.getConsultAmt().multiply(new BigDecimal("-1")));	//退款这里应该是负值
+					}else {
+						detail.setConsultAmt(order.getConsultAmt());
+					}
 					detail.setChannelRate(FeeCalculator.calculateFeeRate(reconFile.getFeeAmt(), reconFile.getTranAmt()));
 					detail.setChannelAmt(reconFile.getFeeAmt());
 					detail.setMchNo(order.getMchNo());
@@ -441,6 +445,16 @@ public class UnionPayReconcilServiceImpl implements ReconcilService {
 					
 					Long sect_id = order.getSectId();	//小区ID
 					Long entity_id = order.getEntityId(); 	//清算实体ID
+					if (entity_id == null) {	//如果清算主体是空，则查询清算主体与项目关系表，根据小区ID获取他的清算实体
+						MsaBaseAcctInfo acctInfo = unionPayReconcilMapper.getAcctEntityBySect(MchStatus.QiYong.toString(), order.getSecret());
+						if (acctInfo == null) {
+							//TODO 没有填写,如何处理 。 
+							continue;
+						}else {
+							entity_id = acctInfo.getId();
+						}
+					}
+					
 					Long mch_id = order.getMchId();	//商户号
 					
 					if (!sectMap.containsKey(sect_id)) {
@@ -542,7 +556,7 @@ public class UnionPayReconcilServiceImpl implements ReconcilService {
 				/*保存对账汇总。 同个小区同个清算实体保存一条*/
 				String[]tmpKey = key.split("_");
 				String sect_id = tmpKey[0];
-				String mch_id = tmpKey[1];	
+//				String mch_id = tmpKey[1];	
 				String entity_id = tmpKey[2];	//entity_id可能建立交易时还未填上，所以此处可能未空。
 				
 				Map<String, Object> sumMap = unionPayReconcilMapper.getSumDetailByCheckId(sumId);
@@ -562,20 +576,6 @@ public class UnionPayReconcilServiceImpl implements ReconcilService {
 				checkSum.setAccountDate(DateUtil.getSysDate());	//TODO
 				checkSum.setPayNum(counts.intValue());
 				checkSum.setAccountStatus(AccountStatus.WeiJieSuan.toString());
-				if ("null".equalsIgnoreCase(entity_id)) {	//如果清算实体id为空，则查询商户表
-					MsaBaseAcctInfo acctInfo = unionPayReconcilMapper.getAcctEntityByTrade(MchStatus.QiYong.toString(), mch_id, sect_id);
-					if (acctInfo == null) {
-						//TODO ???如何处理 。 如果跳过是否删除刚才已保存的明细
-						continue;
-					}
-					Long entityId = acctInfo.getId();	//清算实体ID
-					if (entityId == null) {	//仍旧没有填写
-						//TODO ???如何处理 。 如果跳过是否删除刚才已保存的明细
-						continue;
-					}else {
-						entity_id = String.valueOf(entityId);
-					}
-				}
 				checkSum.setEntityId(Long.valueOf(entity_id));	//清算实体ID
 				
 				//如果清算实体ID不为空，则填写以下字段

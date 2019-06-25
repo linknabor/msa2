@@ -30,7 +30,7 @@ public interface UnionPayReconcilMapper {
 	 * @param custId
 	 * @return
 	 */
-	public MsaBaseAcctInfo getAcctEntityByTrade(@Param("status") String status, @Param("mchId") String mchId, @Param("custId") String custId);
+	public MsaBaseAcctInfo getAcctEntityBySect(@Param("status") String status, @Param("sectId") String sectId);
 	
 	/**
 	 * 根据对账汇总ID获取对账明细的汇总

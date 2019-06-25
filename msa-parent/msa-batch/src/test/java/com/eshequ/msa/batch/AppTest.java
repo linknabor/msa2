@@ -1,29 +1,24 @@
 package com.eshequ.msa.batch;
 
 import java.io.File;
-import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
 import java.math.BigDecimal;
 import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mybatis.spring.SqlSessionTemplate;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.util.ReflectionUtils;
 
 import com.eshequ.msa.batch.config.AppInit;
 import com.eshequ.msa.batch.mapper.normal.MsaBaseAcctInfoMapper;
 import com.eshequ.msa.batch.mapper.normal.MsaBaseMchInfoMapper;
-import com.eshequ.msa.batch.mapper.normal.MsaRelateMchCustMapper;
+import com.eshequ.msa.batch.mapper.normal.MsaRelateAcctSectMapper;
 import com.eshequ.msa.batch.mapper.normal.MsaTradePayOrderMapper;
 import com.eshequ.msa.batch.model.MsaBaseAcctInfo;
 import com.eshequ.msa.batch.model.MsaBaseMchInfo;
-import com.eshequ.msa.batch.model.MsaRelateMchCust;
+import com.eshequ.msa.batch.model.MsaRelateAcctSect;
 import com.eshequ.msa.batch.model.MsaTradePayOrder;
 import com.eshequ.msa.batch.service.reconciliation.ReconcilFactory;
 import com.eshequ.msa.batch.service.reconciliation.ReconcilService;
@@ -31,7 +26,6 @@ import com.eshequ.msa.batch.service.reconciliation.cfg.ReconcilCfg;
 import com.eshequ.msa.batch.service.reconciliation.dto.ReconcilFileBody;
 import com.eshequ.msa.batch.service.reconciliation.dto.ReconcilFileDTO;
 import com.eshequ.msa.batch.service.tranlsnr.TranDTO;
-import com.eshequ.msa.batch.service.tranlsnr.TranlsnrService;
 import com.eshequ.msa.batch.service.tranlsnr.TranlsnrStarter;
 import com.eshequ.msa.codes.MchStatus;
 import com.eshequ.msa.codes.MergerStatus;
@@ -46,7 +40,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import junit.framework.TestCase;
-import springfox.documentation.spring.web.json.Json;
 
 /**
  * Unit test for simple App.
@@ -69,7 +62,7 @@ public class AppTest extends TestCase {
 	@Autowired
 	private MsaTradePayOrderMapper msaTradePayOrderMapper;
 	@Autowired
-	private MsaRelateMchCustMapper msaRelateMchCustMapper;
+	private MsaRelateAcctSectMapper msaRelateAcctSectMapper;
 
 	/**
 	 * 添加商户测试数据
@@ -121,11 +114,10 @@ public class AppTest extends TestCase {
 		msaBaseAcctInfoMapper.insert(msaBaseAcctInfo);
 
 		// 创建客户商户关系
-		MsaRelateMchCust msaRelateMchCust = new MsaRelateMchCust();
-		msaRelateMchCust.setEntityId(msaBaseAcctInfo.getId());
-		msaRelateMchCust.setMchId(109495968801624064l);
-		msaRelateMchCust.setCustId(130320100000000083l);
-		msaRelateMchCustMapper.insert(msaRelateMchCust);
+		MsaRelateAcctSect msaRelateAcctSect = new MsaRelateAcctSect();
+		msaRelateAcctSect.setAcctId(msaBaseAcctInfo.getId());
+		msaRelateAcctSect.setSectId(130320100000000083l);
+		msaRelateAcctSectMapper.insert(msaRelateAcctSect);
 
 		msaBaseAcctInfo = new MsaBaseAcctInfo();
 		msaBaseAcctInfo.setId(snowFlake.nextId());
@@ -144,11 +136,10 @@ public class AppTest extends TestCase {
 		msaBaseAcctInfoMapper.insert(msaBaseAcctInfo);
 
 		// 创建客户商户关系
-		msaRelateMchCust = new MsaRelateMchCust();
-		msaRelateMchCust.setEntityId(msaBaseAcctInfo.getId());
-		msaRelateMchCust.setMchId(109495968801624064l);
-		msaRelateMchCust.setCustId(130320100000000084l);
-		msaRelateMchCustMapper.insert(msaRelateMchCust);
+		msaRelateAcctSect = new MsaRelateAcctSect();
+		msaRelateAcctSect.setAcctId(msaBaseAcctInfo.getId());
+		msaRelateAcctSect.setSectId(130320100000000083l);
+		msaRelateAcctSectMapper.insert(msaRelateAcctSect);
 
 	}
 
@@ -295,7 +286,7 @@ public class AppTest extends TestCase {
 	private TranlsnrStarter tranlsnrStarter;
 	
 	@Test
-	public void testRedisPop() {
+	public void testQueue() {
 		
 		tranlsnrStarter.startLisnter();
 	}

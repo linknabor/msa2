@@ -1,24 +1,27 @@
 package com.eshequ.msa.batch.service.tranlsnr.impl;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Method;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.dao.QueryTimeoutException;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import com.eshequ.msa.batch.service.tranlsnr.TranlsnrService;
 import com.eshequ.msa.util.BeanUtil;
+import com.eshequ.msa.util.DateUtil;
 import com.eshequ.msa.util.ReflectUtil;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import redis.clients.jedis.Protocol;
+import io.lettuce.core.RedisCommandTimeoutException;
 
 @Service
 public class TranlsnrServiceImpl implements TranlsnrService {
@@ -26,18 +29,19 @@ public class TranlsnrServiceImpl implements TranlsnrService {
 	private static Logger logger = LoggerFactory.getLogger(TranlsnrServiceImpl.class);
 	
 	private static final String PAY_ORDER_QUEUE = "UnionPayOrder";
+	private static final String LINE_SEPARATOR = System.getProperty("line.separator");
 	
 	@Autowired
-	private RedisTemplate<String, Object> redisTemplat;
+	private StringRedisTemplate stringRedisTemplat;
 	
 	@Override
 	public void syncData() {
 
+		String tranDto = "";
 		try {
-			Object tranDto = redisTemplat.opsForList().leftPop(PAY_ORDER_QUEUE, Protocol.DEFAULT_TIMEOUT, TimeUnit.SECONDS);
+			tranDto = stringRedisTemplat.opsForList().leftPop(PAY_ORDER_QUEUE, Integer.MAX_VALUE, TimeUnit.SECONDS);
 			ObjectMapper objectMapper = new ObjectMapper();
-			String json = (String)tranDto;	//由于在redie中已经序列化成了字符串，所以这里增强转，不使用objectMapper的writeValueAsString函数。如果使用writeValueAsString，会自动加上转义的斜杠，在取键值的时候会出问题。
-			JsonNode jsonNode = objectMapper.readTree(json);
+			JsonNode jsonNode = objectMapper.readTree(tranDto);
 			
 			List<String> methodNode = jsonNode.findValuesAsText("callMethod");
 			String callMethod = methodNode.get(0);
@@ -58,7 +62,21 @@ public class TranlsnrServiceImpl implements TranlsnrService {
 			
 		
 		} catch (Exception e) {
+			
 			logger.error(e.getMessage(), e);
+			if (e instanceof RedisCommandTimeoutException || e instanceof QueryTimeoutException) {
+				//do nothing
+			}else {
+				File file = new File(DateUtil.getSysDate()+DateUtil.getSysTime()+ "_" + System.currentTimeMillis() +"_msa.fail.queue.file");
+				try {
+					FileUtils.writeStringToFile(file, e.getCause().toString()+ LINE_SEPARATOR + LINE_SEPARATOR, "utf-8", false);
+					FileUtils.writeStringToFile(file, tranDto, "utf-8", true);
+				} catch (IOException e1) {
+					logger.error(e1.getMessage(), e1);
+				}
+				
+			}
+			
 		}
 
 	}

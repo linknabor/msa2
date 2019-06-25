@@ -32,12 +32,11 @@
 	   and mch_status <![CDATA[<>]]> #{mchStatus}
 	</select>
 	
-	<select id="getAcctEntityByTrade" resultMap="acctInfo">
+	<select id="getAcctEntityBySect" resultMap="acctInfo">
 	   select ai.* from msa_base_acct_info ai
-	   join msa_relate_mch_cust r on ai.id = r.entity_id
+	   join sp_relate_acct_sect r on ai.id = r.acct_id
 	   where ai.status = #{status}
-	   and r.mch_id = #{mchId}
-	   and r.cust_id = #{custId} 
+	   and r.sect = #{sectId}
 	</select>
 	
 	<select id="getSumDetailByCheckId" resultType="hashmap" >

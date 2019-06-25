@@ -39,6 +39,8 @@ public class ReconcilExecutor implements Runnable {
 			//3.文件落表
 			reconcilService.saveFile2DB(dto);
 		}
+		//4.执行对账
+		reconcilService.runReconcil();
 		
 		
 	}

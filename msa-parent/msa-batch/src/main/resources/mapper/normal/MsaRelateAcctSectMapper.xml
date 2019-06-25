@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eshequ.msa.batch.mapper.normal.MsaRelateAcctSectMapper">
+  <resultMap id="BaseResultMap" type="com.eshequ.msa.batch.model.MsaRelateAcctSectKey">
+    <id column="SECT_ID" jdbcType="BIGINT" property="sectId" />
+    <id column="ACCT_ID" jdbcType="BIGINT" property="acctId" />
+  </resultMap>
+</mapper>
