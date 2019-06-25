@@ -24,16 +24,6 @@ DATA_SOURCE                                       CHAR(2) NOT NULL, #所属平台
 CONSTRAINT MSA_BASE_MCH_INFO_CHK9 CHECK(CONSULT_RATE<=100.00),
 CONSTRAINT MSA_BASE_MCH_INFO_PK PRIMARY KEY(ID)   );
 
-#客户商户关系表
-DROP TABLE IF EXISTS MSA_RELATE_MCH_CUST ;
-CREATE TABLE MSA_RELATE_MCH_CUST(
-MCH_ID                                            BIGINT default 0 NOT NULL, #ID
-CUST_ID                                           BIGINT default 0 NOT NULL, #客户ID
-COMPANY_ID                                        BIGINT default 0 NULL, #客户归属企业ID
-CUST_NAME                                         VARCHAR(160) NULL, #客户名称
-ENTITY_ID                                         BIGINT default 0 NULL, #ID
-CONSTRAINT MSA_RELATE_MCH_CUST_PK PRIMARY KEY(MCH_ID,CUST_ID)   );
-
 #原始对账信息表
 DROP TABLE IF EXISTS MSA_BASE_ORIGIN_RECON_FILE ;
 CREATE TABLE MSA_BASE_ORIGIN_RECON_FILE(
@@ -282,5 +272,12 @@ CREATE TABLE MSA_RELATE_LIQUIDATE_CHECK(
 LIQUIDATE_ID                                      BIGINT default 0 NOT NULL, #ID
 CHECK_ID                                          BIGINT default 0 NOT NULL, #ID
 CONSTRAINT MSA_RELATE_LIQUIDATE_CHECK_PK PRIMARY KEY(LIQUIDATE_ID,CHECK_ID)   );
+
+#清算主体与项目关系表
+DROP TABLE IF EXISTS SP_RELATE_ACCT_SECT ;
+CREATE TABLE SP_RELATE_ACCT_SECT(
+SECT_ID                                           BIGINT default 0 NOT NULL, #物业项目ID
+ACCT_ID                                           BIGINT default 0 NOT NULL, #ID
+CONSTRAINT SP_RELATE_ACCT_SECT_PK PRIMARY KEY(SECT_ID,ACCT_ID)   );
 
 
