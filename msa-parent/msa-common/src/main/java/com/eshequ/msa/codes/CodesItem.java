@@ -37,6 +37,8 @@ public class CodesItem {
 	protected static final String dataSource=new String("13");
 	
 	protected static final String methodType=new String("14");
+	
+	protected static final String refundStatus=new String("15");
 
 
 	protected static final Map mapCat= new HashMap(100);
@@ -52,6 +54,7 @@ public class CodesItem {
 		mapCat.put("ReginType",reginType);
 		mapCat.put("DataSource",dataSource);
 		mapCat.put("MethodType",methodType);
+		mapCat.put("RefundStatus",refundStatus);
 	}
 
 

@@ -79,3 +79,7 @@ INSERT INTO CODE_INFO  VALUES ('03', '13', '数据来源', '浙江SaaS', 'DataSource')
 delete from code_info where ci_sp_class='14';
 INSERT INTO CODE_INFO  VALUES ('01', '14', '渠道类型', '微信', 'MethodType');
 INSERT INTO CODE_INFO  VALUES ('02', '14', '渠道类型', '支付宝', 'MethodType');
+#　本引用值的代码个数:2 -------i==12
+delete from code_info where ci_sp_class='15';
+INSERT INTO CODE_INFO  VALUES ('01', '15', '退款交易状态', '交易完成', 'RefundStatus');
+INSERT INTO CODE_INFO  VALUES ('03', '15', '退款交易状态', '待审核', 'RefundStatus');
